@@ -12,10 +12,8 @@ const CreateAccount = (props) => {
 	
 	const updateInput = (e) => {
 		const { name, value } = e.target;
-		console.log(name +  " this is ")
 		const updated = { ...input, [name]: value };
 		setInput(updated);
-		console.log(input);
 	};
 
 	const handleCreateAccount = async (e) => {

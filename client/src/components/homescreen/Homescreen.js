@@ -2,7 +2,7 @@ import { GET_DB_TODOS } 				from '../../cache/queries';
 import React, { useState } 				from 'react';
 import { useMutation, useQuery } 		from '@apollo/client';
 import { WNavbar, WSidebar, WNavItem } 	from 'wt-frontend';
-import { WLayout, WLHeader, WLMain, WLSide } from 'wt-frontend';
+import { WLayout, WLHeader, WLMain, WLSide, WCard, WCContent, WCMedia } from 'wt-frontend';
 
 import Login 							from '../modals/Login';
 import NavbarOptions 					from '../navbar/NavbarOptions';
@@ -13,8 +13,8 @@ import Logo 							from '../navbar/Logo';
 
 const Homescreen = (props) => {
 	const auth = props.user === null ? false : true;
+	const [activeRegion, setActiveRegion] = useState({});
 
-	console.log("author is " + auth);
 	const [showCreate, toggleShowCreate] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
 
@@ -54,9 +54,24 @@ const Homescreen = (props) => {
 
 
 	let mainContents;
-	if (auth){
-		mainContents = <div>Hello</div>
+	console.log(typeof(activeRegion_id));
+	if (auth && !activeRegion._id){
+		mainContents = <div>Bye</div>
 	}
+	else if (!auth){
+		mainContents = 
+					<div class = "welcome">
+						<img style = {{borderRadius: "30px"}}src={require('../image/Welcome Earth.png')}/>
+						<div>
+							Welcome To The World Data Mapper
+						</div>
+					</div>
+					
+
+	}
+
+	// <img src={require('/Users/haksookim/Desktop/2021 Spring/CSE 316/HW4/CSE316-HW3-Spring21-Solution/client/src/components/image/Welcome Earth.png')}/>
+	// class="fit-picture"
 
 	return (
 		<WLayout wLayout="header">
