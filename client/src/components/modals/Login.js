@@ -2,7 +2,7 @@ import React, { useState } 	from 'react';
 import { LOGIN } 			from '../../cache/mutations';
 import { useMutation }    	from '@apollo/client';
 
-import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput } from 'wt-frontend';
+import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 
 const Login = (props) => {
 	const [input, setInput] = useState({ email: '', password: '' });
@@ -28,13 +28,14 @@ const Login = (props) => {
 		if (data) {
 			props.fetchUser();
 			toggleLoading(false)
+			props.refetch();
 			props.setShowLogin(false)
 		};
 	};
 
 
 	return (
-		<WModal className="login-modal" cover="true" visible={props.setShowLogin}>
+		<WModal className="modal" cover="true" visible={props.setShowLogin}>
 			<WMHeader  className="modal-header" onClose={() => props.setShowLogin(false)}>
 				Login
 			</WMHeader >
@@ -57,12 +58,26 @@ const Login = (props) => {
 					</WMMain >
 			}
 			<WMFooter>
-				<WButton className="modal-button" onClick={handleLogin} span clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
-					Login
-				</WButton>
-				<WButton className="modal-button" onClick={() => props.setShowLogin(false)} span clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
-					Cancel
-				</WButton>
+			<WRow>
+
+				<WCol size="4" className="modal-row">
+					<WButton className="modal-button" onClick={handleLogin} span clickAnimation="ripple-light"  shape="rounded" color="modal-button">
+						Login
+					</WButton>				
+				</WCol>
+
+				<WCol size="4">
+					<div >&nbsp;</div>
+				</WCol>
+
+				<WCol size="4" className="modal-row">
+					<WButton className="modal-button" onClick={() => props.setShowLogin(false)} span clickAnimation="ripple-light"  shape="rounded" color="modal-button">
+						Cancel
+					</WButton>				
+				</WCol>
+						
+			</WRow>
+
 			</WMFooter>
 		</WModal >
 	);

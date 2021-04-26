@@ -10,21 +10,36 @@ export const GET_DB_USER = gql`
 	}
 `;
 
-export const GET_DB_TODOS = gql`
-	query GetDBTodos {
-		getAllTodos {
-			_id
-			name
-			owner
-			items {
-				_id
-				description
-				due_date
-				assigned_to
-				completed
-			}
-			sortRule
-			sortDirection
+export const GET_ROOT_REGIONS_BY_USERID = gql`
+	query GetRootRegionsByUserId {
+		getRootRegionsByUserId {
+		_id
+        owner
+        name
+        capital
+		leader
+        flag 
+        landmark
+        parentRegion_id
+        top
 		}
 	}
 `;
+
+export const GET_SUBREGIONS_BYID = gql`
+	query GetSubRegionsById($regionId: String!) {
+		getSubRegionsById(regionId : $regionId) {
+		_id
+        owner
+        name
+        capital
+		leader
+        flag 
+        landmark
+        parentRegion_id
+        top
+		}
+	}
+`;
+
+

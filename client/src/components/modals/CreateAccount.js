@@ -41,7 +41,7 @@ const CreateAccount = (props) => {
 	};
 
 	return (
-		<WModal className="signup-modal"  cover="true" visible={props.setShowCreate}>
+		<WModal className="modal"  cover="true" visible={props.setShowCreate}>
 			<WMHeader  className="modal-header" onClose={() => props.setShowCreate(false)}>
 				Create A New Account
 			</WMHeader>
@@ -49,36 +49,71 @@ const CreateAccount = (props) => {
 			{
 				loading ? <div />
 					: <WMMain>
-							<WRow className="modal-col-gap signup-modal">
-								<WCol size="6">
+							<WRow className="modal-col-gap modal ">
+								<WCol size="3" className="modal-row">
+									<div>Name : </div>
+								</WCol>
+								
+								<WCol size="9">
 									<WInput 
-										className="" onBlur={updateInput} name="name" labelAnimation="up" 
+										className="modal-input" onBlur={updateInput} name="name" labelAnimation="up" 
 										barAnimation="solid" labelText="Name" wType="outlined" inputType="text" 
 									/>
 								</WCol>
-								
 							</WRow>
 
 							<div className="modal-spacer">&nbsp;</div>
-							<WInput 
-								className="modal-input" onBlur={updateInput} name="email" labelAnimation="up" 
-								barAnimation="solid" labelText="Email Address" wType="outlined" inputType="text" 
-							/>
+
+							<WRow className="modal-col-gap modal">
+
+								<WCol size="3" className="modal-row">	
+									<div>Email : </div>
+								</WCol>
+								<WCol size="9">
+									<WInput 
+										className="modal-input" onBlur={updateInput} name="email" labelAnimation="up" 
+										barAnimation="solid" labelText="Email Address" wType="outlined" inputType="text" 
+									/>
+								</WCol>
+							</WRow>
+
 							<div className="modal-spacer">&nbsp;</div>
-							<WInput 
-								className="modal-input" onBlur={updateInput} name="password" labelAnimation="up" 
-								barAnimation="solid" labelText="Password" wType="outlined" inputType="password" 
-							/>
+
+							<WRow className="modal-col-gap modal">
+								<WCol size="3" className="modal-row">
+									<div>Password : </div>
+								</WCol>
+								<WCol size="9">
+									<WInput 
+										className="modal-input" onBlur={updateInput} name="password" labelAnimation="up" 
+										barAnimation="solid" labelText="Password" wType="outlined" inputType="password" 
+									/>
+								</WCol>
+							</WRow>
+
 					</WMMain>
 			}
+
 			<WMFooter>
-				<WButton className="modal-button" onClick={handleCreateAccount} span clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
-					Register
-				</WButton>
-				<WButton className="modal-button" onClick={() => props.setShowCreate(false)} span clickAnimation="ripple-light" hoverAnimation="darken" shape="rounded" color="primary">
-					Cancel
-				</WButton>
-				
+				<WRow>
+
+					<WCol size="4" className="modal-row">
+						<WButton className="modal-button " onClick={handleCreateAccount} span clickAnimation="ripple-light"  shape="rounded" color="modal-button">
+							Register
+						</WButton>					
+					</WCol>
+
+					<WCol size="4">
+						<div >&nbsp;</div>
+					</WCol>
+
+					<WCol size="4" className="modal-row">
+						<WButton className="modal-button " onClick={() => props.setShowCreate(false)} span clickAnimation="ripple-light" shape="rounded" color="modal-button">
+							Cancel
+						</WButton>				
+					</WCol>
+						
+				</WRow>
 			</WMFooter>
 			
 		</WModal>

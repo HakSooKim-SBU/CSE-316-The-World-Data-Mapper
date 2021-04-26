@@ -1,10 +1,10 @@
 @use 'node_modules/wt-frontend/build/global/theme' with (
-    $primary-color: #ffc800,
+    $primary-color: rgb(183 ,183,183),
     $background-color: rgb(64, 69, 78),//#d9d6cc,
-    $navbar-background-color: #353a44,//rgb(64, 69, 78),
+    $navbar-background-color: #696969,
     $sidebar-background-color: #2b2e36,//#353a44,
     $text-color: #e9edf0,
-    $modal-background: rgb(64, 69, 78),
+    $modal-background: rgb(65, 65, 64),
     $modal-section-padding: 24px,
     $modal-radius: 4px,
     $modal-border: 1px solid rgb(87, 93, 105),
@@ -93,12 +93,12 @@ html, body {
 
 
 
-.list-item-edit-input, .table-input {
+.list-item-edit-input {
     font-size: 1.125rem !important;
 }
 
 .logo {
-	color: $primary-color;
+	color: #ffa500;
     font-size: 1.5rem;
     font-family: "Roboto Mono", monospace;
     text-transform: uppercase;
@@ -148,15 +148,13 @@ html, body {
 }
 
 .table-entry {
-    border-bottom: 1px solid;
-    color: $text-color;
+    // border-bottom: 1px solid;
+    color: black;
     transition: 0.05s ease-in-out;
     height: 46px;
 }
 
-.table-entry:hover {
-    background-color: var(--warm-white-transparent);
-}
+
 
 .table-header-button {
     transition: 0.1s ease-in-out;
@@ -185,16 +183,7 @@ html, body {
 }
 
 .table-input {
-    /*background-color: var(--deep-blue-lighter);
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: 1px solid;
-    margin: 0;
-    padding:0;
-    font-family: 'Roboto';
-    font-size: 14px;
-    color: var(--light-gray);*/
+
 }
 
 .table-select {
@@ -207,8 +196,11 @@ html, body {
 }
 
 .modal-header {
+    background-color: rgb(195, 26, 35);
     color: $text-color;
     font-size: 28px;
+    border-bottom-width: 2px;
+    border-bottom-color: white; 
 }
 
 .navbar-options {
@@ -234,4 +226,53 @@ html, body {
 }
 .welcome{
     color: $text-color;
+}
+
+.pinkFont{
+    color: rgb(217, 103, 152)
+}
+
+.bold{
+    font-weight: bolder;
+}
+
+.modal-button{
+    background-color: #9b1c1cdc
+}
+.modal-button:hover{
+    background-color:    rgba(189, 71, 77, 0.774);
+
+
+}
+
+.mapSelection-Header{
+    background-color: black;
+    color: $text-color;
+    font-size :25px;
+    
+}
+.mapSelection-Ls{
+    background-color: rgb(229,182,185);
+}
+
+.mapSelection-button{
+    color: black;
+    font-weight: bolder;
+    font-size: larger;
+    height: 100%;
+    width: 100%;
+    
+}
+
+.mapSelection-button:hover{
+    background-color: rgb(250, 157, 141);
+    cursor: pointer;
+}
+
+.modal-row{
+    display: flex;
+    align-items: center;
+    color: #e9edf0;
+    font-size: 16px;
+    font-weight: bolder;
 }
