@@ -17,70 +17,101 @@ import Logo 							from '../navbar/Logo';
 
 const Homescreen = (props) => {
 	const auth = props.user === null ? false : true;
-	let subMaps = []; // Maps
-	let subRegions = [];	// 
+	let subRegions = [];
+	let activeRegionId = "";
 	const [activeRegion, setActiveRegion] = useState({});
-	const [activeMap, setActiveMap]			= useState({});
 	const [showCreate, toggleShowCreate] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
 
 	const [AddRegion] 		= useMutation(mutations.ADD_REGION);
-	const [RenameMap] 		= useMutation(mutations.RENAME_MAP);
-	const [DeleteMap] 		= useMutation(mutations.DELETE_MAP);
+	const [RenameRegion] 		= useMutation(mutations.RENAME_REGION);
+	const [DeleteRegion] 		= useMutation(mutations.DELETE_REGION);
 
-
-	const { loading: loadingRootRegion, error: errorRootRegion, data: dataRootRegion , refetch } = useQuery(queries.GET_ROOT_REGIONS_BY_USERID);
-	if(loadingRootRegion) { console.log(loadingRootRegion); }
-	if(errorRootRegion) { console.log(errorRootRegion); }
-	if(dataRootRegion) { 
-		for(let rootRegion of dataRootRegion.getRootRegionsByUserId) {
-			subMaps.push(rootRegion)
-		}
+	if (!activeRegion._id && auth){
+		activeRegionId = props.user._id;
+	}
+	else if (activeRegion._id && auth){
+		activeRegionId = activeRegion._id;
 	}
 
-	const {loading, error, data}  = useQuery(queries.GET_SUBREGIONS_BYID, {variables: { regionId: activeRegion._id },});
+	const {loading, error, data, refetch}  = useQuery(queries.GET_SUBREGIONS_BYID, {variables: { regionId: activeRegionId }});
 	if(loading) { console.log(loading, 'loading'); }
-	// if(error) { console.log(error, 'error'); }
-	if(data) { 
+	if(error) { console.log(error, 'error'); }
+	if(data && data.getSubRegionsById !== null) { 
 		for(let subRegion of data.getSubRegionsById) {
 			subRegions.push(subRegion)
 		}
 	}
 
-
-
 	const addMap = async (mapName) => {
 		let userId = props.user._id;
 		const newMap = {
 			_id: '',
-			owner: userId,
 			name: mapName,
 			capital: "NO CAPITAL",
         	leader: "NO LEADER",
         	flag: "NO FLAG",
         	landmark: [],
-        	parentRegion_id: "NO PARENT",
+        	parentRegion_id: userId,
         	top: true,
 			subRegion : []
 		};
-		const { data } = await AddRegion({ variables: { region:newMap}, refetchQueries: [{ query: queries.GET_ROOT_REGIONS_BY_USERID }] });
+		// const { data } = await AddRegion({ variables: { region:newMap}, refetchQueries: [{ query: queries.GET_SUBREGIONS_BYID,{variables: { regionId: activeRegionId }} }] });
+		const { data } = await AddRegion({ variables: { region:newMap} });
+		refetch({ variables: { regionId: activeRegionId } })
 	};
 
-	const renameMap = async (regionId, newName) =>{
-		const { data } = await RenameMap({ variables: { regionId:regionId, newName:newName}, refetchQueries: [{ query: queries.GET_ROOT_REGIONS_BY_USERID }] });
+	const addSubRegion = async () => {
+		const newMap = {
+			_id: '',
+			name: "Not Assigned",
+			capital: "Not Assigned",
+        	leader: "Not Assigned",
+        	flag: "Not Assigned",
+        	landmark: [],
+        	parentRegion_id: activeRegion._id,
+        	top: true,
+			subRegion : []
+		};
+		// const { data } = await AddRegion({ variables: { region:newMap}, refetchQueries: [{ query: queries.GET_SUBREGIONS_BYID,{variables: { regionId: activeRegionId }} }] });
+		const { data } = await AddRegion({ variables: { region:newMap} });
+		refetch({ variables: { regionId: activeRegionId } })
+	};
+
+
+
+
+
+	const renameRegion = async (regionId, newName) =>{
+		// const { data } = await RenameRegion({ variables: { regionId:regionId, newName:newName}, refetchQueries: [{ query: queries.GET_ROOT_REGIONS_BY_USERID }] });
+		const { data } = await RenameRegion({ variables: { regionId:regionId, newName:newName} });
+		refetch({ variables: { regionId: activeRegionId } })
+
 	}
 
-	const deleteMap = async (regionId, newName) =>{
-		const { data } = await DeleteMap({ variables: { regionId:regionId}, refetchQueries: [{ query: queries.GET_ROOT_REGIONS_BY_USERID }] });
+	const deleteRegion = async (regionId) =>{
+		const { data } = await DeleteRegion({ variables: { regionId:regionId} });
+		refetch({ variables: { regionId: activeRegionId } })
 	}
 
-	const selectMap = (selectedMap) =>{
-		setActiveRegion(selectedMap)
-		setActiveMap(selectedMap)
-	}
+	// const addSubRegion = async () =>{
+	// 	let userId = props.user._id;
+	// 	let parentRegion_id = activeRegion._id;
+	// 	const newSubRegion = {
+	// 		_id: '',
+	// 		name: "Not Assigned",
+	// 		capital: "Not Assigned",
+    //     	leader: "Not Assigned",
+    //     	flag: "Not Assigned",
+    //     	landmark: [],
+    //     	parentRegion_id: parentRegion_id,
+    //     	top: true,
+	// 		subRegion : []
+	// 	};
+	// 	const { data } = await AddSubRegion({ variables: { region:newMap}, refetchQueries: [{ query: queries.GET_ROOT_REGIONS_BY_USERID }] });
 
-	
 
+	// }
 
 	const setShowLogin = () => {
 		toggleShowCreate(false);
@@ -94,17 +125,18 @@ const Homescreen = (props) => {
 
 
 	let mainContents;
-	console.log(typeof(activeMap));
-	console.log(activeMap);
 
-	if (auth && !activeMap._id){
+	if (auth && !activeRegion._id){
 		mainContents = 				
-				<MapSelectionContent addMap={addMap} subMaps = {subMaps} renameMap = {renameMap}
-				deleteMap = {deleteMap} selectMap = {selectMap}
+				<MapSelectionContent addMap={addMap} renameRegion = {renameRegion} subRegions = {subRegions}
+				deleteRegion = {deleteRegion} setActiveRegion = {setActiveRegion}
 				/>			
 		}
-	else if (auth && activeMap._id){
-		mainContents = <RegionSpreadSheet activeRegion = {activeRegion} subRegions={subRegions}
+	else if (auth && activeRegion._id){
+		mainContents = <RegionSpreadSheet activeRegion = {activeRegion} subRegions={subRegions} addSubRegion = {addSubRegion}
+		subRegions = {subRegions}
+		deleteRegion = {deleteRegion} setActiveRegion = {setActiveRegion}
+
 		/>			
 		}
 	else if (!auth){
@@ -115,12 +147,7 @@ const Homescreen = (props) => {
 							Welcome To The World Data Mapper
 						</div>
 					</div>
-					
-
 	}
-
-	// <img src={require('/Users/haksookim/Desktop/2021 Spring/CSE 316/HW4/CSE316-HW3-Spring21-Solution/client/src/components/image/Welcome Earth.png')}/>
-	// class="fit-picture"
 
 	return (
 		<WLayout wLayout="header">

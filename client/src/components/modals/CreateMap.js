@@ -17,7 +17,6 @@ const CreateMap = (props) => {
         props.setshowCreateMap();
     };
 
-
 	return (
 		<WModal className="modal" cover="true" visible={props.setshowCreateMap}>
 			<WMHeader  className="modal-header" onClose={() => props.setshowCreateMap()}>

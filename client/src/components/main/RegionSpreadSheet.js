@@ -1,34 +1,31 @@
 import { DirectiveLocation } from 'graphql';
 import React, { useState } 				from 'react';
 import { WLayout, WLHeader, WLMain, WCol, WRow, WCContent, WButton } from 'wt-frontend';
-import RegionEntry from './RegionEntry';
+import SubRegionEntry from './SubRegionEntry';
 
 
 const RegionSpreadSheet = (props) => {
     const currentRegionName = props.activeRegion.name;
-    
+    let entries = props.subRegions;
     // subRegions
     // activeRegion
     return (
         <div className = "regionSpreadSheet">
-            <div class="SpreadSheet-title">
-                    Region Name :
-                     <span style={{paddingLeft: "3%"}}>{currentRegionName}</span>
-            </div>
+
             <div class="SpreadSheet-icon">
                 <WRow>
                     <WCol size="4">
-                        <WButton wType="texted" span className = "SpreadSheet-table-icons-add" >
+                        <WButton wType="texted" span className = "SpreadSheet-table-icons-add" clickAnimation = "ripple-light" shape = "pill" onClick = {props.addSubRegion} >
                             <i className="material-icons">add</i>
                         </WButton>
                     </WCol>
                     <WCol size="4">
-                        <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" >
+                        <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" clickAnimation = "ripple-light" shape = "pill" >
                             <i className="material-icons">undo</i>
                         </WButton>
                     </WCol>
                     <WCol size="4">
-                        <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" >
+                        <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" clickAnimation = "ripple-light" shape = "pill" >
                             <i className="material-icons">redo</i>
                         </WButton>
                     </WCol>
@@ -36,44 +33,60 @@ const RegionSpreadSheet = (props) => {
 
             </div>
 
-            <div class="SpreadSheet-tableHeader">
-
+            <div class="SpreadSheet-title">
+                    Region Name : <span style={{paddingLeft: "3%"}}>{currentRegionName}</span>
             </div>
+            
+            <div class="SpreadSheet-empty"></div>
+
+            <div class="SpreadSheet-titleHeader"> 
+                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons" >
+                    Name<span style={{paddingLeft: "15px"}}></span><i className="material-icons">arrow_downward</i>
+                </WButton>
+            </div>
+            <div class="SpreadSheet-capitalHeader"> 
+                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons" >
+                    Capital<span style={{paddingLeft: "15px"}}></span><i className="material-icons">arrow_downward</i>
+                </WButton>
+            </div>
+            <div class="SpreadSheet-leaderHeader">
+                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons" >
+                    Leader<span style={{paddingLeft: "15px"}}></span><i className="material-icons">arrow_downward</i>
+                </WButton>
+            </div>
+            <div class="SpreadSheet-flagHeader">
+                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons" >
+                    Flag<span style={{paddingLeft: "15px"}}></span><i className="material-icons">arrow_downward</i>
+                </WButton>
+            </div>
+            <div class="SpreadSheet-landmarkHeader">
+                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons" >
+                    Landmarks<span style={{paddingLeft: "15px"}}></span><i className="material-icons">arrow_downward</i>
+                </WButton>    
+            </div>
+
 
 
             <div class="SpreadSheet-tableBody">
-
-            </div>
-        </div>
-
-       
-            /* <div className = "mapSelection-Ls">
             {
                 entries.map((entry, index) => (
-                    <RegionEntry 
-                    map ={entry} renameMap = {props.renameMap}
-                    deleteMap = {props.deleteMap} selectMap = {props.selectMap}
-                    
+                    <SubRegionEntry 
+                    subRegion ={entry} renameRegion = {props.renameRegion}
+                    deleteRegion = {props.deleteRegion} setActiveRegion = {props.setActiveRegion}
                     />
                 ))
                 
             }
-            </div>
-
-            <div className = "mapSelection-Rs">
-                
-            <img style = {{height: "90%", width:"100%"}}src={require('../image/Welcome Earth.png')}/>
-            <WButton className="modal-button " span clickAnimation="ripple-light" hoverAnimation="darken" color="primary" onClick = {setshowCreateMap}>
-                Create New Map
-			</WButton>
-            
 
             </div>
 
-            {
-                showCreateMap && (<CreateMap setshowCreateMap={setshowCreateMap} addMap = {props.addMap}/>)
-            } */
-            
+
+
+
+        </div>
+
+       
+        
         
 
     );

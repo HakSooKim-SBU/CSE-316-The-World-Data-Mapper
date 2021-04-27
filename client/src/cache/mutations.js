@@ -32,15 +32,15 @@ export const ADD_REGION = gql`
 	}
 `;
 
-export const RENAME_MAP = gql`
-	mutation RenameMap($regionId: String!, $newName: String!) {
-		renameMap(regionId: $regionId, newName: $newName)
+export const RENAME_REGION = gql`
+	mutation RenameRegion($regionId: String!, $newName: String!) {
+		renameRegion(regionId: $regionId, newName: $newName)
 }
 `;
 
-export const DELETE_MAP = gql`
-	mutation DeleteMap($regionId: String!) {
-		deleteMap(regionId: $regionId)
+export const DELETE_REGION = gql`
+	mutation DeleteRegion($regionId: String!) {
+		deleteRegion(regionId: $regionId)
 }
 `;
 

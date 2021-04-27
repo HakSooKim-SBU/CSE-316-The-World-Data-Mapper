@@ -7,54 +7,63 @@ module.exports = {
 			console.log("getting root regions");
 			const _id = new ObjectId(req.userId);
 			if(!_id) { return([])};
-			const Regions = await Region.find({owner: _id});
+			const Regions = await Region.find({parentRegion_id: _id});
 			if(Regions) {
 				return (Regions);
 			}
 
-
-
-
 		},
 		getSubRegionsById: async (_, args) => {
 			const { regionId } = args;
+			if (regionId == "" ){
+				return
+			}
 			const _id = new ObjectId(regionId);
-			
-			const subRegions = await Region.find({parentRegion_id: _id});
 
+			const subRegions = await Region.find({parentRegion_id: _id});
 			if(subRegions) {
 				return (subRegions);
 			} 
 		},
 	},
 	Mutation: {
-		addRegion: async (_, args) => {
+		addRegion: async (_, args,{req}) => {
+			const userId = new ObjectId(req.userId);
+
 			const { region } = args;
 			const objectId = new ObjectId();
-			const { _id, owner , name,  capital, leader, flag, landmark, parentRegion_id, top} = region;
+			const { _id, name,  capital, leader, flag, landmark, parentRegion_id, subRegion, top} = region;
+			console.log("ready?")
 			const newRegion = new Region({
 				_id: objectId,
-				owner: owner,
 				name: name,
 				capital: capital,
 				leader: leader,
 				flag: flag,
 				landmark: landmark,
 				parentRegion_id: parentRegion_id,
+				subRegion: subRegion,
 				top: top,
 				});
-			console.log("trying2");
+			console.log(userId + "!!!!")
+			console.log(parentRegion_id)
+			if (parentRegion_id != userId){
+				let parentRegion = await Region.findOne({_id: parentRegion_id});
+				console.log(parentRegion);
+				let parentRegionSubRegions = parentRegion.subRegion;
+				parentRegionSubRegions.push(objectId);
+				let updatedParentRegion = await Region.updateOne({_id: parentRegion_id}, { subRegion: parentRegionSubRegions })
+			}
 			const updated = await newRegion.save();
 			if(updated) {
-				console.log(objectId);
+				console.log("succefully added");
 				return objectId._id;
 			}
 			else{
 				console.log("failed");
-
 			}
 		},
-		renameMap: async (_, args) => {
+		renameRegion: async (_, args) => {
 			const { regionId, newName } = args;
 			const _id = new ObjectId(regionId);
 			const updated = await Region.updateOne({_id: _id}, { name: newName });
@@ -64,7 +73,7 @@ module.exports = {
 			}
 			return updated.acknowledged
 		},
-		deleteMap: async (_, args) => {
+		deleteRegion: async (_, args) => {
 			const {regionId} = args;
 			const _id = new ObjectId(regionId);
 			const deleted = await Region.deleteOne({_id: _id});

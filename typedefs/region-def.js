@@ -3,7 +3,6 @@ const { gql } = require('apollo-server');
 const typeDefs = gql `
     type Region {
         _id: String!
-        owner: String!
         name: String!
         capital: String!
         leader: String!
@@ -11,8 +10,7 @@ const typeDefs = gql `
         landmark: [String]
         parentRegion_id: String!
         top: Boolean!
-        subRegion: [Region]
-
+        subRegion: [String]
     }
     extend type Query {
         getRootRegionsByUserId: [Region]
@@ -20,13 +18,11 @@ const typeDefs = gql `
 	}
     extend type Mutation {
         addRegion(region: regionInput!): String!
-        renameMap(regionId: String!, newName: String!): Boolean
-        deleteMap(regionId: String!): Boolean
-
+        renameRegion(regionId: String!, newName: String!): Boolean
+        deleteRegion(regionId: String!): Boolean
     }
     input regionInput{
         _id: String
-        owner: String
         name: String
         capital: String
         leader: String
@@ -34,10 +30,8 @@ const typeDefs = gql `
         landmark: [String]
         parentRegion_id: String
         top: Boolean
-        subRegion: [regionInput]
+        subRegion: [String]
     }
 `;
 
 module.exports = { typeDefs: typeDefs }
-// getRootRegionsByUserId(_id: String!): [Region]
-// 

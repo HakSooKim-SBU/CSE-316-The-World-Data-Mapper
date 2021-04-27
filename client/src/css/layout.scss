@@ -235,46 +235,71 @@ font-weight: bolder;
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 15% 15% 20% 15% 35%;
-    grid-template-rows: 8% 6% 86%;
+    grid-template-columns: 5% 10% 4% 14% 18% 14% 35%;
+    grid-template-rows: 8.3% 5.7% 86%;
     gap: 0px 0px;
     grid-template-areas:
-      "SpreadSheet-icon SpreadSheet-title SpreadSheet-title SpreadSheet-title SpreadSheet-title"
-      "SpreadSheet-tableHeader SpreadSheet-tableHeader SpreadSheet-tableHeader SpreadSheet-tableHeader SpreadSheet-tableHeader"
-      "SpreadSheet-tableBody SpreadSheet-tableBody SpreadSheet-tableBody SpreadSheet-tableBody SpreadSheet-tableBody";
-  }
+      "SpreadSheet-icon SpreadSheet-icon SpreadSheet-title SpreadSheet-title SpreadSheet-title SpreadSheet-title SpreadSheet-title"
+      "SpreadSheet-empty SpreadSheet-titleHeader SpreadSheet-titleHeader SpreadSheet-capitalHeader SpreadSheet-leaderHeader SpreadSheet-flagHeader SpreadSheet-landmarkHeader"
+      "SpreadSheet-tableBody SpreadSheet-tableBody SpreadSheet-tableBody SpreadSheet-tableBody SpreadSheet-tableBody SpreadSheet-tableBody SpreadSheet-tableBody";
+      }
   
-.SpreadSheet-title { 
-    grid-area: SpreadSheet-title; 
-    font-size: 33px;      
-    text-align: center;
-    margin-left: -18%;
-    font-weight: bolder;
-    color:white;
-    }
 
 .SpreadSheet-title span{ 
         color:rgb(69, 132, 173);
       }
-  
-  .SpreadSheet-icon { grid-area: SpreadSheet-icon;}
-  
-  .SpreadSheet-tableHeader { grid-area: SpreadSheet-tableHeader; }
-  
-  .SpreadSheet-tableBody { grid-area: SpreadSheet-tableBody; }
-
-
   .SpreadSheet-table-icons-add{
     color: rgb(4, 224, 4);
-
   }
   .SpreadSheet-table-icons-undo-redo{
         color:white;
-
   }
-
   .SpreadSheet-table-icons-add:hover{
     color:green;
-
   }
+  
+.SpreadSheet-icon { grid-area: SpreadSheet-icon; }
+.SpreadSheet-title { 
+    grid-area: SpreadSheet-title;
+    font-size: 33px;      
+    text-align: center;
+    padding-right: 18%;
+    font-weight: bolder;
+    color:white;
+}
+.SpreadSheet-titleHeader { grid-area: SpreadSheet-titleHeader; }
+.SpreadSheet-landmarkHeader { grid-area: SpreadSheet-landmarkHeader; }
+.SpreadSheet-flagHeader { grid-area: SpreadSheet-flagHeader; }
+.SpreadSheet-leaderHeader { grid-area: SpreadSheet-leaderHeader; }
+.SpreadSheet-capitalHeader { grid-area: SpreadSheet-capitalHeader; }
+.SpreadSheet-empty { grid-area: SpreadSheet-empty; }
+.SpreadSheet-tableBody { 
+    grid-area: SpreadSheet-tableBody;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.spreadsheetTableCell {
+    width: 100%;
+    height: 30px;
+    display: grid;
+    grid-template-columns: 5% 14% 14% 18% 14% 35%;
+    grid-template-rows: 100%;
+    gap: 0px 0px;
+    grid-template-areas:
+      "deleteColumn nameColumn capitalColumn leaderColumn flagColumn landmarkColumn";
+  }
+  
+  .deleteColumn { 
+      grid-area: deleteColumn; }
+  
+  .nameColumn { grid-area: nameColumn; }
+  
+  .capitalColumn { grid-area: capitalColumn; }
+  
+  .leaderColumn { grid-area: leaderColumn; }
+  
+  .flagColumn { grid-area: flagColumn; }
+  
+  .landmarkColumn { grid-area: landmarkColumn; }
   

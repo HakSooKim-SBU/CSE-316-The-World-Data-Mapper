@@ -10,18 +10,18 @@ const MapEntry = (props) => {
 
     
 
-    const handleRenameMap = (e) => {
+    const handleRenameRegion = (e) => {
         toggleMapName(!editingMapName);
         let newName = e.target.value;
-        props.renameMap(props.map._id, newName);
+        props.renameRegion(props.map._id, newName);
     }
 
     const handleDeleteMap = (e) => {
-        props.deleteMap(props.map._id)
+        props.deleteRegion(props.map._id)
     }
 
     const handleClickMap = (e) =>{
-        props.selectMap(props.map)
+        props.setActiveRegion(props.map)
     }
 
 
@@ -31,7 +31,7 @@ const MapEntry = (props) => {
                 {editingMapName ?
                 <WInput
                 wType = "lined"
-                className='table-input table-input-class' onBlur={handleRenameMap}
+                className='table-input table-input-class' onBlur={handleRenameRegion}
                 autoFocus={true} defaultValue={name} type='text' color = "gray"
                 
                 />

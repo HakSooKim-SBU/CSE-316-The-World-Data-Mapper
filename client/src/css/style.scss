@@ -277,5 +277,77 @@ html, body {
     font-weight: bolder;
 }
 
+.SpreadSheet-titleHeader, .SpreadSheet-capitalHeader,
+.SpreadSheet-leaderHeader, .SpreadSheet-flagHeader,
+.SpreadSheet-landmarkHeader, .SpreadSheet-empty{
+    // color:white;
+    background-color:rgb(204, 44, 73);
+    
 
+}
+
+.SpreadSheet-Header-icons{
+    color:white;
+    // background-color: rgb(195, 26, 35); ;
+    height: 100%;
+    padding: 0%;
+    text-align:center;
+    font-weight: 800;
+    font-size: 20px;
+
+}
+.SpreadSheet-Header-icons:hover{
+    color:yellow;
+}
+
+.SpreadSheet-tableBody{
+    background-color:#D3D3D3;
+}
+
+.table-red-column{
+    color:red;
+    height: 100%;
+    padding: 0%;
+    text-align:center;
+    font-weight: 600s;
+    font-size: 20px;
+    border-bottom-style: solid !important ;
+    border-right-style: solid !important ;
+    border-bottom-color: black;
+    border-right-color: black;
+    border-bottom-width:1px;
+    border-right-width:1px;
+
+}
+
+.table-blue-column{
+    color:rgb(69, 132, 173);
+    height: 100%;
+    padding: 0%;
+    text-align:center;
+    font-weight: 600;
+    font-size: 20px;
+    border-bottom-style: solid !important ;
+    border-right-style: solid !important ;
+    border-bottom-color: black;
+    border-right-color: black;
+    border-bottom-width:1px;
+    border-right-width:1px;
+}
+
+.table-black-column{
+    color:black;
+    height: 100%;
+    padding: 0%;
+    text-align:center;
+    font-weight: 600;
+    font-size: 20px;
+    border-bottom-style: solid !important ;
+    border-right-style: solid !important ;
+    border-bottom-color: black;
+    border-right-color: black;
+    border-bottom-width:1px;
+    border-right-width:1px;
+    
+}
 

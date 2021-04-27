@@ -6,10 +6,6 @@ const regionSchema = new Schema(
             type: ObjectId,
             required: true
         },
-        owner: {
-            type: String,
-            required: true
-        },
         name: {
             type: String,
             required: true
@@ -34,6 +30,10 @@ const regionSchema = new Schema(
             type: String,
             requried: true
         }, 
+        subRegion:{
+            type: [String],
+            requried: true
+        },
         top:{
             type: Boolean,
             required: true
@@ -41,11 +41,6 @@ const regionSchema = new Schema(
     },
     { timestamps: true }
 );
-    regionSchema.add({
-    subRegion:{
-    type: [regionSchema]
-    }
-});
 const Region = model('Region', regionSchema);
 module.exports = Region;
 
