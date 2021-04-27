@@ -8,7 +8,6 @@ import CreateMap 							from '../modals/CreateMap';
 const MapSelectionContent = (props) => {
     let entries = props.subRegions;
 	const [showCreateMap, toggleShowCreateMap] 	= useState(false);
-
     
     const setshowCreateMap = () => {
 		toggleShowCreateMap(!showCreateMap);
@@ -24,8 +23,8 @@ const MapSelectionContent = (props) => {
                 entries.map((entry, index) => (
                     <MapEntry 
                     map ={entry} renameRegion = {props.renameRegion}
-                    deleteRegion = {props.deleteRegion} setActiveRegion = {props.setActiveRegion}
-                    
+                     setActiveRegion = {props.setActiveRegion}
+                     deleteRegion = {props.deleteRegion}
                     />
                 ))
                 

@@ -103,7 +103,15 @@ html, body {
     font-family: "Roboto Mono", monospace;
     text-transform: uppercase;
     font-weight: bold;
+    padding:0%
 } 
+
+.logo:hover{
+    color: #f1bf61;
+
+
+
+}
 
 .modal-error {
     color: $primary-color;

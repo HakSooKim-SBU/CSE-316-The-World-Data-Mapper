@@ -79,7 +79,11 @@ const Homescreen = (props) => {
 	};
 
 
-
+	const goHome = () =>{
+		if (auth)
+			setActiveRegion(props.user._id);
+		
+	}
 
 
 	const renameRegion = async (regionId, newName) =>{
@@ -93,25 +97,6 @@ const Homescreen = (props) => {
 		const { data } = await DeleteRegion({ variables: { regionId:regionId} });
 		refetch({ variables: { regionId: activeRegionId } })
 	}
-
-	// const addSubRegion = async () =>{
-	// 	let userId = props.user._id;
-	// 	let parentRegion_id = activeRegion._id;
-	// 	const newSubRegion = {
-	// 		_id: '',
-	// 		name: "Not Assigned",
-	// 		capital: "Not Assigned",
-    //     	leader: "Not Assigned",
-    //     	flag: "Not Assigned",
-    //     	landmark: [],
-    //     	parentRegion_id: parentRegion_id,
-    //     	top: true,
-	// 		subRegion : []
-	// 	};
-	// 	const { data } = await AddSubRegion({ variables: { region:newMap}, refetchQueries: [{ query: queries.GET_ROOT_REGIONS_BY_USERID }] });
-
-
-	// }
 
 	const setShowLogin = () => {
 		toggleShowCreate(false);
@@ -155,7 +140,7 @@ const Homescreen = (props) => {
 				<WNavbar color="colored">
 					<ul>
 						<WNavItem>
-							<Logo className='logo' />
+							<Logo className='logo' goHome = {goHome}/>
 						</WNavItem>
 					</ul>
 					<ul>
@@ -163,6 +148,7 @@ const Homescreen = (props) => {
 							
 							fetchUser={props.fetchUser} auth={auth} 
 							setShowCreate={setShowCreate} 	setShowLogin={setShowLogin}
+							setActiveRegion = {setActiveRegion}
 						/>
 					</ul>
 				</WNavbar>
