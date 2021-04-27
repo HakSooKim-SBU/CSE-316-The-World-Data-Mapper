@@ -14,7 +14,6 @@ const MapSelectionContent = (props) => {
 		toggleShowCreateMap(!showCreateMap);
 	};
 
-
     return (
         <div className = "mapSelection">
             <div className = "mapSelection-Header">

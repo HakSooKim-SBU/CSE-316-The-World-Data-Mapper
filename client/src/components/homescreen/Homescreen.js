@@ -6,6 +6,7 @@ import * as mutations 					from '../../cache/mutations';
 import * as queries				from '../../cache/queries';
 
 
+import RegionSpreadSheet				from '../main/RegionSpreadSheet'
 import MapSelectionContent				from '../main/MapSelectionContent'
 import Login 							from '../modals/Login';
 import NavbarOptions 					from '../navbar/NavbarOptions';
@@ -78,26 +79,7 @@ const Homescreen = (props) => {
 		setActiveMap(selectedMap)
 	}
 
-	// if(loading) { console.log(loading, 'loading'); }
-	// if(error) { console.log(error, 'error'); }
-	// if(data) { 
-	// 	// Assign todolists 
-	// 	for(let todo of data.getAllTodos) {
-	// 		todolists.push(todo)
-	// 	}
-	// 	// if a list is selected, shift it to front of todolists
-	// 	if(activeList._id) {
-	// 		let selectedListIndex = todolists.findIndex(entry => entry._id === activeList._id);
-	// 		let removed = todolists.splice(selectedListIndex, 1);
-	// 		todolists.unshift(removed[0]);
-	// 	}
-	// 	// create data for sidebar links
-	// 	for(let todo of todolists) {
-	// 		if(todo) {
-	// 			SidebarData.push({_id: todo._id, name: todo.name});
-	// 		}	
-	// 	}
-	// }
+	
 
 
 	const setShowLogin = () => {
@@ -122,7 +104,8 @@ const Homescreen = (props) => {
 				/>			
 		}
 	else if (auth && activeMap._id){
-		mainContents = <div>Hello</div>
+		mainContents = <RegionSpreadSheet activeRegion = {activeRegion} subRegions={subRegions}
+		/>			
 		}
 	else if (!auth){
 		mainContents = 

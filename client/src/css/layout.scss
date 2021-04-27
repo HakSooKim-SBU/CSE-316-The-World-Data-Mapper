@@ -19,48 +19,9 @@ html {
     display: flex;
 }
 
-.wsidebar {
-    scrollbar-width: thin;
-}
-
-.list-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 1.125rem;
-    padding: 12px 24px;
-}
-
-.list-item-active {
-    padding-left: 24px;
-    // transform: scale(1);
-    // transition: 0.3s padding-left ease-in-out;
-
-    // padding-left: 24px;
 
 
-//     padding-left: 24px;
-//   transition-property:  padding-left;
-//   transition-duration: 1s;
-}
 
-.list-item {
-    padding-left: inherit;
-    transform: scale(1);
-    transition: 0.1s padding-left ease-in-out;
-}
-
-.list-item:hover {
-    transform: scale(1);
-    transition: 0.1s padding-left ease-in-out;
-    padding-left: 24px;
-}
-
-
-.nothing-msg {
-    display: flex;
-    justify-content: space-evenly;
-}
 
 .table-text {
     white-space: nowrap;
@@ -261,4 +222,59 @@ font-weight: bolder;
         overflow-y: auto;
         overflow-x: hidden;
     ; }
-  .mapSelection-Rs { grid-area: mapSelection-Rs; }
+.mapSelection-Rs { grid-area: mapSelection-Rs; }
+
+.regionSpreadSheet{
+    padding-right: 12%;
+    padding-left: 12%;
+    padding-top: 2%;
+    padding-bottom: 3%;
+}
+
+.regionSpreadSheet {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 15% 15% 20% 15% 35%;
+    grid-template-rows: 8% 6% 86%;
+    gap: 0px 0px;
+    grid-template-areas:
+      "SpreadSheet-icon SpreadSheet-title SpreadSheet-title SpreadSheet-title SpreadSheet-title"
+      "SpreadSheet-tableHeader SpreadSheet-tableHeader SpreadSheet-tableHeader SpreadSheet-tableHeader SpreadSheet-tableHeader"
+      "SpreadSheet-tableBody SpreadSheet-tableBody SpreadSheet-tableBody SpreadSheet-tableBody SpreadSheet-tableBody";
+  }
+  
+.SpreadSheet-title { 
+    grid-area: SpreadSheet-title; 
+    font-size: 33px;      
+    text-align: center;
+    margin-left: -18%;
+    font-weight: bolder;
+    color:white;
+    }
+
+.SpreadSheet-title span{ 
+        color:rgb(69, 132, 173);
+      }
+  
+  .SpreadSheet-icon { grid-area: SpreadSheet-icon;}
+  
+  .SpreadSheet-tableHeader { grid-area: SpreadSheet-tableHeader; }
+  
+  .SpreadSheet-tableBody { grid-area: SpreadSheet-tableBody; }
+
+
+  .SpreadSheet-table-icons-add{
+    color: rgb(4, 224, 4);
+
+  }
+  .SpreadSheet-table-icons-undo-redo{
+        color:white;
+
+  }
+
+  .SpreadSheet-table-icons-add:hover{
+    color:green;
+
+  }
+  
