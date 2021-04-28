@@ -6,20 +6,22 @@ const SubRegionEntry = (props) => {
     // subRegion ={entry} renameRegion = {props.renameRegion}
     // deleteRegion = {props.deleteRegion} setActiveRegion = {props.setActiveRegion}
     
-
+    const handleClickName = () => {
+        props.setActiveRegion(props.subRegion);
+    } 
     return (
         <div className="spreadsheetTableCell">
 
             <div className="deleteColumn">
                 
                 
-                <WButton wType ="texted" span className = "table-red-column" clickAnimation = "ripple-dark" >
+                <WButton wType ="texted" span className = "table-red-column" clickAnimation = "ripple-dark"  >
                 <i className="material-icons">close</i>
 
                 </WButton>
             </div>
             <div className="nameColumn">
-                <WButton wType="texted" span className = "table-blue-column" clickAnimation = "ripple-dark" >
+                <WButton wType="texted" span className = "table-blue-column" clickAnimation = "ripple-dark"  onClick = {handleClickName} >
                     {props.subRegion.name}
                 </WButton>
             </div>
