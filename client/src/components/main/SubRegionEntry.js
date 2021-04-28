@@ -41,7 +41,7 @@ const SubRegionEntry = (props) => {
                 </WButton>
             </div>
             <div className="landmarkColumn">
-                <WButton wType="texted" span className = "table-blue-column" clickAnimation = "ripple-dark" >
+                <WButton wType="texted" span className = "table-blue-column" clickAnimation = "ripple-dark" onClick = {props.setShowViewer}>
                     <i className="material-icons">close</i>
                 </WButton>
             </div>

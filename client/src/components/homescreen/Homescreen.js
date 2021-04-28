@@ -29,7 +29,7 @@ const Homescreen = (props) => {
 	const [showUpdate, toggleShowUpdate] 	= useState(false);
 
 
-	const [showViwer, toggleShowViewer] 	= useState(true);// erase later
+	const [showViwer, toggleShowViewer] 	= useState(false);// erase later
 
 
 
@@ -126,6 +126,10 @@ const Homescreen = (props) => {
 		toggleShowUpdate(!showUpdate);
 	};
 
+	const setShowViewer = () => {
+		toggleShowViewer(!showViwer);
+	}
+
 	
 
 
@@ -140,7 +144,7 @@ const Homescreen = (props) => {
 		}
 	else if (auth && activeRegion._id){
 		mainContents = <RegionSpreadSheet activeRegion = {activeRegion} 
-		subRegions = {subRegions} addSubRegion = {addSubRegion}
+		subRegions = {subRegions} addSubRegion = {addSubRegion} setShowViewer ={setShowViewer}
 		deleteRegion = {deleteRegion} setActiveRegion = {setActiveRegion}
 
 		/>			
@@ -157,12 +161,9 @@ const Homescreen = (props) => {
 
 
 
-
-
 	if (showViwer){
 		mainContents = <RegionViewer/>
 	}
-
 
 
 
