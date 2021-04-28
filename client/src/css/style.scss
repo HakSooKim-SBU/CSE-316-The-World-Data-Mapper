@@ -237,11 +237,19 @@ html, body {
 }
 
 .pinkFont{
-    color: rgb(217, 103, 152)
+    color:rgb(216, 81, 139);
+}
+
+.pinkFont:hover{
+    color:yellow;
 }
 
 .bold{
     font-weight: bolder;
+}
+
+.bold:hover{
+    color:yellow;
 }
 
 .modal-button{

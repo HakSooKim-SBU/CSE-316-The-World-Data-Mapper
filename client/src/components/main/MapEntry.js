@@ -21,7 +21,7 @@ const MapEntry = (props) => {
         toggleMapName(!editingMapName);
         let newName = e.target.value;
         if (e.target.value == ""){
-            newName = "Not Assigned"
+            newName = props.map.name;
         }
         props.renameRegion(props.map._id, newName);
     }

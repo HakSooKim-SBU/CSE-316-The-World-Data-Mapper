@@ -12,6 +12,8 @@ import Login 							from '../modals/Login';
 import NavbarOptions 					from '../navbar/NavbarOptions';
 import CreateAccount 					from '../modals/CreateAccount';
 import Logo 							from '../navbar/Logo';
+import UpdateAccount 					from '../modals/UpdateAccount';
+import { PromiseProvider } from 'mongoose';
 
 
 
@@ -22,6 +24,8 @@ const Homescreen = (props) => {
 	const [activeRegion, setActiveRegion] = useState({});
 	const [showCreate, toggleShowCreate] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
+	const [showUpdate, toggleShowUpdate] 	= useState(false);
+
 
 	const [AddRegion] 		= useMutation(mutations.ADD_REGION);
 	const [RenameRegion] 		= useMutation(mutations.RENAME_REGION);
@@ -100,13 +104,24 @@ const Homescreen = (props) => {
 
 	const setShowLogin = () => {
 		toggleShowCreate(false);
+		toggleShowUpdate(false);
 		toggleShowLogin(!showLogin);
 	};
 
 	const setShowCreate = () => {
 		toggleShowLogin(false);
+		toggleShowUpdate(false);
 		toggleShowCreate(!showCreate);
 	};
+
+	const setShowUpdate = () => {
+		toggleShowLogin(false);
+		toggleShowCreate(false);
+		toggleShowUpdate(!showUpdate);
+	};
+
+	
+
 
 
 	let mainContents;
@@ -118,8 +133,8 @@ const Homescreen = (props) => {
 				/>			
 		}
 	else if (auth && activeRegion._id){
-		mainContents = <RegionSpreadSheet activeRegion = {activeRegion} subRegions={subRegions} addSubRegion = {addSubRegion}
-		subRegions = {subRegions}
+		mainContents = <RegionSpreadSheet activeRegion = {activeRegion} 
+		subRegions = {subRegions} addSubRegion = {addSubRegion}
 		deleteRegion = {deleteRegion} setActiveRegion = {setActiveRegion}
 
 		/>			
@@ -148,7 +163,8 @@ const Homescreen = (props) => {
 							
 							fetchUser={props.fetchUser} auth={auth} 
 							setShowCreate={setShowCreate} 	setShowLogin={setShowLogin}
-							setActiveRegion = {setActiveRegion}
+							setActiveRegion = {setActiveRegion} user = {props.user}
+							setShowUpdate={setShowUpdate} showUpdate = {showUpdate}
 						/>
 					</ul>
 				</WNavbar>
@@ -163,6 +179,10 @@ const Homescreen = (props) => {
 
 			{
 				showLogin && (<Login fetchUser={props.fetchUser} setShowLogin={setShowLogin} refetch={refetch} />)
+			}
+
+			{
+				showUpdate && (<UpdateAccount fetchUser={props.fetchUser}  setShowUpdate={setShowUpdate} showUpdate = {showUpdate}/>)
 			}
 
 		</WLayout>

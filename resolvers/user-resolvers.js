@@ -71,6 +71,27 @@ module.exports = {
 			res.cookie('access-token', accessToken, { httpOnly: true , sameSite: 'None', secure: true}); 
 			return user;
 		},
+		updateAccount: async (_, args, { res, req }) => {
+			const _id = new ObjectId(req.userId);
+			const { email, password, name } = args;
+			const alreadyRegistered = await User.findOne({email: email});
+			const hashed = await bcrypt.hash(password, 10);
+			const updated = await User.updateOne({_id: _id}, { email:email,password:hashed,name: name, });
+	
+			const user = new User({
+				_id: _id,
+				name: name,
+				email: email, 
+				password: password,
+			})
+			// After registering the user, their tokens are generated here so they
+			// are automatically logged in on account creation.
+			const accessToken = tokens.generateAccessToken(user);
+			const refreshToken = tokens.generateRefreshToken(user);
+			res.cookie('refresh-token', refreshToken, { httpOnly: true , sameSite: 'None', secure: true}); 
+			res.cookie('access-token', accessToken, { httpOnly: true , sameSite: 'None', secure: true}); 
+			return user;
+		},
 		/** 
 			@param 	 {object} res - response object containing the current access/refresh tokens  
 			@returns {boolean} true 
@@ -79,9 +100,6 @@ module.exports = {
 			res.clearCookie('refresh-token');
 			res.clearCookie('access-token');
 			return true;
-		},
-		updateAccount: async (_, args, { res }) => {
-			
-        }
+		},	
 	}
 }

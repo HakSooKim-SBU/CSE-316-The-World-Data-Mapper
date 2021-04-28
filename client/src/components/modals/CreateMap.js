@@ -13,7 +13,13 @@ const CreateMap = (props) => {
 	}
 
     const handleCreateNewMap = (e) => {
-        props.addMap(input);
+		console.log(input);
+		if (input === ""){
+			props.addMap("Not Assigned");
+		}
+        else{
+			props.addMap(input);
+		}
         props.setshowCreateMap();
     };
 
