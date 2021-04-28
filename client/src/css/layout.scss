@@ -7,115 +7,7 @@ html {
 }
 
 /* ----------------------------- Top-Level Setup ---------------------------- */
-.container-primary {
-    width: 100%;
-    height: 100%;
-    padding: 0 24px;
-}
 
-.container-secondary {
-    width: 100%;
-    height: 100%;
-    display: flex;
-}
-
-
-
-
-
-.table-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 1.125rem;
-    padding-bottom: 12px;
-    padding-top: 12px;
-    cursor: pointer;
-}
-
-.table {
-    display: flex;
-    //float: left;
-    width: 100%;
-    flex-direction: column;
-    //align-items: center;
-}
-
-.table-entries {
-    overflow-y: scroll;
-}
-
-.table-header {
-    width: calc(100% - 56px);
-    box-sizing: border-box;
-    margin-left: 24px;
-    margin-right: 32px;
-}
-
-.table-header-section {
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    padding-top: 24px;
-    padding-bottom: 12px;
-}
-
-.table-header-button {
-    padding: 0;
-    margin-left: 36px;
-}
-
-.table-header-button-disabled{
-    padding: 0;
-    margin-left: 12px;
-    cursor: default;
-}
-
-.table-header-buttons {
-    float: right;
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.table-entry-buttons {
-    padding: 0;
-    margin-left: 36px;
-    // margin-right: 18px;
-}
-
-.table-entry-buttons-disabled {
-    padding: 0;
-    margin-left: 36px;
-}
-
-.button-group {
-    height: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.sidebar-header {
-    width: calc(100% - 48px);
-    box-sizing: border-box;
-    margin-left: 24px;
-    margin-right: 24px;
-    padding-top: 24px;
-    padding-bottom: 12px
-}
-
-.sidebar-options {
-    height: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    column-gap: 0.5rem;
-}
-
-.sidebar-buttons {
-    padding: 0;
-}
 
 .modal-input {
     width: 100%;
@@ -150,29 +42,13 @@ html {
     align-items: center;
     display: flex;
 }
-.delete-modal {
-    width: fit-content;
-}
 
-
-.col-spacer {
-    width: 24px;
-    display: inline-block;
-}
-
-.wsidebar {
-    overflow-y: scroll;
-}
-
-.list-item-edit, .table-input, .table-select {
+.table-input {
     width: 100%;
 }
 
-.list-item-edit-input {
-    padding: 23px 24px 24px 24px !important;
-}
 
-.table-input, .table-select {
+.table-input {
     height: 100%;
     display: flex;
     align-items: center;
@@ -302,4 +178,56 @@ font-weight: bolder;
   .flagColumn { grid-area: flagColumn; }
   
   .landmarkColumn { grid-area: landmarkColumn; }
-  
+
+
+  .regionViewer {
+    width: 100%;
+    height: 100%;
+    padding-top: 3%;
+    padding-left: 9%;
+    padding-right: 9%;
+    padding-bottom: 4%;
+    display: grid;
+    grid-template-columns: 35% 20% 45%;
+    grid-template-rows: 100%;
+    grid-gap: 0px 0px;
+    gap: 0px 0px;
+    grid-template-areas: "regionViewerLS regionViewerEmptyColumn regionViewerRS";
+  }
+
+  .regionViewerEmptyColumn { grid-area: regionViewerEmptyColumn; }
+
+  .regionViewerLS { 
+    width: 100%;
+    height: 100%;
+    grid-area: regionViewerLS;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 7% 40% 8% 45%;
+    gap: 0px 0px;
+    grid-template-areas:
+      "regionViewer-icons"
+      "regionViewer-flag"
+      "regionViewer-space"
+      "regionViewer-textbox";
+    }
+
+    .regionViewerRS { 
+        width: 100%;
+        height: 100%;
+        grid-area: regionViewerRS;
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: 7% 85% 8%;
+        gap: 0px 0px;
+        grid-template-areas:
+          "regionViewer-LMheader"
+          "regionViewer-LMtable"
+          "regionViewer-LMaddbox"; 
+        }
+.regionViewer-landmarkInput{
+    width:100%;
+    height:100%;
+    background: #696969!important;
+    color:red !important;
+}

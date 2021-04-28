@@ -1,6 +1,6 @@
 import React, { useState } 				from 'react';
 import { useMutation, useQuery } 		from '@apollo/client';
-import { WNavbar, WSidebar, WNavItem } 	from 'wt-frontend';
+import { WNavbar, WNavItem } 	from 'wt-frontend';
 import { WLayout, WLHeader, WLMain, WLSide, WCard, WCContent, WCMedia } from 'wt-frontend';
 import * as mutations 					from '../../cache/mutations';
 import * as queries				from '../../cache/queries';
@@ -13,6 +13,8 @@ import NavbarOptions 					from '../navbar/NavbarOptions';
 import CreateAccount 					from '../modals/CreateAccount';
 import Logo 							from '../navbar/Logo';
 import UpdateAccount 					from '../modals/UpdateAccount';
+import RegionViewer				from '../main/RegionViewer'
+
 import { PromiseProvider } from 'mongoose';
 
 
@@ -25,6 +27,10 @@ const Homescreen = (props) => {
 	const [showCreate, toggleShowCreate] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showUpdate, toggleShowUpdate] 	= useState(false);
+
+
+	const [showViwer, toggleShowViewer] 	= useState(true);// erase later
+
 
 
 	const [AddRegion] 		= useMutation(mutations.ADD_REGION);
@@ -125,7 +131,7 @@ const Homescreen = (props) => {
 
 
 	let mainContents;
-
+	
 	if (auth && !activeRegion._id){
 		mainContents = 				
 				<MapSelectionContent addMap={addMap} renameRegion = {renameRegion} subRegions = {subRegions}
@@ -148,6 +154,25 @@ const Homescreen = (props) => {
 						</div>
 					</div>
 	}
+
+
+
+
+
+	if (showViwer){
+		mainContents = <RegionViewer/>
+	}
+
+
+
+
+
+
+
+
+
+
+
 
 	return (
 		<WLayout wLayout="header">
@@ -184,6 +209,7 @@ const Homescreen = (props) => {
 			{
 				showUpdate && (<UpdateAccount fetchUser={props.fetchUser}  setShowUpdate={setShowUpdate} showUpdate = {showUpdate}/>)
 			}
+
 
 		</WLayout>
 	);
