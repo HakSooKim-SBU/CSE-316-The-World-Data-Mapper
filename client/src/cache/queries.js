@@ -42,4 +42,19 @@ export const GET_SUBREGIONS_BYID = gql`
 	}
 `;
 
+export const GET_ROOTREGIONS_BYID = gql`
+	query GetRootRegionsById($regionId: String!) {
+		getRootRegionsById(regionId : $regionId) {
+		_id
+        name
+        capital
+		leader
+        flag 
+        landmark
+        parentRegion_id
+        top
+		subRegion
+		}
+	}
+`;
 

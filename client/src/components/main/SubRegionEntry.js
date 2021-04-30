@@ -9,7 +9,7 @@ const SubRegionEntry = (props) => {
         props.setActiveRegion(props.subRegion);
     } 
     const handleClickLandmark = () =>{
-        props.setActiveViewerRegion(props.subRegion);
+        props.setActiveRegion(props.subRegion);
         props.setShowViewer();
 
     }

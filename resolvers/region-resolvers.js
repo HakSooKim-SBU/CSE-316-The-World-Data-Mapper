@@ -25,7 +25,41 @@ module.exports = {
 				return (subRegions);
 			} 
 		},
-	},
+		getRootRegionsById:async (_, args,{req}) => {
+			const userId = new ObjectId(req.userId);
+
+			const { regionId } = args;
+			if (regionId == userId ){
+				return []
+			}
+			else if (regionId == ""){
+				return 
+			}
+			
+			console.log(regionId + "!")
+			let _id = new ObjectId(regionId);
+			console.log(_id + "?")
+
+			let region = await Region.findOne({_id: _id});
+			console.log(region)
+
+			rootRegions = [];
+			rootRegions.push(region);
+			while (true){
+			let regionRootId = region.parentRegion_id;
+			if (regionRootId == userId){
+				rootRegions.push(region);
+				break;
+			}
+			let rootRegion = await Region.findOne({_id: regionRootId});
+			rootRegions.push(rootRegion);
+			region = rootRegion;
+			}
+			if(rootRegions) {
+				return (rootRegions.reverse());
+			} 
+		},
+	},                                  
 	Mutation: {
 		addRegion: async (_, args,{req}) => {
 			const userId = new ObjectId(req.userId);

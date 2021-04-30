@@ -3,7 +3,7 @@ import { WLayout, WLHeader, WLMain, WLSide, WInput, WRow, WCol, WButton } from '
 
 
 const RegionViewer = (props) => {
-    const region = props.activeViewerRegion
+    const region = props.activeRegion
     
     return (
         <div class="regionViewer">

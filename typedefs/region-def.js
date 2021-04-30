@@ -15,11 +15,13 @@ const typeDefs = gql `
     extend type Query {
         getRootRegionsByUserId: [Region]
         getSubRegionsById(regionId : String!): [Region]
+        getRootRegionsById(regionId : String!): [Region]
 	}
     extend type Mutation {
         addRegion(region: regionInput!): String!
         renameRegion(regionId: String!, newName: String!): Boolean
         deleteRegion(regionId: String!): Boolean
+        
     }
     input regionInput{
         _id: String

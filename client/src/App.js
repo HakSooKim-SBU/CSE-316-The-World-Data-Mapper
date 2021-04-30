@@ -39,14 +39,14 @@ const App = () => {
 	const auth = user === null ? false : true;
 
 	let subRegions = [];
+	let rootRegions = [];
 	let activeRegionId = "";
 	const [activeRegion, setActiveRegion] = useState({});
-	const [activeViewerRegion, setActiveViewerRegion] = useState({});
 	const [showCreate, toggleShowCreate] 	= useState(false);
 	const [showLogin, toggleShowLogin] 		= useState(false);
 	const [showUpdate, toggleShowUpdate] 	= useState(false);
 
-	const [showViwer, toggleShowViewer] 	= useState(false);// erase later
+	const [showViwer, toggleShowViewer] 	= useState(false);
 	const [AddRegion] 		= useMutation(mutations.ADD_REGION);
 	const [RenameRegion] 		= useMutation(mutations.RENAME_REGION);
 	const [DeleteRegion] 		= useMutation(mutations.DELETE_REGION);
@@ -64,6 +64,15 @@ const App = () => {
 	if(dataRegion && dataRegion.getSubRegionsById !== null) { 
 		for(let subRegion of dataRegion.getSubRegionsById) {
 			subRegions.push(subRegion)
+		}
+	}
+
+	const { data: dataRootRegion, error: errorRootRegion, loading: loadingRootRegion} = useQuery(queries.GET_ROOTREGIONS_BYID, {variables: { regionId: activeRegionId }});
+	if(loadingRootRegion) { console.log(loadingRootRegion, 'loading'); }
+	if(errorRootRegion) { console.log(errorRootRegion, 'error'); }
+	if(dataRootRegion && dataRootRegion.getRootRegionsById !== null) { 
+		for(let rootRegion of dataRootRegion.getRootRegionsById) {
+			rootRegions.push(rootRegion)
 		}
 	}
 
@@ -138,11 +147,9 @@ const App = () => {
 		toggleShowUpdate(!showUpdate);
 	};
 
-	const setShowViewer = () => {
+	const setShowViewer = () => {		
 		toggleShowViewer(!showViwer);
 	}
-
-	
 
 	return(
 		<Router>
@@ -200,22 +207,14 @@ const App = () => {
 								render={() => 
 									<RegionSpreadSheet activeRegion = {activeRegion} 
 										subRegions = {subRegions} addSubRegion = {addSubRegion} setShowViewer ={setShowViewer}
-										deleteRegion = {deleteRegion} setActiveRegion = {setActiveRegion} setActiveViewerRegion = {setActiveViewerRegion}/>	
-								} 
-							/>
-							<Route 
-								path="/RegionSpreadSheet" 				
-								render={() => 
-									<RegionSpreadSheet activeRegion = {activeRegion} 
-										subRegions = {subRegions} addSubRegion = {addSubRegion} setShowViewer ={setShowViewer}
-										deleteRegion = {deleteRegion} setActiveRegion = {setActiveRegion} setActiveViewerRegion = {setActiveViewerRegion}/>	
+										deleteRegion = {deleteRegion} setActiveRegion = {setActiveRegion} />	
 								} 
 							/>
 							<Route/>
 							<Route 
 								path="/RegionViewer" 				
 								render={() => 
-									<RegionViewer activeViewerRegion = {activeViewerRegion} activeRegion = {activeRegion}/>
+									<RegionViewer activeRegion = {activeRegion}/>
 									
 								}
 							/>
