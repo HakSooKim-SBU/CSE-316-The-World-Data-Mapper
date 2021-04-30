@@ -4,6 +4,8 @@ import { WLayout, WLHeader, WLMain, WLSide, WCard, WCContent, WCMedia, WButton }
 import MapEntry from './MapEntry';
 import CreateMap 							from '../modals/CreateMap';
 
+import { PromiseProvider } from 'mongoose';
+
 
 const MapSelectionContent = (props) => {
     let entries = props.subRegions;

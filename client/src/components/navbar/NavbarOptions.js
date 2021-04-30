@@ -19,14 +19,18 @@ const LoggedIn = (props) => {
     };
 
     return (
+        <>
         <WNavItem hoverAnimation="lighten">
             <WButton className="navbar-options pinkFont bold" onClick={props.setShowUpdate} wType="texted" > 
                 {props.user.name}
             </WButton>
+        </WNavItem >
+        <WNavItem hoverAnimation="lighten">
             <WButton className="navbar-options bold" onClick={handleLogout} wType="texted" hoverAnimation="text-primary">
                 Logout
             </WButton>
         </WNavItem >
+        </>
     );
 };
 

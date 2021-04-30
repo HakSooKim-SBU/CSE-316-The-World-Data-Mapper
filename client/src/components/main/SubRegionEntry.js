@@ -3,12 +3,16 @@ import React, { useState } 	from 'react';
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 
 const SubRegionEntry = (props) => {
-    // subRegion ={entry} renameRegion = {props.renameRegion}
-    // deleteRegion = {props.deleteRegion} setActiveRegion = {props.setActiveRegion}
+
     
     const handleClickName = () => {
         props.setActiveRegion(props.subRegion);
     } 
+    const handleClickLandmark = () =>{
+        props.setActiveViewerRegion(props.subRegion);
+        props.setShowViewer();
+
+    }
     return (
         <div className="spreadsheetTableCell">
 
@@ -41,7 +45,7 @@ const SubRegionEntry = (props) => {
                 </WButton>
             </div>
             <div className="landmarkColumn">
-                <WButton wType="texted" span className = "table-blue-column" clickAnimation = "ripple-dark" onClick = {props.setShowViewer}>
+                <WButton wType="texted" span className = "table-blue-column" clickAnimation = "ripple-dark" onClick = {handleClickLandmark}>
                     <i className="material-icons">close</i>
                 </WButton>
             </div>

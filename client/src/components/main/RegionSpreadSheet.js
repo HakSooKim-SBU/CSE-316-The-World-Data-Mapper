@@ -71,8 +71,8 @@ const RegionSpreadSheet = (props) => {
             {
                 entries.map((entry, index) => (
                     <SubRegionEntry 
-                    subRegion ={entry} renameRegion = {props.renameRegion} setShowViewer = {props.setShowViewer}
-                    deleteRegion = {props.deleteRegion} setActiveRegion = {props.setActiveRegion}
+                    subRegion ={entry} setShowViewer = {props.setShowViewer} 
+                   setActiveRegion = {props.setActiveRegion} setActiveViewerRegion = {props.setActiveViewerRegion}
                     />
                 ))
                 

@@ -3,6 +3,7 @@ import { REGISTER }			from '../../cache/mutations';
 import { useMutation }    	from '@apollo/client';
 
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 const CreateAccount = (props) => {
 	const [input, setInput] = useState({ email: '', password: '', name: '' });
@@ -36,6 +37,8 @@ const CreateAccount = (props) => {
 				props.fetchUser();
 			}
 			props.setShowCreate(false);
+			return <Redirect to="/home/MapSelection" />
+
 
 		};
 	};

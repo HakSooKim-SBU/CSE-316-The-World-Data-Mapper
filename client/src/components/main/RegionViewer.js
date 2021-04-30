@@ -3,7 +3,7 @@ import { WLayout, WLHeader, WLMain, WLSide, WInput, WRow, WCol, WButton } from '
 
 
 const RegionViewer = (props) => {
-   
+    const region = props.activeViewerRegion
     
     return (
         <div class="regionViewer">
@@ -18,7 +18,34 @@ const RegionViewer = (props) => {
                 </div>
                 <div class="regionViewer-flag"></div>
                 <div class="regionViewer-space"></div>
-                <div class="regionViewer-textbox"></div>
+                <div class="regionViewer-textbox">
+                <WRow>
+                    <WCol size ="12" className = "RegionViewerText">
+                        Region Name:  {region.name}; 
+                    </WCol>
+                </WRow>
+                <WRow>
+                    <WCol size ="12"  className = "RegionViewerText">
+                        Parent Region:  <span style={{paddingLeft: "3%"}}>{props.activeRegion.name}</span>
+                    </WCol>
+                </WRow>
+                <WRow>
+                    <WCol size ="12"  className = "RegionViewerText">
+                        Region Capital:  {region.capital}; 
+                    </WCol>
+
+                </WRow>
+                <WRow>
+                    <WCol size ="12"  className = "RegionViewerText">
+                        Region Leader:  {region.leader}; 
+                    </WCol>
+                </WRow>
+                <WRow>
+                    <WCol size ="12"  className = "RegionViewerText">
+                        # Of Sub Regions:  {region.subRegion.length};
+                    </WCol>
+                </WRow>
+                </div>
             </div>
             <div class="regionViewerEmptyColumn">
 
