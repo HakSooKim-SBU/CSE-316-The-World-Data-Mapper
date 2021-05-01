@@ -6,12 +6,11 @@ const SubRegionEntry = (props) => {
 
     
     const handleClickName = () => {
-        props.setActiveRegion(props.subRegion);
+        props.handleClickName(props.subRegion._id);
     } 
+    
     const handleClickLandmark = () =>{
-        props.setActiveRegion(props.subRegion);
-        props.setShowViewer();
-
+        props.handleClickLandmark(props.subRegion._id);
     }
     return (
         <div className="spreadsheetTableCell">

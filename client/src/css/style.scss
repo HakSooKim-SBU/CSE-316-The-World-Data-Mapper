@@ -279,3 +279,8 @@ html, body {
 .RegionViewerText span{
     color:rgb(69, 132, 173);
 }
+
+.RegionViewerText span:hover{
+    color:rgb(0, 102, 170);
+    cursor:pointer;
+}

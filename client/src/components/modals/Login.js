@@ -5,10 +5,11 @@ import { useMutation }    	from '@apollo/client';
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { hasClientExports } from '@apollo/client/utilities';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
 
 const Login = (props) => {
+	let history = useHistory();
 	const [input, setInput] = useState({ email: '', password: '' });
 	const [loading, toggleLoading] = useState(false);
 	const [showErr, displayErrorMsg] = useState(false);
@@ -31,17 +32,10 @@ const Login = (props) => {
 		if (data) {
 			props.fetchUser();
 			toggleLoading(false)
-			props.refetch();
 			props.setShowLogin(false)
-
-
+			history.replace("/MapSelection/" +data.login._id);
 		};
 	};
-
-	// if (props.auth) {
-	// 	return <Redirect to="/MapSelection" />
-   	// }
-	// else
 		return (
 			<WModal className="modal" cover="true" visible={props.setShowLogin}>
 				<WMHeader  className="modal-header" onClose={() => props.setShowLogin(false)}>

@@ -2,8 +2,11 @@ import React                                from 'react';
 import { LOGOUT }                           from '../../cache/mutations';
 import { useMutation, useApolloClient }     from '@apollo/client';
 import { WButton, WNavItem }                from 'wt-frontend';
+import { Redirect, useHistory } from "react-router-dom";
 
 const LoggedIn = (props) => {
+    let history = useHistory();
+
     const client = useApolloClient();
 	const [Logout] = useMutation(LOGOUT);
 
@@ -15,7 +18,9 @@ const LoggedIn = (props) => {
             if (reset) {
             props.setActiveRegion({});
             }
+            history.replace("/");
         }
+
     };
 
     return (
@@ -58,7 +63,7 @@ const NavbarOptions = (props) => {
         <>
             {
                 props.auth === false ? <LoggedOut setShowLogin={props.setShowLogin} setShowCreate={props.setShowCreate}  />
-                : <LoggedIn fetchUser={props.fetchUser} logout={props.logout}  showUpdate = {props.showUpdate}
+                : <LoggedIn fetchUser={props.fetchUser} logout={props.logout}  showUpdate = {props.showUpdate}  auth = {props.auth}
                 setActiveRegion ={props.setActiveRegion} user = {props.user} setShowUpdate = {props.setShowUpdate}
                 />
             }

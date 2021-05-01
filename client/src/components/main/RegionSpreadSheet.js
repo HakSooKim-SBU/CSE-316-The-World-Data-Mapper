@@ -2,20 +2,74 @@ import { DirectiveLocation } from 'graphql';
 import React, { useState } 				from 'react';
 import { WLayout, WLHeader, WLMain, WCol, WRow, WCContent, WButton } from 'wt-frontend';
 import SubRegionEntry from './SubRegionEntry';
+import { useQuery } 	from '@apollo/client';
+import * as queries				from '../../cache/queries';
+import { useMutation } 		from '@apollo/client';
+
+import { PromiseProvider } from 'mongoose';
+import { useParams } from "react-router-dom";
+import * as mutations 					from '../../cache/mutations';
+import { useHistory } from "react-router-dom";
 
 
 const RegionSpreadSheet = (props) => {
-    const currentRegionName = props.activeRegion.name;
-    let entries = props.subRegions;
-    // subRegions
-    // activeRegion
+    let history = useHistory();
+    let {_id} = useParams();
+    let region = null;
+    let subRegions = [];
+
+    const { data, error, loading, refetch} = useQuery(queries.GET_REGION_BYID, {variables: { regionId: _id }});
+	if(loading) { console.log(loading, 'loading'); }
+	if(error) { console.log(error, 'error'); }
+	if(data && data.getRegionById !== null) { 
+		region = data.getRegionById;
+	}
+
+    
+
+    const { data: dataRegion, error: errorRegion, loading: loadingRegion, refetch: refetchRegion} = useQuery(queries.GET_SUBREGIONS_BYID, {variables: { regionId: _id }});
+	if(loadingRegion) { console.log(loadingRegion, 'loading'); }
+	if(errorRegion) { console.log(errorRegion, 'error'); }
+	if(dataRegion && dataRegion.getSubRegionsById !== null) { 
+		for(let subRegion of dataRegion.getSubRegionsById) {
+			subRegions.push(subRegion)
+		}
+	}
+
+    const [AddRegion] 		= useMutation(mutations.ADD_REGION);
+
+
+    const addSubRegion = async () => {
+		const newSubRegion = {
+			_id: '',
+			name: "Not Assigned",
+			capital: "Not Assigned",
+        	leader: "Not Assigned",
+        	flag: "Not Assigned",
+        	landmark: [],
+        	parentRegion_id: _id,
+        	top: true,
+			subRegion : []
+		};
+		const { data } = await AddRegion({ variables: { region:newSubRegion} });
+        refetch();
+        refetchRegion();
+    };
+
+    const handleClickName = (mapId) => {
+        history.push("/RegionSpreadSheet/" +mapId);
+    }
+    
+    const handleClickLandmark = (mapId) =>{
+        history.replace("/RegionViewer/" +mapId);
+    }
     return (
         <div className = "regionSpreadSheet">
 
             <div class="SpreadSheet-icon">
                 <WRow>
                     <WCol size="4">
-                        <WButton wType="texted" span className = "SpreadSheet-table-icons-add" clickAnimation = "ripple-light" shape = "pill" onClick = {props.addSubRegion} >
+                        <WButton wType="texted" span className = "SpreadSheet-table-icons-add" clickAnimation = "ripple-light" shape = "pill" onClick = {addSubRegion} >
                             <i className="material-icons">add</i>
                         </WButton>
                     </WCol>
@@ -34,7 +88,7 @@ const RegionSpreadSheet = (props) => {
             </div>
 
             <div class="SpreadSheet-title">
-                    Region Name : <span style={{paddingLeft: "3%"}}>{currentRegionName}</span>
+                    Region Name : <span style={{paddingLeft: "3%"}}>{(region) ? region.name : "  "}</span>
             </div>
             
             <div class="SpreadSheet-empty"></div>
@@ -69,13 +123,10 @@ const RegionSpreadSheet = (props) => {
 
             <div class="SpreadSheet-tableBody">
             {
-                entries.map((entry, index) => (
-                    <SubRegionEntry 
-                    subRegion ={entry} setShowViewer = {props.setShowViewer} 
-                   setActiveRegion = {props.setActiveRegion} 
-                    />
+                subRegions.map((entry, index) => (
+                    <SubRegionEntry handleClickLandmark = {handleClickLandmark} handleClickName = {handleClickName}
+                    subRegion ={entry} />
                 ))
-                
             }
 
             </div>

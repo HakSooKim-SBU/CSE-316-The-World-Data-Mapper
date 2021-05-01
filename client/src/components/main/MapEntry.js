@@ -27,7 +27,7 @@ const MapEntry = (props) => {
     }
 
     const handleClickMap = (e) =>{
-        props.setActiveRegion(props.map)
+        props.handleMapClick(props.map._id);
     }
 
     return (

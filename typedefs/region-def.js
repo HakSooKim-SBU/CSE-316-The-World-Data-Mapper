@@ -13,7 +13,7 @@ const typeDefs = gql `
         subRegion: [String]
     }
     extend type Query {
-        getRootRegionsByUserId: [Region]
+        getRegionById(regionId : String!): Region
         getSubRegionsById(regionId : String!): [Region]
         getRootRegionsById(regionId : String!): [Region]
 	}

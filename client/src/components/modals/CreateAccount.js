@@ -33,11 +33,7 @@ const CreateAccount = (props) => {
 			if(data.register.email === 'already exists') {
 				alert('User with that email already registered');
 			}
-			else {
-				props.fetchUser();
-			}
 			props.setShowCreate(false);
-			return <Redirect to="/home/MapSelection" />
 
 
 		};

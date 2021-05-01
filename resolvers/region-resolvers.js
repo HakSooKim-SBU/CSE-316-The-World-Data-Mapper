@@ -3,15 +3,15 @@ const Region = require('../models/region-model');
 
 module.exports = {
 	Query: {
-		getRootRegionsByUserId: async (_, __, { req }) => {
-			console.log("getting root regions");
-			const _id = new ObjectId(req.userId);
-			if(!_id) { return([])};
-			const Regions = await Region.find({parentRegion_id: _id});
-			if(Regions) {
-				return (Regions);
-			}
-
+		getRegionById: async (_, args) => {
+			const { regionId } = args;
+			console.log(regionId);
+			const _id = new ObjectId(regionId);
+			let region = await Region.findOne({_id: _id});
+			console.log(region + "HELLO");
+			if(region) {
+				return (region);
+			} 
 		},
 		getSubRegionsById: async (_, args) => {
 			const { regionId } = args;
@@ -19,7 +19,6 @@ module.exports = {
 				return
 			}
 			const _id = new ObjectId(regionId);
-
 			const subRegions = await Region.find({parentRegion_id: _id});
 			if(subRegions) {
 				return (subRegions);
@@ -35,14 +34,8 @@ module.exports = {
 			else if (regionId == ""){
 				return 
 			}
-			
-			console.log(regionId + "!")
 			let _id = new ObjectId(regionId);
-			console.log(_id + "?")
-
 			let region = await Region.findOne({_id: _id});
-			console.log(region)
-
 			rootRegions = [];
 			rootRegions.push(region);
 			while (true){
