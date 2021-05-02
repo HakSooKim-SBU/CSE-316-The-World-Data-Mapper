@@ -5,6 +5,8 @@ module.exports = {
 	Query: {
 		getRegionById: async (_, args) => {
 			const { regionId } = args;
+			if (regionId == null)
+			return
 			console.log(regionId);
 			const _id = new ObjectId(regionId);
 			let region = await Region.findOne({_id: _id});
@@ -25,23 +27,38 @@ module.exports = {
 			} 
 		},
 		getRootRegionsById:async (_, args,{req}) => {
+			console.log(1)
 			const userId = new ObjectId(req.userId);
-
 			const { regionId } = args;
+			console.log(2)
+
 			if (regionId == userId ){
+				console.log(3)
+
 				return []
 			}
-			else if (regionId == ""){
+			else if (regionId == "" ){
+				console.log(4)
+
 				return 
 			}
+			console.log(5)
+
 			let _id = new ObjectId(regionId);
 			let region = await Region.findOne({_id: _id});
+			console.log(6)
+
 			rootRegions = [];
 			rootRegions.push(region);
+			console.log(7)
+
 			while (true){
+			if (region == null){
+				return
+			}
 			let regionRootId = region.parentRegion_id;
 			if (regionRootId == userId){
-				rootRegions.push(region);
+				// rootRegions.push(region);
 				break;
 			}
 			let rootRegion = await Region.findOne({_id: regionRootId});

@@ -24,13 +24,13 @@ const typeDefs = gql `
         
     }
     input regionInput{
-        _id: String
-        name: String
-        capital: String
-        leader: String
-        flag: String
+        _id: String!
+        name: String!
+        capital: String!
+        leader: String!
+        flag: String!
         landmark: [String]
-        parentRegion_id: String
+        parentRegion_id: String!
         top: Boolean
         subRegion: [String]
     }

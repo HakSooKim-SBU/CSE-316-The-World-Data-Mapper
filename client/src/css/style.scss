@@ -284,3 +284,16 @@ html, body {
     color:rgb(0, 102, 170);
     cursor:pointer;
 }
+
+.AncestorRegionNavigator{
+    font-size: 20px;
+    font-weight: 600;
+    float: left;
+    padding-left: 10px;
+}
+
+.AncestorRegionNavigator:hover{
+    cursor:pointer;
+    color:greenyellow;
+}
+

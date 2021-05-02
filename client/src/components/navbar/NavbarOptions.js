@@ -3,10 +3,14 @@ import { LOGOUT }                           from '../../cache/mutations';
 import { useMutation, useApolloClient }     from '@apollo/client';
 import { WButton, WNavItem }                from 'wt-frontend';
 import { Redirect, useHistory } from "react-router-dom";
+import Login 							from '../../components/modals/Login';
+import UpdateAccount 					from '../../components/modals/UpdateAccount';
+import CreateAccount 					from '../../components/modals/CreateAccount';
+import  { useState } 				from 'react';
+
 
 const LoggedIn = (props) => {
     let history = useHistory();
-
     const client = useApolloClient();
 	const [Logout] = useMutation(LOGOUT);
 
@@ -16,7 +20,6 @@ const LoggedIn = (props) => {
         if (data) {
             let reset = await client.resetStore();
             if (reset) {
-            props.setActiveRegion({});
             }
             history.replace("/");
         }
@@ -59,14 +62,51 @@ const LoggedOut = (props) => {
 
 
 const NavbarOptions = (props) => {
+
+
+	const [showCreate, toggleShowCreate] 	= useState(false);
+	const [showLogin, toggleShowLogin] 		= useState(false);
+	const [showUpdate, toggleShowUpdate] 	= useState(false);
+
+	const setShowLogin = () => {
+		toggleShowCreate(false);
+		toggleShowUpdate(false);
+		toggleShowLogin(!showLogin);
+	};
+
+	const setShowCreate = () => {
+		toggleShowLogin(false);
+		toggleShowUpdate(false);
+		toggleShowCreate(!showCreate);
+	};
+
+	const setShowUpdate = () => {
+		toggleShowLogin(false);
+		toggleShowCreate(false);
+		toggleShowUpdate(!showUpdate);
+	};
     return (
-        <>
+        <>  
+            {(!props.auth)?  <Redirect to = {"/"} /> : null
+            }
             {
-                props.auth === false ? <LoggedOut setShowLogin={props.setShowLogin} setShowCreate={props.setShowCreate}  />
-                : <LoggedIn fetchUser={props.fetchUser} logout={props.logout}  showUpdate = {props.showUpdate}  auth = {props.auth}
-                setActiveRegion ={props.setActiveRegion} user = {props.user} setShowUpdate = {props.setShowUpdate}
+                props.auth === false ? <LoggedOut setShowLogin={setShowLogin} setShowCreate={setShowCreate}  />
+                : <LoggedIn fetchUser={props.fetchUser} logout={props.logout}  showUpdate = {showUpdate}  auth = {props.auth}
+                 user = {props.user} setShowUpdate = {setShowUpdate}
                 />
             }
+            {
+				showCreate && (<CreateAccount fetchUser={props.fetchUser} setShowCreate={setShowCreate} />)
+			}
+
+			{
+				showLogin && (<Login fetchUser={props.fetchUser} setShowLogin={setShowLogin}/>)
+			}
+
+			{
+				showUpdate && (<UpdateAccount fetchUser={props.fetchUser}  setShowUpdate={setShowUpdate} showUpdate = {showUpdate}/>)
+			}
+
         </>
 
     );
