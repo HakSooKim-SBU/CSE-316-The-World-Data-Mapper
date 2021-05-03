@@ -5,53 +5,44 @@ module.exports = {
 	Query: {
 		getRegionById: async (_, args) => {
 			const { regionId } = args;
-			if (regionId == null)
-			return
-			console.log(regionId);
+			if(!regionId) { return };
 			const _id = new ObjectId(regionId);
 			let region = await Region.findOne({_id: _id});
-			console.log(region + "HELLO");
 			if(region) {
+				console.log("getting region")
 				return (region);
 			} 
 		},
-		getSubRegionsById: async (_, args) => {
+		getSubRegionsById: async (_, args,{req}) => {
+			console.log("getting subregions");
+
 			const { regionId } = args;
-			if (regionId == "" ){
-				return
-			}
+			const userId = new ObjectId(req.userId);
+			if(!regionId) { return};
 			const _id = new ObjectId(regionId);
 			const subRegions = await Region.find({parentRegion_id: _id});
 			if(subRegions) {
-				return (subRegions);
-			} 
+				if (_id.toString() == userId.toString() ){ 					// when getting regions
+					subRegions.sort((a, b) => (a.top > b.top) ? -1: 1)
+					return subRegions
+				}
+				else {								// when getting regions
+					return subRegions
+				}
+			}
+			return
 		},
 		getRootRegionsById:async (_, args,{req}) => {
-			console.log(1)
 			const userId = new ObjectId(req.userId);
 			const { regionId } = args;
-			console.log(2)
-
-			if (regionId == userId ){
-				console.log(3)
-
+			if (regionId == userId || !regionId){
 				return []
 			}
-			else if (regionId == "" ){
-				console.log(4)
-
-				return 
-			}
-			console.log(5)
-
 			let _id = new ObjectId(regionId);
 			let region = await Region.findOne({_id: _id});
-			console.log(6)
-
 			rootRegions = [];
 			rootRegions.push(region);
-			console.log(7)
-
+			console.log("getting rootRegions");
 			while (true){
 			if (region == null){
 				return
@@ -73,11 +64,9 @@ module.exports = {
 	Mutation: {
 		addRegion: async (_, args,{req}) => {
 			const userId = new ObjectId(req.userId);
-
 			const { region } = args;
 			const objectId = new ObjectId();
 			const { _id, name,  capital, leader, flag, landmark, parentRegion_id, subRegion, top} = region;
-			console.log("ready?")
 			const newRegion = new Region({
 				_id: objectId,
 				name: name,
@@ -89,11 +78,8 @@ module.exports = {
 				subRegion: subRegion,
 				top: top,
 				});
-			console.log(userId + "!!!!")
-			console.log(parentRegion_id)
 			if (parentRegion_id != userId){
 				let parentRegion = await Region.findOne({_id: parentRegion_id});
-				console.log(parentRegion);
 				let parentRegionSubRegions = parentRegion.subRegion;
 				parentRegionSubRegions.push(objectId);
 				let updatedParentRegion = await Region.updateOne({_id: parentRegion_id}, { subRegion: parentRegionSubRegions })
@@ -122,6 +108,15 @@ module.exports = {
 			const _id = new ObjectId(regionId);
 			const deleted = await Region.deleteOne({_id: _id});
 			if(deleted) return true;
+			else return false;
+		},
+		makeTopMap: async  (_, args,{req}) => {
+			const userId = new ObjectId(req.userId);
+			const {regionId} = args;
+			const _id = new ObjectId(regionId);
+			const updateAllMapToFalseTop = await Region.updateMany({parentRegion_id: userId}, { top: false });
+			const updateSelectedMapTrue = await Region.updateOne({_id: _id}, { top: true });
+			if(updateSelectedMapTrue && updateAllMapToFalseTop) return true;
 			else return false;
 		},
 

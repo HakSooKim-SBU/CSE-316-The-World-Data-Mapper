@@ -35,7 +35,6 @@ const App = () => {
 
 	return(
 		<Router>
-
 		<WLayout wLayout="header">
 			<WLHeader>
 				<WNavbar color="colored">
@@ -58,10 +57,10 @@ const App = () => {
 				
 			<Switch>
 				<WLMain>
-					<Route exact path="/" name="welcome" component={() => <Welcome auth={auth} user = {user} />} /> <Route/>
-					<Route path="/MapSelection/:_id" component={() => <MapSelectionContent user={user}/>}/> <Route/>
-					<Route path="/RegionSpreadSheet/:_id" component={() => <RegionSpreadSheet user={user}/>}/> <Route/>
-					<Route path="/RegionViewer/:_id" component={() => <RegionViewer user={user}/>} /> <Route/>
+					<Route exact path="/" name="welcome" render={() => <Welcome auth={auth} user = {user} />} /> <Route/>
+					<Route path="/MapSelection/:_id" render={() => <MapSelectionContent user={user}/>}/> <Route/>
+					<Route path="/RegionSpreadSheet/:_id" render={() => <RegionSpreadSheet user={user}/>}/> <Route/>
+					<Route path="/RegionViewer/:_id" render={() => <RegionViewer user={user}/>} /> <Route/>
 				</WLMain>
 			</Switch>
 

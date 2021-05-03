@@ -65,32 +65,29 @@ module.exports = {
 			const saved = await user.save();
 			// After registering the user, their tokens are generated here so they
 			// are automatically logged in on account creation.
-			const accessToken = tokens.generateAccessToken(user);
-			const refreshToken = tokens.generateRefreshToken(user);
-			res.cookie('refresh-token', refreshToken, { httpOnly: true , sameSite: 'None', secure: true}); 
-			res.cookie('access-token', accessToken, { httpOnly: true , sameSite: 'None', secure: true}); 
+			// const accessToken = tokens.generateAccessToken(user);
+			// const refreshToken = tokens.generateRefreshToken(user);
+			// res.cookie('refresh-token', refreshToken, { httpOnly: true , sameSite: 'None', secure: true}); 
+			// res.cookie('access-token', accessToken, { httpOnly: true , sameSite: 'None', secure: true}); 
 			return user;
 		},
 		updateAccount: async (_, args, { res, req }) => {
 			const _id = new ObjectId(req.userId);
 			const { email, password, name } = args;
 			const alreadyRegistered = await User.findOne({email: email});
+			if(alreadyRegistered && alreadyRegistered._id.toString() != _id.toString()) {
+				console.log('User with that email already registered.');
+				return(new User({
+					_id: '',
+					name: '',
+					email: 'already exists', 
+					password: '',
+					}));
+			}
 			const hashed = await bcrypt.hash(password, 10);
 			const updated = await User.updateOne({_id: _id}, { email:email,password:hashed,name: name, });
-	
-			const user = new User({
-				_id: _id,
-				name: name,
-				email: email, 
-				password: password,
-			})
-			// After registering the user, their tokens are generated here so they
-			// are automatically logged in on account creation.
-			const accessToken = tokens.generateAccessToken(user);
-			const refreshToken = tokens.generateRefreshToken(user);
-			res.cookie('refresh-token', refreshToken, { httpOnly: true , sameSite: 'None', secure: true}); 
-			res.cookie('access-token', accessToken, { httpOnly: true , sameSite: 'None', secure: true}); 
-			return user;
+			
+			return updated;
 		},
 		/** 
 			@param 	 {object} res - response object containing the current access/refresh tokens  

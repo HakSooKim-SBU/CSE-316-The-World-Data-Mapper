@@ -55,6 +55,12 @@ export const DELETE_REGION = gql`
 }
 `;
 
+export const MAKE_TOPMAP = gql`
+	mutation MakeTopMap($regionId: String!) {
+		makeTopMap(regionId: $regionId)
+}
+`
+
 
 
 

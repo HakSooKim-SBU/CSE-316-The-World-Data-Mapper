@@ -21,6 +21,7 @@ const typeDefs = gql `
         addRegion(region: regionInput!): String!
         renameRegion(regionId: String!, newName: String!): Boolean
         deleteRegion(regionId: String!): Boolean
+        makeTopMap(regionId: String!): Boolean
         
     }
     input regionInput{

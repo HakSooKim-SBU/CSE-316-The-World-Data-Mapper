@@ -13,12 +13,13 @@ import * as mutations 					from '../../cache/mutations';
 import { useHistory } from "react-router-dom";
 
 const MapSelectionContent = (props) => {
+    console.log("hello");
     let history = useHistory();
     let {_id} = useParams();
     const userId = _id;
     let subMaps = []
     const { data: dataRegion, error: errorRegion, loading: loadingRegion, refetch: refetchRegion} = useQuery(queries.GET_SUBREGIONS_BYID, {variables: { regionId: userId }});
-	if(loadingRegion) { console.log(loadingRegion, 'loading'); }
+    if(loadingRegion) { console.log(loadingRegion, 'loading'); }
 	if(errorRegion) { console.log(errorRegion, 'error'); }
 	if(dataRegion && dataRegion.getSubRegionsById !== null) { 
 		for(let subRegion of dataRegion.getSubRegionsById) {
@@ -32,9 +33,11 @@ const MapSelectionContent = (props) => {
 		refetchRegion({ variables: { regionId: userId } })
 	}
 
-    const [AddRegion] 		= useMutation(mutations.ADD_REGION);
+    const [AddRegion] 		    = useMutation(mutations.ADD_REGION);
 	const [RenameRegion] 		= useMutation(mutations.RENAME_REGION);
     const [DeleteRegion] 		= useMutation(mutations.DELETE_REGION);
+    const [MakeTopMap] 		    = useMutation(mutations.MAKE_TOPMAP);
+
 
 
 	const [showCreateMap, toggleShowCreateMap] 	= useState(false);
@@ -58,15 +61,19 @@ const MapSelectionContent = (props) => {
         	flag: "NO FLAG",
         	landmark: [],
         	parentRegion_id: userId,
-        	top: true,
+        	top: false,
 			subRegion : []
 		};
 		const { data } = await AddRegion({ variables: { region:newMap} });
 		refetchRegion({ variables: { regionId: userId } })
 	};
 
-    const handleMapClick = (mapId) => {
-        history.replace("/RegionSpreadSheet/" +mapId);
+    const handleMapClick = async (mapId) => {
+        const { data } = await MakeTopMap({ variables: { regionId: mapId} });
+        refetchRegion({ variables: { regionId: userId } });
+        // alert("Successfully clicked");
+        history.replace("/RegionSpreadSheet/" + mapId);
+
     }
 
     return (
@@ -84,9 +91,7 @@ const MapSelectionContent = (props) => {
                 ))
             }
             </div>
-
             <div className = "mapSelection-Rs">
-                
             <img style = {{height: "90%", width:"100%"}}src={require('../image/Welcome Earth.png')}/>
             <WButton className="modal-button " span clickAnimation="ripple-light" hoverAnimation="darken" color="primary" onClick = {setshowCreateMap}>
                 Create New Map

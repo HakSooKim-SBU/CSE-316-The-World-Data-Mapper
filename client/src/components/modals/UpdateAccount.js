@@ -1,11 +1,28 @@
 import React, { useState } 	from 'react';
-import { useMutation }    	from '@apollo/client';
+import { useMutation,useApolloClient }    	from '@apollo/client';
 import { UPDATE }			from '../../cache/mutations';
-
+import { useQuery } 	from '@apollo/client';
+import * as queries				from '../../cache/queries';
+import { LOGOUT }                           from '../../cache/mutations';
+import { Redirect, useHistory } from "react-router-dom";
 
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 
 const UpdateAccount = (props) => {
+	const [Logout] = useMutation(LOGOUT);
+    const client = useApolloClient();
+	const history = useHistory();
+	let user = null;
+	const { loading: userLoading, error: userError, data: userData, refetch: userRefetch } = useQuery(queries.GET_DB_USER);
+	
+    if(userError) { console.log(userError); }
+	if(userLoading) { console.log(loading); }
+	if(userData) { 
+		let { getCurrentUser } = userData;
+		if(getCurrentUser !== null) { user = getCurrentUser; }
+    }
+
+
 	const [input, setInput] = useState({ email: '', password: '', name: '' });
 	const [loading, toggleLoading] = useState(false);
 	const [Update] = useMutation(UPDATE);
@@ -24,14 +41,29 @@ const UpdateAccount = (props) => {
 				return;
 			}
 		}
+
 		const { loading, error, data } = await Update({ variables: { ...input } });
 		if (loading) { toggleLoading(true) };
 		if (error) { return `Error: ${error.message}` };
 		if (data) {
+			if(data.updateAccount.email === 'already exists') {
+				alert('User with that email already registered');
+				return;
+			}
 			console.log(data)
 			toggleLoading(false);
-			props.fetchUser();
 			props.setShowUpdate(false);
+			props.fetchUser();
+			Logout();
+			const { data:fetchData } = await props.fetchUser();
+        if (fetchData) {
+            let reset = await client.resetStore();
+            if (reset) {
+            }
+            history.replace("/");
+        }
+
+
 
 		};
 	};
@@ -53,7 +85,7 @@ const UpdateAccount = (props) => {
 								<WCol size="9">
 									<WInput 
 										className="modal-input" onBlur={updateInput} name="name" labelAnimation="up" 
-										barAnimation="solid" labelText="Name" wType="outlined" inputType="text" 
+										barAnimation="solid" labelText={(user)?user.name:""} wType="outlined" inputType="text" 
 									/>
 								</WCol>
 							</WRow>
@@ -68,7 +100,7 @@ const UpdateAccount = (props) => {
 								<WCol size="9">
 									<WInput 
 										className="modal-input" onBlur={updateInput} name="email" labelAnimation="up" 
-										barAnimation="solid" labelText="Email Address" wType="outlined" inputType="text" 
+										barAnimation="solid" labelText={(user)?user.email:""} wType="outlined" inputType="text" 
 									/>
 								</WCol>
 							</WRow>
@@ -82,7 +114,7 @@ const UpdateAccount = (props) => {
 								<WCol size="9">
 									<WInput 
 										className="modal-input" onBlur={updateInput} name="password" labelAnimation="up" 
-										barAnimation="solid" labelText="Password" wType="outlined" inputType="text" 
+										barAnimation="solid" labelText="********" wType="outlined" inputType="password" 
 									/>
 								</WCol>
 							</WRow>
