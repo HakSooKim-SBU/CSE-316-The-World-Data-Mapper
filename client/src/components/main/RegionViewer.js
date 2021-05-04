@@ -35,10 +35,10 @@ const RegionViewer = (props) => {
             <div class="regionViewerLS">
                 <div class="regionViewer-icons">
                     <WButton wType="texted" className = "regionViewer-icon" clickAnimation = "ripple-light" shape = "Rounded" >
-                        <i className="material-icons">add</i>
+                        <i className="material-icons">navigate_before</i>
                     </WButton>
                     <WButton wType="texted" className = "regionViewer-icon" clickAnimation = "ripple-light" shape = "Rounded" >
-                        <i className="material-icons">add</i>
+                        <i className="material-icons">navigate_next</i>
                     </WButton>
                 </div>
                 <div class="regionViewer-flag"></div>

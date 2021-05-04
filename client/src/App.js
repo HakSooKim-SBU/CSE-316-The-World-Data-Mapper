@@ -1,7 +1,7 @@
 import React 			from 'react';
 import { useQuery } 	from '@apollo/client';
 import { jsTPS } 		from './utils/jsTPS';
-import {BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, Redirect,useHistory } from 'react-router-dom';
 import  { useState } 				from 'react';
 import { WNavbar, WNavItem } 	from 'wt-frontend';
 import { WLayout, WLHeader, WLMain, WLSide, WCard, WCContent, WCMedia } from 'wt-frontend';
@@ -15,7 +15,6 @@ import Logo 							from '../src/components/navbar/Logo';
 import RegionViewer						from '../src/components/main/RegionViewer'
 import Welcome							from '../src/components/main/Welcome';
 import { PromiseProvider } from 'mongoose';
-
 
 
 const App = () => {

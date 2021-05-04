@@ -87,8 +87,6 @@ const NavbarOptions = (props) => {
 	};
     return (
         <>  
-            {(!props.auth)?  <Redirect to = {"/"} /> : null
-            }
             {
                 props.auth === false ? <LoggedOut setShowLogin={setShowLogin} setShowCreate={setShowCreate}  />
                 : <LoggedIn fetchUser={props.fetchUser} logout={props.logout}  showUpdate = {showUpdate}  auth = {props.auth}

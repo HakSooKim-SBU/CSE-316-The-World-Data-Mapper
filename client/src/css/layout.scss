@@ -100,6 +100,9 @@ font-weight: bolder;
     ; }
 .mapSelection-Rs { grid-area: mapSelection-Rs; }
 
+.yellow-hover:hover { color: yellow; }
+
+
 .regionSpreadSheet{
     padding-right: 12%;
     padding-left: 12%;
@@ -180,7 +183,9 @@ font-weight: bolder;
   
   .landmarkColumn { grid-area: landmarkColumn; }
 
-
+.nameColumn:hover, .deleteColumn:hover,.capitalColumn:hover,.leaderColumn:hover,.flagColumn:hover,.landmarkColumn:hover{
+    background-color:#f0f8ff;
+}
   .regionViewer {
     width: 100%;
     height: 100%;

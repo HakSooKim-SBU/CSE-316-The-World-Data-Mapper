@@ -13,7 +13,7 @@ import * as mutations 					from '../../cache/mutations';
 import { useHistory } from "react-router-dom";
 
 const MapSelectionContent = (props) => {
-    console.log("hello");
+    // window.location.reload();
     let history = useHistory();
     let {_id} = useParams();
     const userId = _id;
@@ -70,10 +70,8 @@ const MapSelectionContent = (props) => {
 
     const handleMapClick = async (mapId) => {
         const { data } = await MakeTopMap({ variables: { regionId: mapId} });
-        refetchRegion({ variables: { regionId: userId } });
-        // alert("Successfully clicked");
         history.replace("/RegionSpreadSheet/" + mapId);
-
+        refetchRegion({ variables: { regionId: userId } });
     }
 
     return (
@@ -93,7 +91,7 @@ const MapSelectionContent = (props) => {
             </div>
             <div className = "mapSelection-Rs">
             <img style = {{height: "90%", width:"100%"}}src={require('../image/Welcome Earth.png')}/>
-            <WButton className="modal-button " span clickAnimation="ripple-light" hoverAnimation="darken" color="primary" onClick = {setshowCreateMap}>
+            <WButton className="modal-button yellow-hover" span clickAnimation="ripple-light" hoverAnimation="darken" color="primary" onClick = {setshowCreateMap}>
                 Create New Map
 			</WButton>
             
