@@ -13,9 +13,9 @@ const cache = new InMemoryCache({
 	*/
 	dataIdFromObject: object => `${object.__typename}:${object._id}`,
 	typePolicies: {
-		Region: {
+		Todolist: {
 			fields: {
-				subRegion: {
+				items: {
 					merge(existing, incoming){
 						return incoming
 					}
