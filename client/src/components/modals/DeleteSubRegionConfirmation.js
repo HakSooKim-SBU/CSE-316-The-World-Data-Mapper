@@ -4,8 +4,8 @@ import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 
 
 const DeleteSubRegionConfirmation = (props) => {
 
-    const handleDeleteMap = (e) => {
-        props.deleteSubRegion(props._id);
+    const handleDeleteSubRegion = (e) => {
+        props.deleteSubRegion(props.subRegion,props.index);
 		props.setshowDeleteMap();
     }
 
@@ -19,7 +19,7 @@ const DeleteSubRegionConfirmation = (props) => {
 			<WRow>
 
 				<WCol size="4" className="modal-row">
-					<WButton className="modal-button" onClick={() => handleDeleteMap()}  span clickAnimation="ripple-light"  shape="rounded" color="modal-button">
+					<WButton className="modal-button" onClick={() => handleDeleteSubRegion()}  span clickAnimation="ripple-light"  shape="rounded" color="modal-button">
 						Delete
 					</WButton>				
 				</WCol>

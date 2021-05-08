@@ -43,11 +43,6 @@ export const ADD_SUBREGION = gql`
 	}
 `;
 
-export const RENAME_REGION = gql`
-	mutation RenameRegion($regionId: String!, $newName: String!) {
-		renameRegion(regionId: $regionId, newName: $newName)
-	}
-`;
 
 export const DELETE_SUBREGION = gql`
 	mutation DeleteSubRegion($regionId: String!) {

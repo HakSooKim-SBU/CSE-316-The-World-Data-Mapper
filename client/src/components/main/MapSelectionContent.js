@@ -34,10 +34,11 @@ const MapSelectionContent = (props) => {
 	}
 
     const [AddSubRegion] 		    = useMutation(mutations.ADD_SUBREGION);
-	const [RenameRegion] 		= useMutation(mutations.RENAME_REGION);
     const [DeleteSubRegion] 		= useMutation(mutations.DELETE_SUBREGION);
     const [MakeTopMap] 		    = useMutation(mutations.MAKE_TOPMAP);
+    const [UpdateSubRegion]     = useMutation(mutations.UPDATE_SUBREGION_FIELD);
 
+    
 
 
 	const [showCreateMap, toggleShowCreateMap] 	= useState(false);
@@ -47,7 +48,7 @@ const MapSelectionContent = (props) => {
 	};
 
     const renameRegion = async (regionId, newName) =>{
-		const { data } = await RenameRegion({ variables: { regionId:regionId, newName:newName} });
+		const { data } = await UpdateSubRegion({ variables: { regionId:regionId,field: "name", value:newName} });
 		refetchRegion({ variables: { regionId: userId } })
 
 	}

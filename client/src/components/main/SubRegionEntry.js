@@ -1,6 +1,7 @@
 import { DirectiveLocation } from 'graphql';
 import React, { useState } 	from 'react';
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
+import DeleteSubRegionConfirmation 							from '../modals/DeleteSubRegionConfirmation';
 
 const SubRegionEntry = (props) => {
 
@@ -12,6 +13,12 @@ const SubRegionEntry = (props) => {
     const handleClickName = () => {
         props.handleClickName(props.subRegion._id);
     } 
+
+    const [showDeleteMap, toggleShowDeleteMap] = useState(false);
+
+    const setshowDeleteMap = () => {
+		toggleShowDeleteMap(!showDeleteMap);
+	};
     
     const handleClickCapital = (e) =>{
         toggleCapitalEdit(!editingCapital);
@@ -35,17 +42,13 @@ const SubRegionEntry = (props) => {
         props.handleClickLandmark(props.subRegion._id);
     }
 
-    const handleDelete = () =>{
-        props.deleteSubRegion(props.subRegion,props.index);
-    }
-
     return (
         <div className="spreadsheetTableCell">
 
             <div className="deleteColumn">
                 
                 
-                <WButton wType ="texted" span className = "table-red-column" clickAnimation = "ripple-dark"  onClick = {handleDelete} >
+                <WButton wType ="texted" span className = "table-red-column" clickAnimation = "ripple-dark"  onClick = {setshowDeleteMap} >
                 <i className="material-icons">close</i>
 
                 </WButton>
@@ -97,6 +100,9 @@ const SubRegionEntry = (props) => {
                 </WButton>
             </div>
 
+            {
+                showDeleteMap && <DeleteSubRegionConfirmation deleteSubRegion = {props.deleteSubRegion} subRegion = {props.subRegion} index = {props.index} setshowDeleteMap = {setshowDeleteMap}/> 
+            }
       </div>
 
 
