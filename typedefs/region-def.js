@@ -22,7 +22,9 @@ const typeDefs = gql `
         renameRegion(regionId: String!, newName: String!): Boolean
         deleteRegion(regionId: String!): Boolean
         makeTopMap(regionId: String!): Boolean
-        
+        updateSubRegionField(regionId: String!, field: String!, value: String! ): Boolean
+        updateSubRegionSort(regionId: String!, field: String!, value: [String] ): Boolean
+
     }
     input regionInput{
         _id: String!

@@ -19,9 +19,9 @@ import { PromiseProvider } from 'mongoose';
 
 const App = () => {
 	let user = null;
-    let transactionStack = new jsTPS();
-	let refreshTps = false;
-    const { loading, error, data, refetch } = useQuery(queries.GET_DB_USER);
+    let tps = new jsTPS();
+	console.log(tps)
+	const { loading, error, data, refetch } = useQuery(queries.GET_DB_USER);
 	
     if(error) { console.log(error); }
 	if(loading) { console.log(loading); }
@@ -29,6 +29,8 @@ const App = () => {
 		let { getCurrentUser } = data;
 		if(getCurrentUser !== null) { user = getCurrentUser; }
     }
+
+
 
 	const auth = user === null ? false : true;
 
@@ -56,10 +58,10 @@ const App = () => {
 				
 			<Switch>
 				<WLMain>
-					<Route exact path="/" name="welcome" render={() => <Welcome auth={auth} user = {user} />} /> <Route/>
-					<Route path="/MapSelection/:_id" render={() => <MapSelectionContent user={user}/>}/> <Route/>
-					<Route path="/RegionSpreadSheet/:_id" render={() => <RegionSpreadSheet user={user}/>}/> <Route/>
-					<Route path="/RegionViewer/:_id" render={() => <RegionViewer user={user}/>} /> <Route/>
+					<Route exact path="/" name="welcome" render={() => <Welcome />} /> <Route/>
+					<Route path="/MapSelection/:_id" render={() => <MapSelectionContent />}/> <Route/>
+					<Route path="/RegionSpreadSheet/:_id" render={() => <RegionSpreadSheet tps = {tps}   />}/> <Route/>
+					<Route path="/RegionViewer/:_id" render={() => <RegionViewer />} tps = {tps}  /> <Route/>
 				</WLMain>
 			</Switch>
 

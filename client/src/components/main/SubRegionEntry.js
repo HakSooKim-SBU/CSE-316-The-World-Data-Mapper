@@ -4,14 +4,37 @@ import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 
 
 const SubRegionEntry = (props) => {
 
-    
+
+    // const [editingName, toggleDateEdit] = useState(false);
+    const [editingCapital, toggleCapitalEdit] = useState(false);
+    const [editingLeader, toggleLeaderEdit] = useState(false);
+
     const handleClickName = () => {
         props.handleClickName(props.subRegion._id);
     } 
     
+    const handleClickCapital = (e) =>{
+        toggleCapitalEdit(!editingCapital);
+        const newCapital = e.target.value ? e.target.value : 'Not Assigned';
+        const prevCapital = props.subRegion.capital;
+        if(newCapital !== prevCapital) {
+            props.editRegion(props.subRegion._id, 'capital', newCapital, prevCapital);
+        }
+    }
+
+    const handleClickLeader = (e) =>{
+        toggleLeaderEdit(!editingLeader);
+        const newLeader = e.target.value ? e.target.value : 'Not Assigned';
+        const prevLeader = props.subRegion.leader;
+        if(newLeader !== prevLeader) {
+            props.editRegion(props.subRegion._id, 'leader', newLeader, prevLeader);
+        }
+    }
+
     const handleClickLandmark = () =>{
         props.handleClickLandmark(props.subRegion._id);
     }
+
     return (
         <div className="spreadsheetTableCell">
 
@@ -29,14 +52,35 @@ const SubRegionEntry = (props) => {
                 </WButton>
             </div>
             <div className="capitalColumn">
-                <WButton wType="texted" span className = "table-black-column" clickAnimation = "ripple-dark" >
-                    {props.subRegion.capital}
-                </WButton>
+                {editingCapital ? 
+                    < WInput
+                     onBlur={handleClickCapital}
+                    onKeyDown={(e) => {if(e.keyCode === 13) handleClickCapital(e)}}
+                    autoFocus={true} defaultValue={props.subRegion.capital} 
+                    inputClass="table-input-class" 
+                    />
+                :
+                    <WButton wType="texted" span className = "table-black-column" clickAnimation = "ripple-dark" onClick = { ()=> toggleCapitalEdit(!editingCapital)}>
+                        {props.subRegion.capital}
+                    </WButton>
+                 }
             </div>
+           
             <div className="leaderColumn">
-                <WButton wType="texted" span className = "table-black-column" clickAnimation = "ripple-dark" >
+                {editingLeader ? 
+                    < WInput
+                     onBlur={handleClickLeader}
+                    onKeyDown={(e) => {if(e.keyCode === 13) handleClickLeader(e)}}
+                    autoFocus={true} defaultValue={props.subRegion.leader} 
+                    inputClass="table-input-class" 
+                    />
+                :
+                    <WButton wType="texted" span className = "table-black-column" clickAnimation = "ripple-dark" onClick = { ()=> toggleLeaderEdit(!editingLeader)}>
                     {props.subRegion.leader}
-                </WButton>
+                    </WButton>
+                 }
+
+                
             </div>
             <div className="flagColumn">
                 <WButton wType="texted" span className = "table-black-column" clickAnimation = "ripple-dark" >

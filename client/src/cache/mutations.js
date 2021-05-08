@@ -46,21 +46,32 @@ export const ADD_REGION = gql`
 export const RENAME_REGION = gql`
 	mutation RenameRegion($regionId: String!, $newName: String!) {
 		renameRegion(regionId: $regionId, newName: $newName)
-}
+	}
 `;
 
 export const DELETE_REGION = gql`
 	mutation DeleteRegion($regionId: String!) {
 		deleteRegion(regionId: $regionId)
-}
+	}
 `;
 
 export const MAKE_TOPMAP = gql`
 	mutation MakeTopMap($regionId: String!) {
 		makeTopMap(regionId: $regionId)
-}
+	}
 `
 
+export const UPDATE_SUBREGION_FIELD = gql`
+	mutation UpdateSubRegionField($regionId: String!, $field: String!, $value: String!) {
+		updateSubRegionField(regionId: $regionId, field:$field, value:$value )
+	}
+`
+
+export const UPDATE_SUBREGION_SORT = gql`
+	mutation UpdateSubRegionSort($regionId: String!, $field: String!, $value: [String]) {
+		updateSubRegionSort(regionId: $regionId, field:$field, value:$value )
+	}
+`
 
 
 

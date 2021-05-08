@@ -10,7 +10,7 @@ import { PromiseProvider } from 'mongoose';
 import { useParams } from "react-router-dom";
 import * as mutations 					from '../../cache/mutations';
 import { useHistory } from "react-router-dom";
-
+import { UpdateSubRegionField_Transaction } 				from '../../utils/jsTPS';
 
 const RegionSpreadSheet = (props) => {
     let history = useHistory();
@@ -25,8 +25,6 @@ const RegionSpreadSheet = (props) => {
 		region = data.getRegionById;
 	}
 
-    
-
     const { data: dataRegion, error: errorRegion, loading: loadingRegion, refetch: refetchRegion} = useQuery(queries.GET_SUBREGIONS_BYID, {variables: { regionId: _id }});
 	if(loadingRegion) { console.log(loadingRegion, 'loading'); }
 	if(errorRegion) { console.log(errorRegion, 'error'); }
@@ -36,7 +34,33 @@ const RegionSpreadSheet = (props) => {
 		}
 	}
 
-    const [AddRegion] 		= useMutation(mutations.ADD_REGION);
+    const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
+	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+
+    const tpsUndo = async () => {
+		const ret = await props.tps.undoTransaction();
+		if(ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+        refetch();
+        refetchRegion();
+	}
+
+	const tpsRedo = async () => {
+		const ret = await props.tps.doTransaction();
+		if(ret) {
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
+		}
+        refetch();
+        refetchRegion();
+	}
+
+    const [AddRegion] 		        = useMutation(mutations.ADD_REGION);
+	const [UpdateSubRegionField] 	= useMutation(mutations.UPDATE_SUBREGION_FIELD);
+    const [UpdateSubRegionSort] 	= useMutation(mutations.UPDATE_SUBREGION_SORT);
+
 
 
     const addSubRegion = async () => {
@@ -56,6 +80,67 @@ const RegionSpreadSheet = (props) => {
         refetchRegion();
     };
 
+    const sortByColumn = async (sortingCriteria) => {
+		let oldSubRegionsIds = [];
+        let newSubRegionsIds = [];
+		for (let i = 0; i < subRegions.length; i++) {
+			let subRegion = subRegions[i];
+			oldSubRegionsIds.push(subRegion._id);
+		  }
+        let subRegionsToSort = [...subRegions]
+
+        let sortIncreasing = isInIncreasingOrder(subRegionsToSort, sortingCriteria);
+		let compareFunction = makeCompareFunction(sortingCriteria, sortIncreasing);
+		subRegionsToSort = subRegionsToSort.sort(compareFunction);
+        for (let i = 0; i < subRegionsToSort.length; i++) {
+			let subRegion = subRegionsToSort[i];
+			newSubRegionsIds.push(subRegion._id);
+		  }
+
+		let transaction = new UpdateSubRegionField_Transaction (_id, "subRegion" , newSubRegionsIds, oldSubRegionsIds, UpdateSubRegionSort);
+		props.tps.addTransaction(transaction);
+		tpsRedo();
+	}
+
+    const isInIncreasingOrder = (subRegionsToSort, sortingCriteria) => {
+        for (let i = 0; i < subRegionsToSort.length - 1; i++) {
+            let a = subRegionsToSort[i][sortingCriteria];
+            let b = subRegionsToSort[i + 1][sortingCriteria];
+            let c = a>b
+          if (subRegionsToSort[i][sortingCriteria] > subRegionsToSort[i + 1][sortingCriteria]){
+            return false;
+          }
+        }
+        return true;
+    }
+
+    const makeCompareFunction = (criteria, increasing) => {
+        return function (item1, item2) {
+          let negate = 1;
+          if (increasing) {
+            negate = -1;
+          }
+          let value1 = item1[criteria];
+          let value2 = item2[criteria];
+          if (value1 < value2) {
+            return -1 * negate;
+          }
+          else if (value1 === value2) {
+            return 0;
+          }
+          else {
+            return 1 * negate;
+          }
+        }
+      }
+
+
+    const editRegion = async (regionID, field, value, prev) => {
+        let transaction = new UpdateSubRegionField_Transaction(regionID, field, value, prev, UpdateSubRegionField);
+        props.tps.addTransaction(transaction);
+        tpsRedo();
+	};
+
     const handleClickName = (mapId) => {
         history.push("/RegionSpreadSheet/" +mapId);
     }
@@ -63,6 +148,8 @@ const RegionSpreadSheet = (props) => {
     const handleClickLandmark = (mapId) =>{
         history.replace("/RegionViewer/" +mapId);
     }
+    
+
     return (
         <div className = "regionSpreadSheet">
 
@@ -74,12 +161,14 @@ const RegionSpreadSheet = (props) => {
                         </WButton>
                     </WCol>
                     <WCol size="4">
-                        <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" clickAnimation = "ripple-light" shape = "pill" >
+                        <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" 
+                        clickAnimation = "ripple-light" shape = "pill" onClick = {tpsUndo} >
                             <i className="material-icons">undo</i>
                         </WButton>
                     </WCol>
                     <WCol size="4">
-                        <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" clickAnimation = "ripple-light" shape = "pill" >
+                        <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" 
+                        clickAnimation = "ripple-light" shape = "pill"onClick = {tpsRedo} >
                             <i className="material-icons">redo</i>
                         </WButton>
                     </WCol>
@@ -94,17 +183,17 @@ const RegionSpreadSheet = (props) => {
             <div class="SpreadSheet-empty"></div>
 
             <div class="SpreadSheet-titleHeader"> 
-                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons" >
+                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons" onClick = {() => sortByColumn("name")} >
                     Name<span style={{paddingLeft: "15px"}}></span><i className="material-icons">arrow_downward</i>
                 </WButton>
             </div>
             <div class="SpreadSheet-capitalHeader"> 
-                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons" >
+                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons" onClick = {() => sortByColumn("capital")} >
                     Capital<span style={{paddingLeft: "15px"}}></span><i className="material-icons">arrow_downward</i>
                 </WButton>
             </div>
             <div class="SpreadSheet-leaderHeader">
-                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons" >
+                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons"onClick = {() => sortByColumn("leader")} >
                     Leader<span style={{paddingLeft: "15px"}}></span><i className="material-icons">arrow_downward</i>
                 </WButton>
             </div>
@@ -124,7 +213,7 @@ const RegionSpreadSheet = (props) => {
             <div class="SpreadSheet-tableBody">
             {
                 subRegions.map((entry, index) => (
-                    <SubRegionEntry handleClickLandmark = {handleClickLandmark} handleClickName = {handleClickName}
+                    <SubRegionEntry handleClickLandmark = {handleClickLandmark} handleClickName = {handleClickName} editRegion={editRegion}
                     subRegion ={entry} />
                 ))
             }
