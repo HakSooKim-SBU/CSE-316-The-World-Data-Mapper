@@ -28,14 +28,14 @@ const MapSelectionContent = (props) => {
 	}
 
     
-    const deleteRegion = async (regionId) =>{
-		const { data } = await DeleteRegion({ variables: { regionId:regionId} });
+    const deleteSubRegion = async (regionId) =>{
+		const { data } = await DeleteSubRegion({ variables: { regionId:regionId} });
 		refetchRegion({ variables: { regionId: userId } })
 	}
 
-    const [AddRegion] 		    = useMutation(mutations.ADD_REGION);
+    const [AddSubRegion] 		    = useMutation(mutations.ADD_SUBREGION);
 	const [RenameRegion] 		= useMutation(mutations.RENAME_REGION);
-    const [DeleteRegion] 		= useMutation(mutations.DELETE_REGION);
+    const [DeleteSubRegion] 		= useMutation(mutations.DELETE_SUBREGION);
     const [MakeTopMap] 		    = useMutation(mutations.MAKE_TOPMAP);
 
 
@@ -64,7 +64,7 @@ const MapSelectionContent = (props) => {
         	top: false,
 			subRegion : []
 		};
-		const { data } = await AddRegion({ variables: { region:newMap} });
+		const { data } = await AddSubRegion({ variables: { region:newMap, index: 0} });
 		refetchRegion({ variables: { regionId: userId } })
 	};
 
@@ -84,7 +84,7 @@ const MapSelectionContent = (props) => {
                 subMaps.map((entry, index) => (
                     <MapEntry 
                     map ={entry} renameRegion = {renameRegion}
-                     deleteRegion = {deleteRegion} handleMapClick ={handleMapClick}
+                    deleteSubRegion = {deleteSubRegion} handleMapClick ={handleMapClick}
                     />
                 ))
             }

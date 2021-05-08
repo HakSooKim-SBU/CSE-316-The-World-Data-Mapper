@@ -35,13 +35,17 @@ const SubRegionEntry = (props) => {
         props.handleClickLandmark(props.subRegion._id);
     }
 
+    const handleDelete = () =>{
+        props.deleteSubRegion(props.subRegion,props.index);
+    }
+
     return (
         <div className="spreadsheetTableCell">
 
             <div className="deleteColumn">
                 
                 
-                <WButton wType ="texted" span className = "table-red-column" clickAnimation = "ripple-dark"  >
+                <WButton wType ="texted" span className = "table-red-column" clickAnimation = "ripple-dark"  onClick = {handleDelete} >
                 <i className="material-icons">close</i>
 
                 </WButton>

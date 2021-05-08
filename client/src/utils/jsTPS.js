@@ -24,6 +24,42 @@ export class UpdateSubRegionField_Transaction extends jsTPS_Transaction {
     }
 }
 
+export class UpdateSubRegion_Transaction extends jsTPS_Transaction {
+    // opcodes: 0 - delete, 1 - add 
+    constructor(subRegionId, subRegion, opcode, addfunc, delfunc, index = -1) {
+        super();
+        this.subRegionId = subRegionId;
+		this.subRegion = subRegion;
+		this.opcode = opcode;
+        this.addfunc = addfunc;
+        this.delfunc = delfunc;
+        this.index = index;
+    }
+    async doTransaction() {
+		let data;
+        this.opcode === 0 ? { data } = await this.delfunc({
+							variables: {regionId: this.subRegionId}})
+						  : { data } = await this.addfunc({
+							variables: {region: this.subRegion, index: this.index}})  
+		if(this.opcode !== 0) {
+            this.subRegion._id = this.subRegionId = data.addSubRegion;
+		}
+		return data;
+    }
+    // Since delete/add are opposites, flip matching opcode
+    async undoTransaction() {
+		let data;
+        this.opcode === 1 ? { data } = await this.delfunc({
+                        variables: {regionId: this.subRegionId}})
+            : { data } = await this.addfunc({
+							variables: {region: this.subRegion, index: this.index}})  
+		if(this.opcode !== 1) {
+            this.subRegion._id = this.subRegionId = data.addSubRegion;
+        }
+		return data;
+    }
+}
+
 
 
 

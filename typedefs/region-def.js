@@ -18,9 +18,9 @@ const typeDefs = gql `
         getRootRegionsById(regionId : String!): [Region]
 	}
     extend type Mutation {
-        addRegion(region: regionInput!): String!
+        addSubRegion(region: regionInput!, index:Int): String!
         renameRegion(regionId: String!, newName: String!): Boolean
-        deleteRegion(regionId: String!): Boolean
+        deleteSubRegion(regionId: String!): Boolean
         makeTopMap(regionId: String!): Boolean
         updateSubRegionField(regionId: String!, field: String!, value: String! ): Boolean
         updateSubRegionSort(regionId: String!, field: String!, value: [String] ): Boolean

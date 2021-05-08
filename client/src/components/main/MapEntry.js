@@ -62,7 +62,7 @@ const MapEntry = (props) => {
                 </WRow>
 
                 {
-                showDeleteMap && <DeleteMapConfirmation deleteRegion = {props.deleteRegion} _id = {props.map._id} setshowDeleteMap = {setshowDeleteMap}/> 
+                showDeleteMap && <DeleteMapConfirmation deleteSubRegion = {props.deleteSubRegion} _id = {props.map._id} setshowDeleteMap = {setshowDeleteMap}/> 
                 }
         </div>
 

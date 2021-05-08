@@ -37,9 +37,9 @@ export const UPDATE = gql`
 `;
 
 
-export const ADD_REGION = gql`
-	mutation AddRegion($region: regionInput!) {
-		addRegion(region: $region)
+export const ADD_SUBREGION = gql`
+	mutation AddSubRegion($region: regionInput!, $index: Int) {
+		addSubRegion(region: $region, index: $index)
 	}
 `;
 
@@ -49,9 +49,9 @@ export const RENAME_REGION = gql`
 	}
 `;
 
-export const DELETE_REGION = gql`
-	mutation DeleteRegion($regionId: String!) {
-		deleteRegion(regionId: $regionId)
+export const DELETE_SUBREGION = gql`
+	mutation DeleteSubRegion($regionId: String!) {
+		deleteSubRegion(regionId: $regionId)
 	}
 `;
 

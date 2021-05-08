@@ -5,7 +5,7 @@ import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 
 const DeleteMapConfirmation = (props) => {
 
     const handleDeleteMap = (e) => {
-        props.deleteRegion(props._id);
+        props.deleteSubRegion(props._id);
 		props.setshowDeleteMap();
     }
 

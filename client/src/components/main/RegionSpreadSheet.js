@@ -10,7 +10,7 @@ import { PromiseProvider } from 'mongoose';
 import { useParams } from "react-router-dom";
 import * as mutations 					from '../../cache/mutations';
 import { useHistory } from "react-router-dom";
-import { UpdateSubRegionField_Transaction } 				from '../../utils/jsTPS';
+import { UpdateSubRegionField_Transaction, UpdateSubRegion_Transaction } 				from '../../utils/jsTPS';
 
 const RegionSpreadSheet = (props) => {
     let history = useHistory();
@@ -37,6 +37,11 @@ const RegionSpreadSheet = (props) => {
     const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
 
+    const [AddSubRegion] 		    = useMutation(mutations.ADD_SUBREGION);
+    const [DeleteSubRegion] 	    = useMutation(mutations.DELETE_SUBREGION);
+	const [UpdateSubRegionField] 	= useMutation(mutations.UPDATE_SUBREGION_FIELD);
+    const [UpdateSubRegionSort] 	= useMutation(mutations.UPDATE_SUBREGION_SORT);
+    
     const tpsUndo = async () => {
 		const ret = await props.tps.undoTransaction();
 		if(ret) {
@@ -57,9 +62,8 @@ const RegionSpreadSheet = (props) => {
         refetchRegion();
 	}
 
-    const [AddRegion] 		        = useMutation(mutations.ADD_REGION);
-	const [UpdateSubRegionField] 	= useMutation(mutations.UPDATE_SUBREGION_FIELD);
-    const [UpdateSubRegionSort] 	= useMutation(mutations.UPDATE_SUBREGION_SORT);
+
+
 
 
 
@@ -72,13 +76,38 @@ const RegionSpreadSheet = (props) => {
         	flag: "Not Assigned",
         	landmark: [],
         	parentRegion_id: _id,
-        	top: true,
+        	top: false,
 			subRegion : []
 		};
-		const { data } = await AddRegion({ variables: { region:newSubRegion} });
-        refetch();
-        refetchRegion();
+        let opcode = 1;
+        let subRegionId = newSubRegion._id;
+
+        let transaction = new UpdateSubRegion_Transaction(subRegionId, newSubRegion, opcode, AddSubRegion, DeleteSubRegion);
+        props.tps.addTransaction(transaction);
+		tpsRedo();
     };
+
+    const deleteSubRegion = async (subRegion, index) => {
+		const subRegionToDelete = {
+			_id: subRegion._id,
+			name: subRegion.name,
+			capital: subRegion.capital,
+        	leader: subRegion.leader,
+        	flag: subRegion.flag,
+        	landmark: subRegion.landmark,
+        	parentRegion_id: subRegion.parentRegion_id,
+        	top: subRegion.top,
+			subRegion : subRegion.subRegion
+		};
+        let subRegionId = subRegion._id;
+        let opcode = 0;
+        let transaction = new UpdateSubRegion_Transaction(subRegionId, subRegionToDelete, opcode, AddSubRegion, DeleteSubRegion,index);
+        props.tps.addTransaction(transaction);
+		tpsRedo();
+    };
+
+
+
 
     const sortByColumn = async (sortingCriteria) => {
 		let oldSubRegionsIds = [];
@@ -214,7 +243,7 @@ const RegionSpreadSheet = (props) => {
             {
                 subRegions.map((entry, index) => (
                     <SubRegionEntry handleClickLandmark = {handleClickLandmark} handleClickName = {handleClickName} editRegion={editRegion}
-                    subRegion ={entry} />
+                    subRegion ={entry} index = {index} deleteSubRegion = {deleteSubRegion} />
                 ))
             }
 

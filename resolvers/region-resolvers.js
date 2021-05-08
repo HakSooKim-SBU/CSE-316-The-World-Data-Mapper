@@ -69,13 +69,17 @@ module.exports = {
 		},
 	},                                  
 	Mutation: {
-		addRegion: async (_, args,{req}) => {
+		addSubRegion: async (_, args,{req}) => {
 			const userId = new ObjectId(req.userId);
-			const { region } = args;
+			const { region, index } = args;
+			console.log(typeof(index));
 			const objectId = new ObjectId();
-			const { _id, name,  capital, leader, flag, landmark, parentRegion_id, subRegion, top} = region;
+			let { _id, name,  capital, leader, flag, landmark, parentRegion_id, subRegion, top} = region;
+			if (_id === ""){
+				_id = objectId
+			}			
 			const newRegion = new Region({
-				_id: objectId,
+				_id: _id,
 				name: name,
 				capital: capital,
 				leader: leader,
@@ -85,20 +89,48 @@ module.exports = {
 				subRegion: subRegion,
 				top: top,
 				});
-			if (parentRegion_id != userId){
+			if (parentRegion_id.toString() != userId.toString()){
+				console.log("안무야호");
 				let parentRegion = await Region.findOne({_id: parentRegion_id});
 				let parentRegionSubRegions = parentRegion.subRegion;
-				parentRegionSubRegions.push(objectId);
+
+				if(index < 0) parentRegionSubRegions.push(newRegion._id);
+				else parentRegionSubRegions.splice(index, 0, newRegion._id);
 				let updatedParentRegion = await Region.updateOne({_id: parentRegion_id}, { subRegion: parentRegionSubRegions })
 			}
 			const updated = await newRegion.save();
 			if(updated) {
 				console.log("succefully added");
-				return objectId._id;
+				return newRegion._id;
 			}
 			else{
 				console.log("failed");
 			}
+		},
+		deleteSubRegion: async (_, args,{req}) => {
+			const {regionId} = args;
+			const userId = new ObjectId(req.userId);
+
+			const _id = new ObjectId(regionId);
+
+			let region = await Region.findOne({_id: _id});
+			console.log(region.parentRegion_id)
+			console.log(userId)
+			if (region.parentRegion_id != userId){
+				console.log("무야호");
+				console.log(_id)
+				let parentRegion = await Region.findOne({_id: region.parentRegion_id});
+				let parentRegionSubRegions = parentRegion.subRegion;
+				console.log(parentRegionSubRegions + "before")
+				parentRegionSubRegions = parentRegionSubRegions.filter(item => item !== _id.toString());
+				console.log(parentRegionSubRegions + "after")
+
+				let updatedParentRegion = await Region.updateOne({_id: region.parentRegion_id}, { subRegion: parentRegionSubRegions })
+			} 
+			const deleted = await Region.deleteOne({_id: _id});
+
+			if(deleted) return true;
+			else return false;
 		},
 		renameRegion: async (_, args) => {
 			const { regionId, newName } = args;
@@ -110,13 +142,7 @@ module.exports = {
 			}
 			return updated.acknowledged
 		},
-		deleteRegion: async (_, args) => {
-			const {regionId} = args;
-			const _id = new ObjectId(regionId);
-			const deleted = await Region.deleteOne({_id: _id});
-			if(deleted) return true;
-			else return false;
-		},
+		
 		makeTopMap: async  (_, args,{req}) => {
 			const userId = new ObjectId(req.userId);
 			const {regionId} = args;
