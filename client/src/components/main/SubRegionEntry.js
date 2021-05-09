@@ -5,7 +5,6 @@ import DeleteSubRegionConfirmation 							from '../modals/DeleteSubRegionConfirm
 
 const SubRegionEntry = (props) => {
 
-
     // const [editingName, toggleDateEdit] = useState(false);
     const [editingCapital, toggleCapitalEdit] = useState(false);
     const [editingLeader, toggleLeaderEdit] = useState(false);
@@ -104,8 +103,6 @@ const SubRegionEntry = (props) => {
                 showDeleteMap && <DeleteSubRegionConfirmation deleteSubRegion = {props.deleteSubRegion} subRegion = {props.subRegion} index = {props.index} setshowDeleteMap = {setshowDeleteMap}/> 
             }
       </div>
-
-
     );
 };
 

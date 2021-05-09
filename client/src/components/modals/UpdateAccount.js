@@ -4,15 +4,14 @@ import { UPDATE }			from '../../cache/mutations';
 import { useQuery } 	from '@apollo/client';
 import * as queries				from '../../cache/queries';
 import { LOGOUT }                           from '../../cache/mutations';
-import { Redirect, useHistory } from "react-router-dom";
-
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
+import {useHistory } from 'react-router-dom';
 
 const UpdateAccount = (props) => {
 	const [Logout] = useMutation(LOGOUT);
     const client = useApolloClient();
-	const history = useHistory();
 	let user = null;
+	let history = useHistory();
 	const { loading: userLoading, error: userError, data: userData, refetch: userRefetch } = useQuery(queries.GET_DB_USER);
 	
     if(userError) { console.log(userError); }

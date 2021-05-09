@@ -3,15 +3,18 @@ import { WLayout, WLHeader, WLMain, WLSide, WInput, WRow, WCol, WButton } from '
 import { useParams } from "react-router-dom";
 import { useQuery } 	from '@apollo/client';
 import * as queries				from '../../cache/queries';
-import { useHistory } from "react-router-dom";
+import {useHistory } from 'react-router-dom';
 
 
 const RegionViewer = (props) => {
     let {_id} = useParams();
     let history = useHistory();
-
     let region = null;
-    let parentRegionName = " ";
+    let parentRegion = null;
+    let index = null; 
+    let prevIndex = null;
+    let nextIndex = null;
+
     const { data, error, loading, refetch} = useQuery(queries.GET_REGION_BYID, {variables: { regionId: _id }});
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
@@ -24,20 +27,39 @@ const RegionViewer = (props) => {
 	if(errorRootsRegion) { console.log(errorRootsRegion, 'error'); }
 	if(dataRootsRegion && dataRootsRegion.getRootRegionsById !== null) { 
         let rootsRegions = dataRootsRegion.getRootRegionsById
-        parentRegionName = rootsRegions[rootsRegions.length - 2].name;
-        }
+        parentRegion = rootsRegions[rootsRegions.length - 2];
+    }
 	
-    const parenRegionClick = () =>{
-        history.replace("/RegionSpreadSheet/" + region.parentRegion_id);
+    if(parentRegion){
+        index = parentRegion.subRegion.indexOf(_id)
+        prevIndex = index - 1;
+        
+        nextIndex = index + 1; 
+    }
+
+    const moveToPrevSibling = () =>{
+        history.push("/RegionViewer/" + parentRegion.subRegion[prevIndex]);
+    }
+
+    const moveToNextSibling = () =>{
+        history.push("/RegionViewer/" + parentRegion.subRegion[nextIndex]);
+    }
+
+    const parentRegionClick = () =>{
+        history.push("/RegionSpreadSheet/" + region.parentRegion_id);
+    }
+
+    const disable = () =>{
+
     }
     return (
         <div class="regionViewer">
             <div class="regionViewerLS">
                 <div class="regionViewer-icons">
-                    <WButton wType="texted" className = "regionViewer-icon" clickAnimation = "ripple-light" shape = "Rounded" >
+                    <WButton wType="texted" className = "regionViewer-icon" disabled ={(parentRegion)?prevIndex===-1:null}  shape = "Rounded" onClick = { ((parentRegion)&&prevIndex===-1)?disable:moveToPrevSibling} >
                         <i className="material-icons">navigate_before</i>
                     </WButton>
-                    <WButton wType="texted" className = "regionViewer-icon" clickAnimation = "ripple-light" shape = "Rounded" >
+                    <WButton wType="texted" className = "regionViewer-icon" disabled ={(parentRegion)?nextIndex === parentRegion.subRegion.length:null} shape = "Rounded" onClick = {((parentRegion)&&nextIndex === parentRegion.subRegion.length)?disable:moveToNextSibling}>
                         <i className="material-icons">navigate_next</i>
                     </WButton>
                 </div>
@@ -51,7 +73,7 @@ const RegionViewer = (props) => {
                 </WRow>
                 <WRow>
                     <WCol size ="12"  className = "RegionViewerText">
-                        Parent Region:  <span style={{paddingLeft: "3%"}} onClick={parenRegionClick}>{(parentRegionName) ? parentRegionName : "  "} </span> 
+                        Parent Region:  <span style={{paddingLeft: "3%"}} onClick={parentRegionClick}>{(parentRegion) ? parentRegion.name : "  "} </span> 
                     </WCol>
                 </WRow>
                 <WRow>

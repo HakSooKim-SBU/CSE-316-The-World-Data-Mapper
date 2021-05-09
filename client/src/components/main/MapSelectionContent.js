@@ -6,11 +6,11 @@ import CreateMap 							from '../modals/CreateMap';
 import { useQuery } 	from '@apollo/client';
 import * as queries				from '../../cache/queries';
 import { useMutation } 		from '@apollo/client';
+import {useHistory } from 'react-router-dom';
 
 import { PromiseProvider } from 'mongoose';
 import { useParams } from "react-router-dom";
 import * as mutations 					from '../../cache/mutations';
-import { useHistory } from "react-router-dom";
 
 const MapSelectionContent = (props) => {
     // window.location.reload();
@@ -71,7 +71,7 @@ const MapSelectionContent = (props) => {
 
     const handleMapClick = async (mapId) => {
         const { data } = await MakeTopMap({ variables: { regionId: mapId} });
-        history.replace("/RegionSpreadSheet/" + mapId);
+        history.push("/RegionSpreadSheet/" + mapId);
         refetchRegion({ variables: { regionId: userId } });
     }
 

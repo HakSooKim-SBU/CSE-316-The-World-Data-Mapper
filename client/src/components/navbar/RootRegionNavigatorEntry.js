@@ -1,14 +1,12 @@
 import React                                from 'react';
-import { useHistory } from "react-router-dom";
-import {  WButton} from 'wt-frontend';
+import {useHistory } from 'react-router-dom';
 
 const RootRegionNavigatorEntry = (props) => {
     const rootRegion = props.rootRegion;
     const index = props.index;
     let history = useHistory();
-
     const handleClick = () =>{
-        history.replace("/RegionSpreadSheet/" + rootRegion._id);
+        history.push("/RegionSpreadSheet/" + rootRegion._id);
     }
     let content = (props.index == 0)? rootRegion.name : "> " + rootRegion.name;
     return (

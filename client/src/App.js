@@ -16,7 +16,6 @@ import RegionViewer						from '../src/components/main/RegionViewer'
 import Welcome							from '../src/components/main/Welcome';
 import { PromiseProvider } from 'mongoose';
 
-
 const App = () => {
 	let user = null;
     let tps = new jsTPS();
@@ -30,27 +29,25 @@ const App = () => {
 		if(getCurrentUser !== null) { user = getCurrentUser; }
     }
 
-
-
 	const auth = user === null ? false : true;
 
 	return(
-		<Router>
+		<Router >
 		<WLayout wLayout="header">
 			<WLHeader>
 				<WNavbar color="colored">
 					<div >
 						<WNavItem>
-							<Logo className='logo' user = {user} />
+							<Logo className='logo' user = {user}  />
 						</WNavItem>
 					</div>
 					<div style = {{width:"53%"}}>
-					<Route path={["/RegionSpreadSheet/:_id","/RegionViewer/:_id"]}  component={() => <AncestorRegionNavigator/>} /> <Route/>
+					<Route path={["/RegionSpreadSheet/:_id","/RegionViewer/:_id"]}  component={() => <AncestorRegionNavigator />} /> <Route/>
 					</div>
 					<div  >
 						<NavbarOptions		
 							fetchUser={refetch} auth={auth} 
-							 user = {user}				
+							 user = {user} 
 						/>
 					</div>
 				</WNavbar>
@@ -60,8 +57,8 @@ const App = () => {
 				<WLMain>
 					<Route exact path="/" name="welcome" render={() => <Welcome />} /> <Route/>
 					<Route path="/MapSelection/:_id" render={() => <MapSelectionContent />}/> <Route/>
-					<Route path="/RegionSpreadSheet/:_id" render={() => <RegionSpreadSheet tps = {tps}   />}/> <Route/>
-					<Route path="/RegionViewer/:_id" render={() => <RegionViewer />} tps = {tps}  /> <Route/>
+					<Route path="/RegionSpreadSheet/:_id" render={() => <RegionSpreadSheet  tps = {tps}   />}/> <Route/>
+					<Route path="/RegionViewer/:_id" render={() => <RegionViewer />}  tps = {tps}  /> <Route/>
 				</WLMain>
 			</Switch>
 

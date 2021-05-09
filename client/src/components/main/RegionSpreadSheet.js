@@ -5,11 +5,11 @@ import SubRegionEntry from './SubRegionEntry';
 import { useQuery } 	from '@apollo/client';
 import * as queries				from '../../cache/queries';
 import { useMutation } 		from '@apollo/client';
+import {useHistory } from 'react-router-dom';
 
 import { PromiseProvider } from 'mongoose';
 import { useParams } from "react-router-dom";
 import * as mutations 					from '../../cache/mutations';
-import { useHistory } from "react-router-dom";
 import { UpdateSubRegionField_Transaction, UpdateSubRegion_Transaction } 				from '../../utils/jsTPS';
 
 const RegionSpreadSheet = (props) => {
@@ -61,11 +61,6 @@ const RegionSpreadSheet = (props) => {
         refetch();
         refetchRegion();
 	}
-
-
-
-
-
 
     const addSubRegion = async () => {
 		const newSubRegion = {
@@ -175,7 +170,7 @@ const RegionSpreadSheet = (props) => {
     }
     
     const handleClickLandmark = (mapId) =>{
-        history.replace("/RegionViewer/" +mapId);
+        history.push("/RegionViewer/" +mapId);
     }
     
 
@@ -243,7 +238,7 @@ const RegionSpreadSheet = (props) => {
             {
                 subRegions.map((entry, index) => (
                     <SubRegionEntry handleClickLandmark = {handleClickLandmark} handleClickName = {handleClickName} editRegion={editRegion}
-                    subRegion ={entry} index = {index} deleteSubRegion = {deleteSubRegion} />
+                    subRegion ={entry} index = {index} deleteSubRegion = {deleteSubRegion} subRegions = {subRegions} />
                 ))
             }
 

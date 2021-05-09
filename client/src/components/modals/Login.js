@@ -5,7 +5,7 @@ import { useMutation }    	from '@apollo/client';
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { hasClientExports } from '@apollo/client/utilities';
-import { useHistory } from "react-router-dom";
+import {useHistory } from 'react-router-dom';
 
 
 const Login = (props) => {

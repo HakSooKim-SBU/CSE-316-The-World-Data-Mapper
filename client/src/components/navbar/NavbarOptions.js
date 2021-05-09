@@ -2,11 +2,11 @@ import React                                from 'react';
 import { LOGOUT }                           from '../../cache/mutations';
 import { useMutation, useApolloClient }     from '@apollo/client';
 import { WButton, WNavItem }                from 'wt-frontend';
-import { Redirect, useHistory } from "react-router-dom";
 import Login 							from '../../components/modals/Login';
 import UpdateAccount 					from '../../components/modals/UpdateAccount';
 import CreateAccount 					from '../../components/modals/CreateAccount';
 import  { useState } 				from 'react';
+import {useHistory } from 'react-router-dom';
 
 
 const LoggedIn = (props) => {
@@ -90,7 +90,7 @@ const NavbarOptions = (props) => {
             {
                 props.auth === false ? <LoggedOut setShowLogin={setShowLogin} setShowCreate={setShowCreate}  />
                 : <LoggedIn fetchUser={props.fetchUser} logout={props.logout}  showUpdate = {showUpdate}  auth = {props.auth}
-                 user = {props.user} setShowUpdate = {setShowUpdate}
+                 user = {props.user} setShowUpdate = {setShowUpdate} 
                 />
             }
             {
@@ -98,11 +98,11 @@ const NavbarOptions = (props) => {
 			}
 
 			{
-				showLogin && (<Login fetchUser={props.fetchUser} setShowLogin={setShowLogin}/>)
+				showLogin && (<Login fetchUser={props.fetchUser} setShowLogin={setShowLogin} />)
 			}
 
 			{
-				showUpdate && (<UpdateAccount fetchUser={props.fetchUser}  setShowUpdate={setShowUpdate} showUpdate = {showUpdate}/>)
+				showUpdate && (<UpdateAccount fetchUser={props.fetchUser}  setShowUpdate={setShowUpdate}  showUpdate = {showUpdate}/>)
 			}
 
         </>

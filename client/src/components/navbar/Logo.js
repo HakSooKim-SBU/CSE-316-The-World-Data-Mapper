@@ -1,14 +1,12 @@
 import React from 'react';
 import { WButton }                from 'wt-frontend';
-import { useHistory } from "react-router-dom";
-
-
+import {useHistory } from 'react-router-dom';
 
 const Logo = (props) => {
-let history = useHistory();
+    let history = useHistory();
 const handleLogoCLick = () =>{
     if(props.user !== null)
-    history.replace("/MapSelection/" + props.user._id);
+    history.push("/MapSelection/" + props.user._id);
 }
     return (
         <WButton className="logo" onClick={handleLogoCLick} wType="texted">
