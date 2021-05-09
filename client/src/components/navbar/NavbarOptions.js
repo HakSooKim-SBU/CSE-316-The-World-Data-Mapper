@@ -16,11 +16,14 @@ const LoggedIn = (props) => {
 
     const handleLogout = async (e) => {
         Logout();
+
         const { data } = await props.fetchUser();
         if (data) {
             let reset = await client.resetStore();
-            if (reset) {
-            }
+
+        //     if (reset) {
+
+        //     }
             history.replace("/");
         }
 
