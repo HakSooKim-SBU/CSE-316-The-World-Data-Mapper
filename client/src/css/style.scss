@@ -306,3 +306,23 @@ html, body {
     color:greenyellow;
 }
 
+.landmark-edit-icon{
+    color:rgb(255, 166, 0);
+}
+.landmark-delete-icon{
+    color:rgba(196, 42, 21, 0.89);
+}
+
+.landmark-edit-icon:hover{
+    color:rgb(69, 132, 173);
+}
+
+.landmark-delete-icon :hover{
+    color:rgb(69, 132, 173);
+}
+.landmarkText{
+    color: white;
+font-size: 23px;
+padding-top: 1.8%;
+padding-left: 2%;
+}

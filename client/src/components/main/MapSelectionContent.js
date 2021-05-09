@@ -7,6 +7,8 @@ import { useQuery } 	from '@apollo/client';
 import * as queries				from '../../cache/queries';
 import { useMutation } 		from '@apollo/client';
 import {useHistory } from 'react-router-dom';
+import {withRouter} from 'react-router';
+
 
 import { PromiseProvider } from 'mongoose';
 import { useParams } from "react-router-dom";
@@ -30,7 +32,7 @@ const MapSelectionContent = (props) => {
     
     const deleteSubRegion = async (regionId) =>{
 		const { data } = await DeleteSubRegion({ variables: { regionId:regionId} });
-		refetchRegion({ variables: { regionId: userId } })
+		await refetchRegion({ variables: { regionId: userId } })
 	}
 
     const [AddSubRegion] 		    = useMutation(mutations.ADD_SUBREGION);
@@ -49,7 +51,7 @@ const MapSelectionContent = (props) => {
 
     const renameRegion = async (regionId, newName) =>{
 		const { data } = await UpdateSubRegion({ variables: { regionId:regionId,field: "name", value:newName} });
-		refetchRegion({ variables: { regionId: userId } })
+		await refetchRegion({ variables: { regionId: userId } })
 
 	}
 
@@ -66,13 +68,13 @@ const MapSelectionContent = (props) => {
 			subRegion : []
 		};
 		const { data } = await AddSubRegion({ variables: { region:newMap, index: 0} });
-		refetchRegion({ variables: { regionId: userId } })
+		await refetchRegion({ variables: { regionId: userId } })
 	};
 
     const handleMapClick = async (mapId) => {
         const { data } = await MakeTopMap({ variables: { regionId: mapId} });
+        await refetchRegion({ variables: { regionId: userId } });
         history.push("/RegionSpreadSheet/" + mapId);
-        refetchRegion({ variables: { regionId: userId } });
     }
 
     return (

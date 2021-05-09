@@ -260,3 +260,18 @@ font-weight: 700;
 .siblingNavigator{
     width:43%;
 }
+
+.landmarkRow {
+    display: grid;
+    grid-template-columns: 7% 7% 86%;
+    grid-template-rows: 100%;
+    gap: 0px 0px;
+    grid-template-areas:
+      "landmarkEdit landmarkDelete landmarkText";
+  }
+  .landmarkEdit { grid-area: landmarkEdit; }
+  .landmarkDelete { grid-area: landmarkDelete; }
+  .landmarkText { grid-area: landmarkText; }
+.landmarkInput{
+    width: 90%;
+}

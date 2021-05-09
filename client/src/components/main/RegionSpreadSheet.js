@@ -11,6 +11,8 @@ import { PromiseProvider } from 'mongoose';
 import { useParams } from "react-router-dom";
 import * as mutations 					from '../../cache/mutations';
 import { UpdateSubRegionField_Transaction, UpdateSubRegion_Transaction } 				from '../../utils/jsTPS';
+import {withRouter} from 'react-router';
+
 
 const RegionSpreadSheet = (props) => {
     let history = useHistory();
@@ -50,8 +52,8 @@ const RegionSpreadSheet = (props) => {
 			setCanUndo(props.tps.hasTransactionToUndo());
 			setCanRedo(props.tps.hasTransactionToRedo());
 		}
-        refetch();
-        refetchRegion();
+        let a = await refetch();
+        let b = await refetchRegion();
 	}
 
 	const tpsRedo = async () => {
@@ -60,8 +62,8 @@ const RegionSpreadSheet = (props) => {
 			setCanUndo(props.tps.hasTransactionToUndo());
 			setCanRedo(props.tps.hasTransactionToRedo());
 		}
-        refetch();
-        refetchRegion();
+        let a = await refetch();
+        let b = await refetchRegion();
 	}
 
     const addSubRegion = async () => {
@@ -167,17 +169,21 @@ const RegionSpreadSheet = (props) => {
         tpsRedo();
 	};
 
-    const handleClickName = (mapId) => {
+    const handleClickName = async (mapId) => {
         props.tps.clearAllTransactions();
         setCanUndo(props.tps.hasTransactionToUndo());
         setCanRedo(props.tps.hasTransactionToRedo());
+        let a = await refetch();
+        let b = await refetchRegion();
         history.push("/RegionSpreadSheet/" +mapId);
     }
     
-    const handleClickLandmark = (mapId) =>{
+    const handleClickLandmark = async (mapId) =>{
         props.tps.clearAllTransactions();
 		setCanUndo(props.tps.hasTransactionToUndo());
 		setCanRedo(props.tps.hasTransactionToRedo());
+        let a = await refetch();
+        let b = await refetchRegion();
         history.push("/RegionViewer/" +mapId);
     }
     

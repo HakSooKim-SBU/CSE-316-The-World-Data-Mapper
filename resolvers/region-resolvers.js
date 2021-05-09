@@ -67,6 +67,42 @@ module.exports = {
 				return (rootRegions.reverse());
 			} 
 		},
+		getSubRegionLandmarkById:async (_, args) => {
+			const {regionId} = args;
+			const _id = new ObjectId(regionId);
+			let region = await Region.findOne({_id: _id});
+
+			let nodes = [];
+			let queue = [];
+			queue.unshift(region);
+			while(queue.length != 0){
+				let node = queue.shift();
+				nodes.push(node);
+				let subNodes = await Region.find({parentRegion_id: node._id});
+				for (let i = 0; i < subNodes.length; i++){
+					queue.push(subNodes[i]);
+				}
+			}
+			let subRegionsLandmark = []
+			for (let i = 0; i< nodes.length; i++){
+				console.log("hi");
+
+				for (let j = 0; j< nodes[i].landmark.length; j++){
+					let str = nodes[i].landmark[j];
+					if (i !== 0){
+					str += " - ";
+					str += nodes[i].leader;
+					}
+					subRegionsLandmark.push(str);
+					console.log(str);
+
+				}
+			}
+			return subRegionsLandmark;
+			
+
+			return nodes
+		},
 	},                                  
 	Mutation: {
 		addSubRegion: async (_, args,{req}) => {

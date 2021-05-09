@@ -16,6 +16,7 @@ import Logo 							from '../src/components/navbar/Logo';
 import RegionViewer						from '../src/components/main/RegionViewer'
 import Welcome							from '../src/components/main/Welcome';
 import { PromiseProvider } from 'mongoose';
+import { createBrowserHistory } from 'history';
 
 const App = () => {
 	let user = null;
@@ -31,21 +32,20 @@ const App = () => {
     }
 
 	const auth = user === null ? false : true;
-
 	return(
 		<Router >
-		<WLayout wLayout="header">
+		<WLayout wLayout="header" >
 			<WLHeader>
 				<WNavbar color="colored">
 				<ul className = "logoSpace" >
-					<Logo className='logo' user = {user}  tps = {tps}  />
+					<Logo className='logo' user = {user}  tps = {tps} />
 				</ul>
 				<ul className = "navigatorSpace" >
 						<ul className = "ancestorNavigator" >
-							<Route path={["/RegionSpreadSheet/:_id","/RegionViewer/:_id"]}  component={() => <AncestorRegionNavigator />} /> <Route/>
+							<Route path={["/RegionSpreadSheet/:_id","/RegionViewer/:_id"]}  render={() => <AncestorRegionNavigator />} /> <Route/>
 						</ul>
 						<ul className = "siblingNavigator" >
-							<Route path={["/RegionViewer/:_id"]}  component={() => <SiblingsNavigator />} /> <Route/>
+							<Route path={["/RegionViewer/:_id"]}  render={() => <SiblingsNavigator />} /> <Route/>
 						</ul>
 				</ul>
 				<ul>
@@ -58,8 +58,8 @@ const App = () => {
 				<WLMain>
 					<Route exact path="/" name="welcome" render={() => <Welcome />} /> <Route/>
 					<Route path="/MapSelection/:_id" render={() => <MapSelectionContent />}/> <Route/>
-					<Route path="/RegionSpreadSheet/:_id" render={() => <RegionSpreadSheet  tps = {tps}   />}/> <Route/>
-					<Route path="/RegionViewer/:_id" render={() => <RegionViewer />}  tps = {tps}  /> <Route/>
+					<Route path="/RegionSpreadSheet/:_id" render={() => <RegionSpreadSheet tps = {tps}   />}/> <Route/>
+					<Route path="/RegionViewer/:_id" render={() => <RegionViewer  tps = {tps}  />}/><Route/>
 				</WLMain>
 			</Switch>
 

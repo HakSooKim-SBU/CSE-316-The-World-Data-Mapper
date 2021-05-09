@@ -16,6 +16,8 @@ const typeDefs = gql `
         getRegionById(regionId : String!): Region
         getSubRegionsById(regionId : String!): [Region]
         getRootRegionsById(regionId : String!): [Region]
+        getSubRegionLandmarkById(regionId: String!):[String]
+
 	}
     extend type Mutation {
         addSubRegion(region: regionInput!, index:Int): String!
@@ -23,7 +25,6 @@ const typeDefs = gql `
         makeTopMap(regionId: String!): Boolean
         updateSubRegionField(regionId: String!, field: String!, value: String! ): Boolean
         updateSubRegionSort(regionId: String!, field: String!, value: [String] ): Boolean
-
     }
     input regionInput{
         _id: String!

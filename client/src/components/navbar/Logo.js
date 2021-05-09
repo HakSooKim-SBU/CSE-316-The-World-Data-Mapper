@@ -1,6 +1,7 @@
 import React from 'react';
 import { WButton }                from 'wt-frontend';
 import {useHistory } from 'react-router-dom';
+import {withRouter} from 'react-router';
 
 const Logo = (props) => {
     let history = useHistory();
