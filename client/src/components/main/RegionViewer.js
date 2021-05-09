@@ -11,9 +11,7 @@ const RegionViewer = (props) => {
     let history = useHistory();
     let region = null;
     let parentRegion = null;
-    let index = null; 
-    let prevIndex = null;
-    let nextIndex = null;
+ 
 
     const { data, error, loading, refetch} = useQuery(queries.GET_REGION_BYID, {variables: { regionId: _id }});
 	if(loading) { console.log(loading, 'loading'); }
@@ -29,38 +27,20 @@ const RegionViewer = (props) => {
         let rootsRegions = dataRootsRegion.getRootRegionsById
         parentRegion = rootsRegions[rootsRegions.length - 2];
     }
-	
-    if(parentRegion){
-        index = parentRegion.subRegion.indexOf(_id)
-        prevIndex = index - 1;
-        
-        nextIndex = index + 1; 
-    }
-
-    const moveToPrevSibling = () =>{
-        history.push("/RegionViewer/" + parentRegion.subRegion[prevIndex]);
-    }
-
-    const moveToNextSibling = () =>{
-        history.push("/RegionViewer/" + parentRegion.subRegion[nextIndex]);
-    }
-
     const parentRegionClick = () =>{
         history.push("/RegionSpreadSheet/" + region.parentRegion_id);
     }
 
-    const disable = () =>{
-
-    }
+    const disable = () =>{}
     return (
         <div class="regionViewer">
             <div class="regionViewerLS">
                 <div class="regionViewer-icons">
-                    <WButton wType="texted" className = "regionViewer-icon" disabled ={(parentRegion)?prevIndex===-1:null}  shape = "Rounded" onClick = { ((parentRegion)&&prevIndex===-1)?disable:moveToPrevSibling} >
-                        <i className="material-icons">navigate_before</i>
+                    <WButton wType="texted" className = "regionViewer-icon"  shape = "Rounded" >
+                        <i className="material-icons">undo</i>
                     </WButton>
-                    <WButton wType="texted" className = "regionViewer-icon" disabled ={(parentRegion)?nextIndex === parentRegion.subRegion.length:null} shape = "Rounded" onClick = {((parentRegion)&&nextIndex === parentRegion.subRegion.length)?disable:moveToNextSibling}>
-                        <i className="material-icons">navigate_next</i>
+                    <WButton wType="texted" className = "regionViewer-icon" shape = "Rounded">
+                        <i className="material-icons">redo</i>
                     </WButton>
                 </div>
                 <div class="regionViewer-flag"></div>

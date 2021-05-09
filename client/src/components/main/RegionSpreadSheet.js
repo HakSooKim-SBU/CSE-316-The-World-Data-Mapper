@@ -18,6 +18,9 @@ const RegionSpreadSheet = (props) => {
     let region = null;
     let subRegions = [];
 
+    const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
+	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+
     const { data, error, loading, refetch} = useQuery(queries.GET_REGION_BYID, {variables: { regionId: _id }});
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
@@ -34,8 +37,7 @@ const RegionSpreadSheet = (props) => {
 		}
 	}
 
-    const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
-	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+    
 
     const [AddSubRegion] 		    = useMutation(mutations.ADD_SUBREGION);
     const [DeleteSubRegion] 	    = useMutation(mutations.DELETE_SUBREGION);
@@ -166,13 +168,20 @@ const RegionSpreadSheet = (props) => {
 	};
 
     const handleClickName = (mapId) => {
+        props.tps.clearAllTransactions();
+        setCanUndo(props.tps.hasTransactionToUndo());
+        setCanRedo(props.tps.hasTransactionToRedo());
         history.push("/RegionSpreadSheet/" +mapId);
     }
     
     const handleClickLandmark = (mapId) =>{
+        props.tps.clearAllTransactions();
+		setCanUndo(props.tps.hasTransactionToUndo());
+		setCanRedo(props.tps.hasTransactionToRedo());
         history.push("/RegionViewer/" +mapId);
     }
     
+    const disable = () => {}
 
     return (
         <div className = "regionSpreadSheet">
@@ -186,13 +195,13 @@ const RegionSpreadSheet = (props) => {
                     </WCol>
                     <WCol size="4">
                         <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" 
-                        clickAnimation = "ripple-light" shape = "pill" onClick = {tpsUndo} >
+                         shape = "pill" disabled = {!canUndo} onClick = { (canUndo)?tpsUndo:disable} >
                             <i className="material-icons">undo</i>
                         </WButton>
                     </WCol>
                     <WCol size="4">
                         <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" 
-                        clickAnimation = "ripple-light" shape = "pill"onClick = {tpsRedo} >
+                         shape = "pill" disabled = {!canRedo} onClick = {(canRedo)?tpsRedo:disable} >
                             <i className="material-icons">redo</i>
                         </WButton>
                     </WCol>

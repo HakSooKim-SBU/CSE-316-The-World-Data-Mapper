@@ -10,6 +10,7 @@ import RegionSpreadSheet				from '../src/components/main/RegionSpreadSheet'
 import MapSelectionContent				from '../src/components/main/MapSelectionContent'
 import NavbarOptions 					from '../src/components/navbar/NavbarOptions';
 import AncestorRegionNavigator 			from '../src/components/navbar/AncestorRegionNavigator';
+import SiblingsNavigator 			from '../src/components/navbar/SiblingsNavigator';
 
 import Logo 							from '../src/components/navbar/Logo';
 import RegionViewer						from '../src/components/main/RegionViewer'
@@ -36,20 +37,20 @@ const App = () => {
 		<WLayout wLayout="header">
 			<WLHeader>
 				<WNavbar color="colored">
-					<div >
-						<WNavItem>
-							<Logo className='logo' user = {user}  />
-						</WNavItem>
-					</div>
-					<div style = {{width:"53%"}}>
-					<Route path={["/RegionSpreadSheet/:_id","/RegionViewer/:_id"]}  component={() => <AncestorRegionNavigator />} /> <Route/>
-					</div>
-					<div  >
-						<NavbarOptions		
-							fetchUser={refetch} auth={auth} 
-							 user = {user} 
-						/>
-					</div>
+				<ul className = "logoSpace" >
+					<Logo className='logo' user = {user}  tps = {tps}  />
+				</ul>
+				<ul className = "navigatorSpace" >
+						<ul className = "ancestorNavigator" >
+							<Route path={["/RegionSpreadSheet/:_id","/RegionViewer/:_id"]}  component={() => <AncestorRegionNavigator />} /> <Route/>
+						</ul>
+						<ul className = "siblingNavigator" >
+							<Route path={["/RegionViewer/:_id"]}  component={() => <SiblingsNavigator />} /> <Route/>
+						</ul>
+				</ul>
+				<ul>
+					<NavbarOptions fetchUser={refetch} auth={auth} user = {user} />
+				</ul>
 				</WNavbar>
 			</WLHeader>
 				

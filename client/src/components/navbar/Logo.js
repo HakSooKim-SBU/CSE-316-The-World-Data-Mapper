@@ -7,6 +7,7 @@ const Logo = (props) => {
 const handleLogoCLick = () =>{
     if(props.user !== null)
     history.push("/MapSelection/" + props.user._id);
+    props.tps.clearAllTransactions();
 }
     return (
         <WButton className="logo" onClick={handleLogoCLick} wType="texted">
