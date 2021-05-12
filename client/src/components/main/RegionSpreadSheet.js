@@ -265,7 +265,7 @@ const RegionSpreadSheet = (props) => {
             {
                 subRegions.map((entry, index) => (
                     <SubRegionEntry handleClickLandmark = {handleClickLandmark} handleClickName = {handleClickName} editRegion={editRegion}
-                    subRegion ={entry} index = {index} deleteSubRegion = {deleteSubRegion} subRegions = {subRegions} />
+                    subRegion ={entry} index = {index + 2} deleteSubRegion = {deleteSubRegion} subRegions = {subRegions} />
                 ))
             }
 

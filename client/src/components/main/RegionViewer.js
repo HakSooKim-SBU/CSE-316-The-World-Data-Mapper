@@ -116,7 +116,9 @@ const RegionViewer = (props) => {
     const handleMovingParent = async (e) =>{
         let newParentId = e.target.value;
         if(parentRegion._id == newParentId){
+            toggleParentMoving(!movingParent);
             return;
+            
         }
         let transaction = new Move_ParentRegion_Transaction(region._id, parentRegion._id, newParentId, ChangeParentRegion);
         props.tps.addTransaction(transaction);
@@ -150,10 +152,10 @@ const RegionViewer = (props) => {
                     </WCol>
                     <WCol size ="7"  className = "RegionViewerText">
                     {movingParent ?
-                        <select className = "RegionViewerSelect" autoFocus={true} onBlur={handleMovingParent}> 
+                        <select className = "RegionViewerSelect" autoFocus={true} onBlur={handleMovingParent} > 
                             {
                                 parentRegions.map((entry, index) => (
-                                     <option value = {entry._id}>{entry.name} </option>  
+                                     <option value = {entry._id} selected={parentRegion._id == entry._id}>{entry.name}  </option>  
                                 ))                           
                             }
                         </select> 
