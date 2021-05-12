@@ -52,7 +52,7 @@ const UpdateAccount = (props) => {
 			console.log(data)
 			toggleLoading(false);
 			props.setShowUpdate(false);
-			props.fetchUser();
+			let a = await props.fetchUser();
 			Logout();
 			const { data:fetchData } = await props.fetchUser();
         if (fetchData) {

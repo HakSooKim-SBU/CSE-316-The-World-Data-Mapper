@@ -5,10 +5,12 @@ import {withRouter} from 'react-router';
 
 const Logo = (props) => {
     let history = useHistory();
-const handleLogoCLick = () =>{
-    if(props.user !== null)
-    history.push("/MapSelection/" + props.user._id);
+const handleLogoCLick = async () =>{
+    if(props.user !== null){
     props.tps.clearAllTransactions();
+    history.push("/MapSelection/" + props.user._id);
+    }
+
 }
     return (
         <WButton className="logo" onClick={handleLogoCLick} wType="texted">

@@ -46,14 +46,13 @@ const RegionViewer = (props) => {
         let b = await rootRegionsRefetch();
         let c = await landmarkRefetch();
         props.tps.clearAllTransactions();
-        setCanUndo(props.tps.hasTransactionToUndo());
-        setCanRedo(props.tps.hasTransactionToRedo());
+        props.setCanUndo(props.tps.hasTransactionToUndo());
+        props.setCanRedo(props.tps.hasTransactionToRedo());
         history.push("/RegionSpreadSheet/" + region.parentRegion_id);
     }
 
     const [UpdateSubRegionField] 	= useMutation(mutations.UPDATE_SUBREGION_SORT);
-    const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
-	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+
 	const [landmarkInput, setLandmarkInput] = useState("");
 
 	const updateLandmarkInput = (e) => {
@@ -83,8 +82,8 @@ const RegionViewer = (props) => {
     const tpsUndo = async () => {
 		const ret = await props.tps.undoTransaction();
 		if(ret) {
-			setCanUndo(props.tps.hasTransactionToUndo());
-			setCanRedo(props.tps.hasTransactionToRedo());
+			props.setCanUndo(props.tps.hasTransactionToUndo());
+			props.setCanRedo(props.tps.hasTransactionToRedo());
 		}
         let a = await refetch();
         let b = await rootRegionsRefetch();
@@ -94,8 +93,8 @@ const RegionViewer = (props) => {
 	const tpsRedo = async () => {
 		const ret = await props.tps.doTransaction();
 		if(ret) {
-			setCanUndo(props.tps.hasTransactionToUndo());
-			setCanRedo(props.tps.hasTransactionToRedo());
+			props.setCanUndo(props.tps.hasTransactionToUndo());
+			props.setCanRedo(props.tps.hasTransactionToRedo());
 		}
         let a = await refetch();
         let b = await rootRegionsRefetch();
@@ -108,10 +107,10 @@ const RegionViewer = (props) => {
         <div class="regionViewer">
             <div class="regionViewerLS">
                 <div class="regionViewer-icons">
-                    <WButton wType="texted" className = "regionViewer-icon"  shape = "Rounded" disabled = {!canUndo} onClick = { (canUndo)?tpsUndo:disable} >
+                    <WButton wType="texted" className = "regionViewer-icon"  shape = "Rounded" disabled = {!props.canUndo} onClick = { (props.canUndo)?tpsUndo:disable} >
                         <i className="material-icons">undo</i>
                     </WButton>
-                    <WButton wType="texted" className = "regionViewer-icon" shape = "Rounded" disabled = {!canRedo} onClick = {(canRedo)?tpsRedo:disable} >
+                    <WButton wType="texted" className = "regionViewer-icon" shape = "Rounded" disabled = {!props.canRedo} onClick = {(props.canRedo)?tpsRedo:disable} >
                         <i className="material-icons">redo</i>
                     </WButton>
                 </div>

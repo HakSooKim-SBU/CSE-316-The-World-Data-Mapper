@@ -20,8 +20,10 @@ const RegionSpreadSheet = (props) => {
     let region = null;
     let subRegions = [];
 
-    const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
-	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+    // const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
+	// const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+    // const [isRefetched, refetchToggle] = useState(false);
+
 
     const { data, error, loading, refetch} = useQuery(queries.GET_REGION_BYID, {variables: { regionId: _id }});
 	if(loading) { console.log(loading, 'loading'); }
@@ -30,16 +32,23 @@ const RegionSpreadSheet = (props) => {
 		region = data.getRegionById;
 	}
 
+    
     const { data: dataRegion, error: errorRegion, loading: loadingRegion, refetch: refetchRegion} = useQuery(queries.GET_SUBREGIONS_BYID, {variables: { regionId: _id }});
 	if(loadingRegion) { console.log(loadingRegion, 'loading'); }
 	if(errorRegion) { console.log(errorRegion, 'error'); }
 	if(dataRegion && dataRegion.getSubRegionsById !== null) { 
 		for(let subRegion of dataRegion.getSubRegionsById) {
-			subRegions.push(subRegion)
+			subRegions.push(subRegion);
+            
 		}
 	}
 
     
+    // if(!isRefetched){
+    //     refetchToggle(true);
+    //     refetch();
+    //     refetchRegion();;
+    // }
 
     const [AddSubRegion] 		    = useMutation(mutations.ADD_SUBREGION);
     const [DeleteSubRegion] 	    = useMutation(mutations.DELETE_SUBREGION);
@@ -49,8 +58,8 @@ const RegionSpreadSheet = (props) => {
     const tpsUndo = async () => {
 		const ret = await props.tps.undoTransaction();
 		if(ret) {
-			setCanUndo(props.tps.hasTransactionToUndo());
-			setCanRedo(props.tps.hasTransactionToRedo());
+			props.setCanUndo(props.tps.hasTransactionToUndo());
+			props.setCanRedo(props.tps.hasTransactionToRedo());
 		}
         let a = await refetch();
         let b = await refetchRegion();
@@ -59,8 +68,8 @@ const RegionSpreadSheet = (props) => {
 	const tpsRedo = async () => {
 		const ret = await props.tps.doTransaction();
 		if(ret) {
-			setCanUndo(props.tps.hasTransactionToUndo());
-			setCanRedo(props.tps.hasTransactionToRedo());
+			props.setCanUndo(props.tps.hasTransactionToUndo());
+			props.setCanRedo(props.tps.hasTransactionToRedo());
 		}
         let a = await refetch();
         let b = await refetchRegion();
@@ -171,8 +180,8 @@ const RegionSpreadSheet = (props) => {
 
     const handleClickName = async (mapId) => {
         props.tps.clearAllTransactions();
-        setCanUndo(props.tps.hasTransactionToUndo());
-        setCanRedo(props.tps.hasTransactionToRedo());
+        props.setCanUndo(props.tps.hasTransactionToUndo());
+        props.setCanRedo(props.tps.hasTransactionToRedo());
         let a = await refetch();
         let b = await refetchRegion();
         history.push("/RegionSpreadSheet/" +mapId);
@@ -180,8 +189,8 @@ const RegionSpreadSheet = (props) => {
     
     const handleClickLandmark = async (mapId) =>{
         props.tps.clearAllTransactions();
-		setCanUndo(props.tps.hasTransactionToUndo());
-		setCanRedo(props.tps.hasTransactionToRedo());
+		props.setCanUndo(props.tps.hasTransactionToUndo());
+		props.setCanRedo(props.tps.hasTransactionToRedo());
         let a = await refetch();
         let b = await refetchRegion();
         history.push("/RegionViewer/" +mapId);
@@ -201,13 +210,13 @@ const RegionSpreadSheet = (props) => {
                     </WCol>
                     <WCol size="4">
                         <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" 
-                         shape = "pill" disabled = {!canUndo} onClick = { (canUndo)?tpsUndo:disable} >
+                         shape = "pill" disabled = {!props.canUndo} onClick = { (props.canUndo)?tpsUndo:disable} >
                             <i className="material-icons">undo</i>
                         </WButton>
                     </WCol>
                     <WCol size="4">
                         <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" 
-                         shape = "pill" disabled = {!canRedo} onClick = {(canRedo)?tpsRedo:disable} >
+                         shape = "pill" disabled = {!props.canRedo} onClick = {(props.canRedo)?tpsRedo:disable} >
                             <i className="material-icons">redo</i>
                         </WButton>
                     </WCol>

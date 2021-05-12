@@ -30,11 +30,12 @@ const Login = (props) => {
 			return;
 		}
 		if (data) {
-			props.fetchUser();
+			let a = await props.fetchUser();
 			toggleLoading(false)
 			props.setShowLogin(false)
-			history.replace("/MapSelection/" +data.login._id);
 		};
+		history.push("/MapSelection/" +data.login._id);
+
 	};
 		return (
 			<WModal className="modal" cover="true" visible={props.setShowLogin}>

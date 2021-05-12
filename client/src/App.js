@@ -31,6 +31,9 @@ const App = () => {
 		if(getCurrentUser !== null) { user = getCurrentUser; }
     }
 
+	const [canUndo, setCanUndo] = useState(tps.hasTransactionToUndo());
+	const [canRedo, setCanRedo] = useState(tps.hasTransactionToRedo());
+
 	const auth = user === null ? false : true;
 	return(
 		<Router >
@@ -38,7 +41,7 @@ const App = () => {
 			<WLHeader>
 				<WNavbar color="colored">
 				<ul className = "logoSpace" >
-					<Logo className='logo' user = {user}  tps = {tps} />
+					<Logo className='logo' user = {user} tps = {tps} />
 				</ul>
 				<ul className = "navigatorSpace" >
 						<ul className = "ancestorNavigator" >
@@ -58,8 +61,10 @@ const App = () => {
 				<WLMain>
 					<Route exact path="/" name="welcome" render={() => <Welcome />} /> <Route/>
 					<Route path="/MapSelection/:_id" render={() => <MapSelectionContent />}/> <Route/>
-					<Route path="/RegionSpreadSheet/:_id" render={() => <RegionSpreadSheet tps = {tps}   />}/> <Route/>
-					<Route path="/RegionViewer/:_id" render={() => <RegionViewer  tps = {tps}  />}/><Route/>
+					<Route path="/RegionSpreadSheet/:_id" render={() => <RegionSpreadSheet tps = {tps} setCanUndo = {setCanUndo} 
+																			setCanRedo = {setCanRedo} canUndo = {canUndo} canRedo = {canRedo} />}/> <Route/>
+					<Route path="/RegionViewer/:_id" render={() => <RegionViewer  tps = {tps}  setCanUndo = {setCanUndo} 
+																			setCanRedo = {setCanRedo} canUndo = {canUndo} canRedo = {canRedo} />}/><Route/>
 				</WLMain>
 			</Switch>
 

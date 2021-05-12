@@ -16,11 +16,10 @@ module.exports = {
 		},
 		getSubRegionsById: async (_, args,{req}) => {
 			console.log("getSubRegionsById")
-			
-			if(!req.userId){
-				return [];
-			}
 			const { regionId } = args;
+			if(!req.userId){
+				return ;
+			}
 			const userId = new ObjectId(req.userId);
 			if(!regionId) { return};
 			const _id = new ObjectId(regionId);
@@ -93,8 +92,6 @@ module.exports = {
 			}
 			let subRegionsLandmark = []
 			for (let i = 0; i< nodes.length; i++){
-				console.log("hi");
-
 				for (let j = 0; j< nodes[i].landmark.length; j++){
 					let str = nodes[i].landmark[j];
 					if (i !== 0){
@@ -102,7 +99,6 @@ module.exports = {
 					str += nodes[i].leader;
 					}
 					subRegionsLandmark.push(str);
-					console.log(str);
 
 				}
 			}

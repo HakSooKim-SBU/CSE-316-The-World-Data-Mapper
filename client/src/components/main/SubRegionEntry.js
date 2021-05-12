@@ -40,6 +40,9 @@ const SubRegionEntry = (props) => {
     const handleClickLandmark = () =>{
         props.handleClickLandmark(props.subRegion._id);
     }
+    let landmarkStr = ""
+    props.subRegion.landmark.map(landmark => landmarkStr += landmark + ", ");
+    landmarkStr = landmarkStr.slice(0,-2);
 
     return (
         <div className="spreadsheetTableCell">
@@ -95,7 +98,7 @@ const SubRegionEntry = (props) => {
             </div>
             <div className="landmarkColumn">
                 <WButton wType="texted" span className = "table-blue-column" clickAnimation = "ripple-dark" onClick = {handleClickLandmark}>
-                    <i className="material-icons">close</i>
+                {landmarkStr}   
                 </WButton>
             </div>
 

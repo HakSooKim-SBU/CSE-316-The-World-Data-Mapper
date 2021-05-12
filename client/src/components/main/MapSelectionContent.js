@@ -29,11 +29,18 @@ const MapSelectionContent = (props) => {
 		}
 	}
 
-    
+    const [isRefetched, refetchTrigger] = useState(true);
+
+   
     const deleteSubRegion = async (regionId) =>{
 		const { data } = await DeleteSubRegion({ variables: { regionId:regionId} });
-		await refetchRegion({ variables: { regionId: userId } })
+		const a = await refetchRegion({ variables: { regionId: userId } })
 	}
+
+    if (subMaps.length ==0 && isRefetched ){
+        refetchTrigger(false);
+		refetchRegion({ variables: { regionId: userId } })
+    }
 
     const [AddSubRegion] 		    = useMutation(mutations.ADD_SUBREGION);
     const [DeleteSubRegion] 		= useMutation(mutations.DELETE_SUBREGION);
@@ -51,7 +58,7 @@ const MapSelectionContent = (props) => {
 
     const renameRegion = async (regionId, newName) =>{
 		const { data } = await UpdateSubRegion({ variables: { regionId:regionId,field: "name", value:newName} });
-		await refetchRegion({ variables: { regionId: userId } })
+		const a = await refetchRegion({ variables: { regionId: userId } })
 
 	}
 
@@ -68,12 +75,12 @@ const MapSelectionContent = (props) => {
 			subRegion : []
 		};
 		const { data } = await AddSubRegion({ variables: { region:newMap, index: 0} });
-		await refetchRegion({ variables: { regionId: userId } })
+		const a = await refetchRegion({ variables: { regionId: userId } })
 	};
 
     const handleMapClick = async (mapId) => {
         const { data } = await MakeTopMap({ variables: { regionId: mapId} });
-        await refetchRegion({ variables: { regionId: userId } });
+		const a = await refetchRegion({ variables: { regionId: userId } })
         history.push("/RegionSpreadSheet/" + mapId);
     }
 
