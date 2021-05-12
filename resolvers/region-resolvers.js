@@ -192,6 +192,29 @@ module.exports = {
 				return false;
 
 		},
+		changeParentRegion: async  (_, args) => {
+			const {subRegionIdToMove, currentParentId, newParentId} = args;
+			const subRegion_id = new ObjectId(subRegionIdToMove);
+			const currentParent_id = new ObjectId(currentParentId);
+			const newParent_id = new ObjectId(newParentId);
 
+			let subRegionUpdated = await Region.updateOne({_id: subRegion_id}, {parentRegion_id:newParentId });
+
+			let currentParentRegion = await Region.findOne({_id: currentParent_id});
+			let currentParentRegionSubRegion = currentParentRegion.subRegion;
+			currentParentRegionSubRegion = currentParentRegionSubRegion.filter(regionId => regionId !== subRegionIdToMove.toString())
+			console.log(currentParentRegionSubRegion)
+			let currentParentUpdated = await Region.updateOne({_id: currentParent_id}, {subRegion : currentParentRegionSubRegion});
+			let newParentRegion = await Region.findOne({_id: newParent_id});
+			let newParentRegionSubRegion = newParentRegion.subRegion;
+			newParentRegionSubRegion.push(subRegionIdToMove);
+			console.log(newParentRegionSubRegion);
+			let newParentUpdated = await Region.updateOne({_id: newParent_id}, {subRegion : newParentRegionSubRegion});
+			if (subRegionUpdated && currentParentUpdated && newParentUpdated)
+				return true;
+			else 
+				return false;
+
+		},
 	}
 }

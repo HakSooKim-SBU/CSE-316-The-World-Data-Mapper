@@ -6,8 +6,9 @@ import * as queries				from '../../cache/queries';
 import {useHistory } from 'react-router-dom';
 import * as mutations 					from '../../cache/mutations';
 import { useMutation } 		from '@apollo/client';
-import { UpdateSubRegionField_Transaction } 				from '../../utils/jsTPS';
+import { UpdateSubRegionField_Transaction,Move_ParentRegion_Transaction } 				from '../../utils/jsTPS';
 import LandmarkEntry from './LandmarkEntry';
+import MapEntry from './MapEntry';
 
 
 const RegionViewer = (props) => {
@@ -15,6 +16,7 @@ const RegionViewer = (props) => {
     let history = useHistory();
     let region = null;
     let parentRegion = null;
+    let parentRegions = [];
     let allSubRegionsLandmark = [];
  
     const { data, error, loading, refetch} = useQuery(queries.GET_REGION_BYID, {variables: { regionId: _id }});
@@ -28,8 +30,11 @@ const RegionViewer = (props) => {
 	if(loadingRootsRegion) { console.log(loadingRootsRegion, 'loading'); }
 	if(errorRootsRegion) { console.log(errorRootsRegion, 'error'); }
 	if(dataRootsRegion && dataRootsRegion.getRootRegionsById !== null) { 
-        let rootsRegions = dataRootsRegion.getRootRegionsById
-        parentRegion = rootsRegions[rootsRegions.length - 2];
+        for(let rootRegion of dataRootsRegion.getRootRegionsById) {
+            parentRegions.push(rootRegion)
+        }
+        parentRegions = parentRegions.slice(0,-1);
+        parentRegion = parentRegions[parentRegions.length - 1];
     }
 
     const { data: dataAllSubRegion, error: errorAllSubRegion, loading: loadingAllSubRegion, refetch:landmarkRefetch} = useQuery(queries.GET_SUBREGION_LANDMARK_BYID, {variables: { regionId: _id }});
@@ -52,7 +57,9 @@ const RegionViewer = (props) => {
     }
 
     const [UpdateSubRegionField] 	= useMutation(mutations.UPDATE_SUBREGION_SORT);
+    const [ChangeParentRegion] 	= useMutation(mutations.CHANGE_PARENT_REGION);
 
+    const [movingParent, toggleParentMoving] = useState(false);
 	const [landmarkInput, setLandmarkInput] = useState("");
 
 	const updateLandmarkInput = (e) => {
@@ -103,6 +110,18 @@ const RegionViewer = (props) => {
 
     const disable = () =>{}
 
+    const handleMovingParent = async (e) =>{
+        let newParentId = e.target.value;
+        if(parentRegion._id == newParentId){
+            return;
+        }
+        let transaction = new Move_ParentRegion_Transaction(region._id, parentRegion._id, newParentId, ChangeParentRegion);
+        props.tps.addTransaction(transaction);
+        const data = await tpsRedo();
+        toggleParentMoving(!movingParent)
+
+    }
+
     return (
         <div class="regionViewer">
             <div class="regionViewerLS">
@@ -123,9 +142,34 @@ const RegionViewer = (props) => {
                     </WCol>
                 </WRow>
                 <WRow>
-                    <WCol size ="12"  className = "RegionViewerText">
-                        Parent Region:  <span style={{paddingLeft: "3%"}} onClick={parentRegionClick}>{(parentRegion) ? parentRegion.name : "  "} </span> 
+                    <WCol size ="5"  className = "RegionViewerText">
+                            Parent Region:  
+                    
                     </WCol>
+                    <WCol size ="7"  className = "RegionViewerText">
+                    {movingParent ?
+                        <select className = "RegionViewerSelect" autoFocus={true} onBlur={handleMovingParent}> 
+                            {
+                                parentRegions.map((entry, index) => (
+                                     <option value = {entry._id}>{entry.name} </option>  
+                                ))                           
+                            }
+                        </select> 
+                :
+                            <WRow>
+                                <WCol size ="8" >
+                             <span onClick={parentRegionClick}>{(parentRegion) ? parentRegion.name : "  "} </span> 
+                             </WCol>
+                             <WCol size ="4" >
+                            <WButton wType ="texted" span className = "RegionViewerEdit"   onClick = {()=> toggleParentMoving(!movingParent)} >
+                                <i className="material-icons">edit</i>
+                            </WButton>
+                            </WCol>
+
+                            </WRow>
+                }                    
+                    </WCol>
+                
                 </WRow>
                 <WRow>
                     <WCol size ="12"  className = "RegionViewerText">

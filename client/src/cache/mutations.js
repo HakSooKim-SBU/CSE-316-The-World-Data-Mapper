@@ -68,5 +68,8 @@ export const UPDATE_SUBREGION_SORT = gql`
 	}
 `
 
-
-
+export const CHANGE_PARENT_REGION = gql`
+	mutation ChangeParentRegion($subRegionIdToMove: String!, $currentParentId: String!, $newParentId: String!) {
+		changeParentRegion(subRegionIdToMove: $subRegionIdToMove, currentParentId:$currentParentId, newParentId:$newParentId )
+	}
+`

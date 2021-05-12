@@ -22,7 +22,6 @@ const RegionSpreadSheet = (props) => {
 
     // const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	// const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
-    // const [isRefetched, refetchToggle] = useState(false);
 
 
     const { data, error, loading, refetch} = useQuery(queries.GET_REGION_BYID, {variables: { regionId: _id }});
@@ -43,12 +42,13 @@ const RegionSpreadSheet = (props) => {
 		}
 	}
 
-    
-    // if(!isRefetched){
-    //     refetchToggle(true);
-    //     refetch();
-    //     refetchRegion();;
-    // }
+    const [isRefetched, refetchToggle] = useState(false);
+
+    if(!isRefetched){
+        refetchToggle(true);
+        refetch();
+        refetchRegion();;
+    }
 
     const [AddSubRegion] 		    = useMutation(mutations.ADD_SUBREGION);
     const [DeleteSubRegion] 	    = useMutation(mutations.DELETE_SUBREGION);

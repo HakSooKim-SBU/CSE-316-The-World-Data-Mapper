@@ -25,6 +25,7 @@ const typeDefs = gql `
         makeTopMap(regionId: String!): Boolean
         updateSubRegionField(regionId: String!, field: String!, value: String! ): Boolean
         updateSubRegionSort(regionId: String!, field: String!, value: [String] ): Boolean
+        changeParentRegion(subRegionIdToMove: String!, currentParentId: String!, newParentId:String! ) : Boolean
     }
     input regionInput{
         _id: String!

@@ -59,6 +59,27 @@ export class UpdateSubRegion_Transaction extends jsTPS_Transaction {
 		return data;
     }
 }
+export class Move_ParentRegion_Transaction extends jsTPS_Transaction {
+    constructor(subRegionIdToMove, currentParentId, newParentId, movefunc) {
+        super();
+        this.subRegionIdToMove = subRegionIdToMove;
+		this.currentParentId = currentParentId;
+		this.newParentId = newParentId;
+        this.movefunc = movefunc;
+    }
+    async doTransaction() {
+        const { data } = await this.movefunc({variables: {subRegionIdToMove: this.subRegionIdToMove, 
+                            currentParentId: this.currentParentId, newParentId: this.newParentId }})  
+            return data;
+    }
+
+    async undoTransaction() {
+        const { data } = await this.movefunc({variables: {subRegionIdToMove: this.subRegionIdToMove, 
+            currentParentId: this.newParentId, newParentId: this.currentParentId }})  
+            return data;
+		
+    }
+}
 
 
 
