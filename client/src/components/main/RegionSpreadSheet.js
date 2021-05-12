@@ -6,15 +6,16 @@ import { useQuery } 	from '@apollo/client';
 import * as queries				from '../../cache/queries';
 import { useMutation } 		from '@apollo/client';
 import {useHistory } from 'react-router-dom';
-
-import { PromiseProvider } from 'mongoose';
 import { useParams } from "react-router-dom";
 import * as mutations 					from '../../cache/mutations';
 import { UpdateSubRegionField_Transaction, UpdateSubRegion_Transaction } 				from '../../utils/jsTPS';
-import {withRouter} from 'react-router';
 
 
 const RegionSpreadSheet = (props) => {
+
+    const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
+	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+
     let history = useHistory();
     let {_id} = useParams();
     let region = null;
@@ -47,7 +48,9 @@ const RegionSpreadSheet = (props) => {
     if(!isRefetched){
         refetchToggle(true);
         refetch();
-        refetchRegion();;
+        refetchRegion();
+        setCanUndo(props.tps.hasTransactionToUndo());
+        setCanRedo(props.tps.hasTransactionToRedo());
     }
 
     const [AddSubRegion] 		    = useMutation(mutations.ADD_SUBREGION);
@@ -58,8 +61,8 @@ const RegionSpreadSheet = (props) => {
     const tpsUndo = async () => {
 		const ret = await props.tps.undoTransaction();
 		if(ret) {
-			props.setCanUndo(props.tps.hasTransactionToUndo());
-			props.setCanRedo(props.tps.hasTransactionToRedo());
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
 		}
         let a = await refetch();
         let b = await refetchRegion();
@@ -68,8 +71,8 @@ const RegionSpreadSheet = (props) => {
 	const tpsRedo = async () => {
 		const ret = await props.tps.doTransaction();
 		if(ret) {
-			props.setCanUndo(props.tps.hasTransactionToUndo());
-			props.setCanRedo(props.tps.hasTransactionToRedo());
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
 		}
         let a = await refetch();
         let b = await refetchRegion();
@@ -180,8 +183,8 @@ const RegionSpreadSheet = (props) => {
 
     const handleClickName = async (mapId) => {
         props.tps.clearAllTransactions();
-        props.setCanUndo(props.tps.hasTransactionToUndo());
-        props.setCanRedo(props.tps.hasTransactionToRedo());
+        setCanUndo(props.tps.hasTransactionToUndo());
+        setCanRedo(props.tps.hasTransactionToRedo());
         let a = await refetch();
         let b = await refetchRegion();
         history.push("/RegionSpreadSheet/" +mapId);
@@ -189,8 +192,8 @@ const RegionSpreadSheet = (props) => {
     
     const handleClickLandmark = async (mapId) =>{
         props.tps.clearAllTransactions();
-		props.setCanUndo(props.tps.hasTransactionToUndo());
-		props.setCanRedo(props.tps.hasTransactionToRedo());
+		setCanUndo(props.tps.hasTransactionToUndo());
+		setCanRedo(props.tps.hasTransactionToRedo());
         let a = await refetch();
         let b = await refetchRegion();
         history.push("/RegionViewer/" +mapId);
@@ -210,13 +213,13 @@ const RegionSpreadSheet = (props) => {
                     </WCol>
                     <WCol size="4">
                         <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" 
-                         shape = "pill" disabled = {!props.canUndo} onClick = { (props.canUndo)?tpsUndo:disable} >
+                         shape = "pill" disabled = {!canUndo} onClick = { (canUndo)?tpsUndo:disable} >
                             <i className="material-icons">undo</i>
                         </WButton>
                     </WCol>
                     <WCol size="4">
                         <WButton wType="texted" span hoverAnimation = "darken" className = "SpreadSheet-table-icons-undo-redo" 
-                         shape = "pill" disabled = {!props.canRedo} onClick = {(props.canRedo)?tpsRedo:disable} >
+                         shape = "pill" disabled = {!canRedo} onClick = {(canRedo)?tpsRedo:disable} >
                             <i className="material-icons">redo</i>
                         </WButton>
                     </WCol>

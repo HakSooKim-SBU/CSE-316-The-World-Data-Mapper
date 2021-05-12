@@ -4,7 +4,7 @@ import * as queries				            from '../../cache/queries';
 import RootRegionNavigatorEntry 			from './RootRegionNavigatorEntry';
 
 
-const AncestorRegionNavigator = () => {
+const AncestorRegionNavigator = (props) => {
     const pathname = window.location.pathname 
     let _id = ""
     if (pathname.startsWith("/RegionSpreadSheet/")){
@@ -29,7 +29,7 @@ const AncestorRegionNavigator = () => {
             {
             rootRegions.map((entry, index) => (
                 <RootRegionNavigatorEntry 
-                rootRegion ={entry} index = {index}
+                rootRegion ={entry} index = {index} tps = {props.tps}
                 />
             ))
             }

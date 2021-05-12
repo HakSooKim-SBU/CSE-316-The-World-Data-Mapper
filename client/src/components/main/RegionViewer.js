@@ -18,7 +18,10 @@ const RegionViewer = (props) => {
     let parentRegion = null;
     let parentRegions = [];
     let allSubRegionsLandmark = [];
- 
+
+    const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
+	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+
     const { data, error, loading, refetch} = useQuery(queries.GET_REGION_BYID, {variables: { regionId: _id }});
 	if(loading) { console.log(loading, 'loading'); }
 	if(error) { console.log(error, 'error'); }
@@ -51,8 +54,8 @@ const RegionViewer = (props) => {
         let b = await rootRegionsRefetch();
         let c = await landmarkRefetch();
         props.tps.clearAllTransactions();
-        props.setCanUndo(props.tps.hasTransactionToUndo());
-        props.setCanRedo(props.tps.hasTransactionToRedo());
+        setCanUndo(props.tps.hasTransactionToUndo());
+        setCanRedo(props.tps.hasTransactionToRedo());
         history.push("/RegionSpreadSheet/" + region.parentRegion_id);
     }
 
@@ -89,8 +92,8 @@ const RegionViewer = (props) => {
     const tpsUndo = async () => {
 		const ret = await props.tps.undoTransaction();
 		if(ret) {
-			props.setCanUndo(props.tps.hasTransactionToUndo());
-			props.setCanRedo(props.tps.hasTransactionToRedo());
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
 		}
         let a = await refetch();
         let b = await rootRegionsRefetch();
@@ -100,8 +103,8 @@ const RegionViewer = (props) => {
 	const tpsRedo = async () => {
 		const ret = await props.tps.doTransaction();
 		if(ret) {
-			props.setCanUndo(props.tps.hasTransactionToUndo());
-			props.setCanRedo(props.tps.hasTransactionToRedo());
+			setCanUndo(props.tps.hasTransactionToUndo());
+			setCanRedo(props.tps.hasTransactionToRedo());
 		}
         let a = await refetch();
         let b = await rootRegionsRefetch();
@@ -119,17 +122,16 @@ const RegionViewer = (props) => {
         props.tps.addTransaction(transaction);
         const data = await tpsRedo();
         toggleParentMoving(!movingParent)
-
     }
 
     return (
         <div class="regionViewer">
             <div class="regionViewerLS">
                 <div class="regionViewer-icons">
-                    <WButton wType="texted" className = "regionViewer-icon"  shape = "Rounded" disabled = {!props.canUndo} onClick = { (props.canUndo)?tpsUndo:disable} >
+                    <WButton wType="texted" className = "regionViewer-icon"  shape = "Rounded" disabled = {!canUndo} onClick = { (canUndo)?tpsUndo:disable} >
                         <i className="material-icons">undo</i>
                     </WButton>
-                    <WButton wType="texted" className = "regionViewer-icon" shape = "Rounded" disabled = {!props.canRedo} onClick = {(props.canRedo)?tpsRedo:disable} >
+                    <WButton wType="texted" className = "regionViewer-icon" shape = "Rounded" disabled = {!canRedo} onClick = {(canRedo)?tpsRedo:disable} >
                         <i className="material-icons">redo</i>
                     </WButton>
                 </div>

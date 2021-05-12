@@ -5,7 +5,7 @@ import {withRouter} from 'react-router';
 
 const Logo = (props) => {
     let history = useHistory();
-const handleLogoCLick = async () =>{
+const handleLogoCLick = () =>{
     if(props.user !== null){
     props.tps.clearAllTransactions();
     history.push("/MapSelection/" + props.user._id);

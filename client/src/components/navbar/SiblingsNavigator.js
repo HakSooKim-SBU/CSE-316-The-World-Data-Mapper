@@ -34,10 +34,14 @@ const SiblingsNavigator = (props) => {
     }
 
     const moveToPrevSibling = () =>{
+        props.tps.clearAllTransactions();
+
         history.push("/RegionViewer/" + parentRegion.subRegion[prevIndex]);
     }
 
     const moveToNextSibling = () =>{
+        props.tps.clearAllTransactions();
+
         history.push("/RegionViewer/" + parentRegion.subRegion[nextIndex]);
     }
 

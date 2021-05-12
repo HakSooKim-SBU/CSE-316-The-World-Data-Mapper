@@ -6,6 +6,7 @@ const RootRegionNavigatorEntry = (props) => {
     const index = props.index;
     let history = useHistory();
     const handleClick = () =>{
+        props.tps.clearAllTransactions();
         history.push("/RegionSpreadSheet/" + rootRegion._id);
     }
     let content = (props.index == 0)? rootRegion.name : "> " + rootRegion.name;
