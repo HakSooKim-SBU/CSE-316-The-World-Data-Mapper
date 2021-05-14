@@ -5,118 +5,98 @@ import DeleteSubRegionConfirmation 							from '../modals/DeleteSubRegionConfirm
 
 
 const SubRegionEntry = (props) => {
-console.log(props.currentLocation);
 
-    const [editingName, toggleNameEdit] = useState(false);
-    const [editingCapital, toggleCapitalEdit] = useState(false);
-    const [editingLeader, toggleLeaderEdit] = useState(false);
+    const [editingName, toggleNameEdit]         = useState(false);
+    const [editingCapital, toggleCapitalEdit]   = useState(false);
+    const [editingLeader, toggleLeaderEdit]     = useState(false);
 
-
-    
     const openNameInput = () =>{
+        toggleNameEdit(true);
         props.setFocus(true);
         props.setCurrentLocation({x: props.index, y:0});
-
-        toggleNameEdit(true);
-        props.setFocus(false);
-
     }
 
     const openCapitalInput = () =>{
-        props.setFocus(true);
-
-        props.setCurrentLocation({x: props.index, y:1});
         toggleCapitalEdit(true);
-        props.setFocus(false);
-
-
+        props.setFocus(true);
+        props.setCurrentLocation({x: props.index, y:1});
     }
 
     const openLeaderInput = () =>{
-        props.setFocus(true);
-
-        props.setCurrentLocation({x: props.index, y:2});
         toggleLeaderEdit(true);
-        props.setFocus(false);
-
-
+        props.setFocus(true);
+        props.setCurrentLocation({x: props.index, y:2});
     }
 
-    if (props.currentLocation.x === props.index && !props.focus){
-        if (props.currentLocation.y == 0 && !editingName){
-            // toggleNameEdit(true);
-            // props.setFocus(true);
+    if (props.currentLocation.x === props.index &&props.focus ){   
+         if (props.currentLocation.y == 0 && !editingName){
             openNameInput();
         }
-        else if (props.currentLocation.y == 1 && !editingCapital){
-            // toggleCapitalEdit(true);
-            // props.setFocus(true);
+        else if (props.currentLocation.y == 1 && !editingCapital){ 
             openCapitalInput();
         }
         else if (props.currentLocation.y == 2 && !editingLeader){
-            // toggleLeaderEdit(true);
-            // props.setFocus(true);
             openLeaderInput();
-
         }
     }
-
+    
     const handleClickNameEdit = (e) =>{
-        // props.setFocus(false);
-        toggleNameEdit(false);
+
         const newName = e.target.value ? e.target.value : 'Not Assigned';
-        const prevName = props.subRegion.capital;
+        const prevName = props.subRegion.name;
         if(newName !== prevName) {
             props.editRegion(props.subRegion._id, 'name', newName, prevName);
         }
-        
-
-        
+        toggleNameEdit(false);
+        props.setFocus(false);
     }
     
     const handleClickCapital = (e) =>{
-        // props.setFocus(false);
-        toggleCapitalEdit(false);
         const newCapital = e.target.value ? e.target.value : 'Not Assigned';
         const prevCapital = props.subRegion.capital;
         if(newCapital !== prevCapital) {
-            props.editRegion(props.subRegion._id, 'capital', newCapital, prevCapital);
+        props.editRegion(props.subRegion._id, 'capital', newCapital, prevCapital);
         }
-
-        
+        toggleCapitalEdit(false);
+        props.setFocus(false);
     }
 
     const handleClickLeader = (e) =>{
-        // props.setFocus(false);
-        toggleLeaderEdit(false);
         const newLeader = e.target.value ? e.target.value : 'Not Assigned';
         const prevLeader = props.subRegion.leader;
         if(newLeader !== prevLeader) {
             props.editRegion(props.subRegion._id, 'leader', newLeader, prevLeader);
         }
-
-        
+        toggleLeaderEdit(false);
+        props.setFocus(false);
     }
 
     const handleKeyDown = (e) =>{
         if(e.key === "ArrowRight") {
             if (props.currentLocation.y <2){
                 props.setCurrentLocation({x:props.currentLocation.x, y:props.currentLocation.y + 1});
+                props.setFocus(true);
             }
 		}
 		else if (e.key === "ArrowLeft") { 
             if (props.currentLocation.y > 0){
                 props.setCurrentLocation({x:props.currentLocation.x, y:props.currentLocation.y - 1});
+                props.setFocus(true);
+
             }
 		}
         else if (e.key === "ArrowDown") { 
-            if (props.currentLocation.x < props.index){
+            if (props.currentLocation.x < props.subRegionsTotal - 1){
                 props.setCurrentLocation({x:props.currentLocation.x + 1, y:props.currentLocation.y});
+                props.setFocus(true);
+
             }
 		}
         else if (e.key === "ArrowUp") { 
             if (props.currentLocation.x > 0){
                 props.setCurrentLocation({x:props.currentLocation.x - 1, y:props.currentLocation.y});
+                props.setFocus(true);
+
             }
 		}
     }
