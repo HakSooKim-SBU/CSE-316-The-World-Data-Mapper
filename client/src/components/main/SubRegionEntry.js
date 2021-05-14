@@ -28,7 +28,7 @@ const SubRegionEntry = (props) => {
         props.setCurrentLocation({x: props.index, y:2});
     }
 
-    if (props.currentLocation.x === props.index &&props.focus ){   
+    if (props.currentLocation.x === props.index && props.focus ){   
          if (props.currentLocation.y == 0 && !editingName){
             openNameInput();
         }
@@ -195,7 +195,6 @@ const SubRegionEntry = (props) => {
                 <WButton wType="texted" span className = "table-black-column" clickAnimation = "ripple-dark" >
 
                 <img  style = {{width: "151px", height: "30px" }} 
-                // src= {require(`../image/The World/${props.subRegion.flag}.png`) }  
                 src= { images[`${props.subRegion.flag}.png`] }  
                  alt="N/A"  
                  />

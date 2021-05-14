@@ -125,7 +125,14 @@ const RegionViewer = (props) => {
         const data = await tpsRedo();
         toggleParentMoving(!movingParent)
     }
-
+        //
+        const importAll = (r) => {
+            let images = {};
+            r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+            return images;
+        }
+        const images = importAll(require.context('../image/The World', false, /\.(png)$/));
+        // referenced by https://stackoverflow.com/questions/42118296/dynamically-import-images-from-a-directory-using-webpack
     return (
         <div class="regionViewer">
             <div class="regionViewerLS">
@@ -137,7 +144,16 @@ const RegionViewer = (props) => {
                         <i className="material-icons">redo</i>
                     </WButton>
                 </div>
-                <div class="regionViewer-flag"></div>
+                <div class="regionViewer-flag">
+                    {
+                    (region)?<img  style = {{width: "100%", height: "100%", color:"red"}} 
+                    src= { images[`${region.flag}.png`] }  
+                    alt="N/A"  
+                    />
+                    :
+                    <></>
+                    }  
+                </div>
                 <div class="regionViewer-space"></div>
                 <div class="regionViewer-textbox">
                 <WRow>
