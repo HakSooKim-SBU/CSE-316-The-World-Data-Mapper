@@ -35,7 +35,6 @@ const SiblingsNavigator = (props) => {
 
     const moveToPrevSibling = () =>{
         props.tps.clearAllTransactions();
-
         history.push("/RegionViewer/" + parentRegion.subRegion[prevIndex]);
     }
 

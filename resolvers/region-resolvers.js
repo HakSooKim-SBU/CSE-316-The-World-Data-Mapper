@@ -96,7 +96,7 @@ module.exports = {
 					let str = nodes[i].landmark[j];
 					if (i !== 0){
 					str += " - ";
-					str += nodes[i].leader;
+					str += nodes[i].name;
 					}
 					subRegionsLandmark.push(str);
 
