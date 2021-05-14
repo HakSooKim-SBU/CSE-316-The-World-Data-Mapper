@@ -140,18 +140,14 @@ console.log(props.currentLocation);
     props.subRegion.landmark.map(landmark => landmarkStr += landmark + ", ");
     landmarkStr = landmarkStr.slice(0,-2);
 
-    let imgSrc = null;
-    const imgCheck = (img) =>{
-        try{
-            imgSrc = require(img);
-            return imgSrc
-        }
-        catch (error) {
-            imgSrc = null;
-        }
-
+    //
+    const importAll = (r) => {
+        let images = {};
+        r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+        return images;
     }
-    
+    const images = importAll(require.context('../image/The World', false, /\.(png)$/));
+    // referenced by https://stackoverflow.com/questions/42118296/dynamically-import-images-from-a-directory-using-webpack
 
 
     return (
@@ -219,8 +215,10 @@ console.log(props.currentLocation);
                 <WButton wType="texted" span className = "table-black-column" clickAnimation = "ripple-dark" >
 
                 <img  style = {{width: "151px", height: "30px" }} 
-                src= {require(`../image/The World/${props.subRegion.flag}.png`) }  
-                 alt="No Image"  />
+                // src= {require(`../image/The World/${props.subRegion.flag}.png`) }  
+                src= { images[`${props.subRegion.flag}.png`] }  
+                 alt="N/A"  
+                 />
 
                 </WButton>
             </div>
