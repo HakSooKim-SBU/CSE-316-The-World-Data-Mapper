@@ -176,6 +176,10 @@ module.exports = {
 			const {regionId, field, value} = args;
 			const _id = new ObjectId(regionId);
 			const updated = await Region.updateOne({_id: _id}, {[field] : value })
+			if (field == "name"){
+				let newflag = value + " Flag"
+				let updated = await Region.updateOne({_id: _id}, {["flag"] : newflag })
+			}
 			if (updated)
 				return true;
 			else 

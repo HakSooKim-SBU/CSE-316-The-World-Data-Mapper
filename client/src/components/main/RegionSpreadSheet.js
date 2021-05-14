@@ -15,15 +15,14 @@ const RegionSpreadSheet = (props) => {
 
     const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
 	const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
+	
+    const [currentLocation, setCurrentLocation] = useState({ x: -1, y: -1 });
+    const [focus, setFocus] = useState(false);
 
     let history = useHistory();
     let {_id} = useParams();
     let region = null;
     let subRegions = [];
-
-    // const [canUndo, setCanUndo] = useState(props.tps.hasTransactionToUndo());
-	// const [canRedo, setCanRedo] = useState(props.tps.hasTransactionToRedo());
-
 
     const { data, error, loading, refetch} = useQuery(queries.GET_REGION_BYID, {variables: { regionId: _id }});
 	if(loading) { console.log(loading, 'loading'); }
@@ -265,7 +264,9 @@ const RegionSpreadSheet = (props) => {
             {
                 subRegions.map((entry, index) => (
                     <SubRegionEntry handleClickLandmark = {handleClickLandmark} handleClickName = {handleClickName} editRegion={editRegion}
-                    subRegion ={entry} index = {index + 2} deleteSubRegion = {deleteSubRegion} subRegions = {subRegions} />
+                    subRegion ={entry} index = {index} deleteSubRegion = {deleteSubRegion} subRegions = {subRegions} currentLocation = {currentLocation}
+                    setCurrentLocation = {setCurrentLocation} focus = {focus} setFocus = {setFocus}
+                    />
                 ))
             }
 
