@@ -200,6 +200,23 @@ const RegionSpreadSheet = (props) => {
     
     const disable = () => {}
 
+    const keyCombination = (e, callback) => {
+		if(e.key === 'z' && e.ctrlKey) {
+			if(canUndo) {
+				tpsUndo();
+			}
+		}
+		else if (e.key === 'y' && e.ctrlKey) { 
+			if(canRedo) {
+				tpsRedo();
+			}
+		}
+	}
+    
+	document.onkeydown = keyCombination;
+
+    
+
     return (
         <div className = "regionSpreadSheet">
 
@@ -248,12 +265,12 @@ const RegionSpreadSheet = (props) => {
                 </WButton>
             </div>
             <div class="SpreadSheet-flagHeader">
-                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons" >
+                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons button_no_Respond" >
                     Flag<span style={{paddingLeft: "15px"}}></span><i className="material-icons">arrow_downward</i>
                 </WButton>
             </div>
             <div class="SpreadSheet-landmarkHeader">
-                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons" >
+                <WButton wType="texted" span clickAnimation = "ripple-light" className = "SpreadSheet-Header-icons button_no_Respond" >
                     Landmarks<span style={{paddingLeft: "15px"}}></span><i className="material-icons">arrow_downward</i>
                 </WButton>    
             </div>

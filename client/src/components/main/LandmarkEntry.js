@@ -1,14 +1,18 @@
 import { DirectiveLocation } from 'graphql';
 import React, { useState } 	from 'react';
 import { WModal, WMHeader, WMMain, WMFooter, WButton, WInput, WRow, WCol } from 'wt-frontend';
-import DeleteMapConfirmation 							from '../modals/DeleteMapConfirmation';
+import DeleteLandmarkConfirmation 							from '../modals/DeleteLandmarkConfirmation';
 
 const LandmarkEntry = (props) => {
     let editable = props.index < props.regionLandmarkNum
     const [editing, toggleEditing] = useState(false);
+    const [showDelete, toggleDeleting] = useState(false);
+
+
 
     const handleDelete = () =>{
         props.editLandmark(props.landmark,"",0);
+        toggleDeleting(false);
     }
     
     const handleEdit = (e) =>{
@@ -32,7 +36,7 @@ const LandmarkEntry = (props) => {
                     </div>
                     <div class="landmarkDelete">
                     {(editable)?
-                            <WButton wType="texted" span clickAnimation = "ripple-light" className = "landmark-delete-icon" onClick = {handleDelete} >
+                            <WButton wType="texted" span clickAnimation = "ripple-light" className = "landmark-delete-icon" onClick = {() =>toggleDeleting(true)} >
                                 <i className="material-icons">delete_outline</i>
                             </WButton>  
                     :
@@ -52,7 +56,10 @@ const LandmarkEntry = (props) => {
                     }
                     
                 </div>
-
+                {
+                showDelete && <DeleteLandmarkConfirmation handleDelete = {handleDelete}   showDelete = {showDelete} toggleDeleting = {toggleDeleting} /> 
+                }
+            
  
         </div>
     );

@@ -192,9 +192,9 @@ const SubRegionEntry = (props) => {
                 
             </div>
             <div className="flagColumn">
-                <WButton wType="texted" span className = "table-black-column" clickAnimation = "ripple-dark" >
+                <WButton wType="texted" span className = "table-black-column button_no_Respond"  >
 
-                <img  style = {{width: "151px", height: "30px" }} 
+                <img  className = "button_no_Respond" style = {{width: "151px", height: "30px" }} 
                 src= { images[`${props.subRegion.flag}.png`] }  
                  alt="N/A"  
                  />

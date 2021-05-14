@@ -75,6 +75,10 @@ const RegionViewer = (props) => {
             if(!editLandmark){
                 return
             }
+            else if(newLandmark.includes(editLandmark)){
+                alert("No duplicate Landmark allowed")
+                return
+            }
             newLandmark.push(editLandmark);
         }
         else if (opcode == 0){
@@ -133,6 +137,21 @@ const RegionViewer = (props) => {
         }
         const images = importAll(require.context('../image/The World', false, /\.(png)$/));
         // referenced by https://stackoverflow.com/questions/42118296/dynamically-import-images-from-a-directory-using-webpack
+
+        const keyCombination = (e, callback) => {
+            if(e.key === 'z' && e.ctrlKey) {
+                if(canUndo) {
+                    tpsUndo();
+                }
+            }
+            else if (e.key === 'y' && e.ctrlKey) { 
+                if(canRedo) {
+                    tpsRedo();
+                }
+            }
+        }
+        
+        document.onkeydown = keyCombination;
     return (
         <div class="regionViewer">
             <div class="regionViewerLS">
